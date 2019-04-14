@@ -1,9 +1,19 @@
 # import-map-overrides
-A javascript library for being able to override import maps in the browser
+A javascript library for being able to override [import maps](https://github.com/WICG/import-maps) in the browser. This works
+with native browser import maps or with the [SystemJS](https://github.com/systemjs/systemjs) polyfill for import maps.
 
-## Installation / Usage
-import-map-overrides is used via a global variable `window.importMapOverrides`. The global variable because this needs to be
-usable regardless of build config and without using ESM modules, since once you use ESM modules you can no longer modify the import map.
+## Motivation
+Import maps are a way of controlling which url to download javascript modules from. The import-map-overrides library allows you
+to dynamically change the url for javascript modules by storing overrides in local storage. This is intended to be used as a way to
+allow developers to override individual modules on deployed environments where they cannot easily change the html file. You should
+not use import-map-overrides as the **only** import map on your page, since you cannot count on everyone's local storage having
+valid values for all of your modules. Instead, this can be viewed as a developer experience enhancement and dev tool -- developers
+can develop and debug on deployed environments instead of having to boot up a local environment.
+
+## Installation
+import-map-overrides is used via a global variable `window.importMapOverrides`. The global variable exists because import-map-overrides needs
+to be usable regardless of build config and without dependence on ESM modules, since
+[once you use ESM modules you can no longer modify the import map](https://github.com/WICG/import-maps/blob/master/spec.md#acquiring-import-maps).
 
 You can install import-map-overrides either through a script tag:
 
@@ -23,6 +33,24 @@ yarn add import-map-overrides
 // Make sure this js file gets executed BEFORE any <script type="module"> elements or any System.import() calls -->
 import 'import-map-overrides'; // this only will work if you compile the `import` down to an iife via webpack, rollup, parcel, etc
 ```
+
+## Configuration
+If you are using import-map-overrides for native import maps, no configuration is required.
+
+However, if you're using SystemJS as a polyfill for import maps, you'll need to tell import-map-overrides to make a
+`<script type="systemjs-importmap">` element instead of `<script type="importmap">`. To do this, you must add the following to
+your html file, **before the import-map-overrides library is loaded**.
+
+```html
+<meta name="importmap-type" content="systemjs-importmap">
+<script type="text/javascript" src="https://unpkg.com/import-map-overrides"></script>
+```
+
+## Integration with other import maps
+The import-map-overrides library can override a server-rendered inline import map, an import map that is loaded via `src=""`, or
+any other import map. The key to making this work is to ensure that the import-map-overrides library is loaded **after** all other
+import maps that are on the page, but **before** the first `<script type="module">` or `System.import()`. An override import map will
+be inserted into the DOM, which will work great.
 
 ## API
 import-map-overrides provides the following functions. Note that these functions are always put onto window.importMapOverrides, even

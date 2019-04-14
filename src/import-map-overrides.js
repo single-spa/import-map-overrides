@@ -4,7 +4,6 @@ window.importMapOverrides = {
   addOverride: function addOverride(moduleName, url) {
     const key = localStoragePrefix + moduleName
     localStorage.setItem(key, url)
-    document.cookie = `${key}=${url};`
   },
   getOverrideMap: function getOverrideMap() {
     const overrides = {imports: {}}
@@ -21,7 +20,6 @@ window.importMapOverrides = {
     const key = localStoragePrefix + moduleName
     const hasItem = localStorage.getItem(key) === null
     localStorage.removeItem(key)
-    document.cookie = `${key}=;expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
     return hasItem
   },
 }
@@ -33,6 +31,7 @@ if (Object.keys(overrideMap.imports).length > 0) {
   const scriptType = importMapMetaElement && importMapMetaElement.getAttribute('content') || 'import-map'
   const overrideMapElement = document.createElement('script')
   overrideMapElement.type = scriptType
+  overrideMapElement.id = 'import-map-overrides' // just for debugging -- easier to find in html with an ID
   overrideMapElement.innerHTML = JSON.stringify(overrideMap)
 
   const importMaps = document.querySelectorAll(`script[type="${scriptType}"]`)

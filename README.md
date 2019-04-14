@@ -63,7 +63,8 @@ if you installed it as an npm package.
 ### `window.importMapOverrides.getOverrideMap()`
 
 Returns the override import map as an object. The returned object represents the overrides
-**that will take effect the next time you reload the page**, including any additions or removals you've recently made.
+**that will take effect the next time you reload the page**, including any additions or removals you've recently made after
+the current page's [acquiringImportMaps boolean](https://github.com/WICG/import-maps/blob/master/spec.md#acquiring-import-maps) was set to false.
 
 ```js
 const overrideMap = window.importMapOverrides.getOverrideMap()

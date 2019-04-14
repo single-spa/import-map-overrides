@@ -17,6 +17,13 @@ window.importMapOverrides = {
 
     return overrides
   },
+  removeOverride: function removeOverride(moduleName) {
+    const key = localStoragePrefix + moduleName
+    const hasItem = localStorage.getItem(key) === null
+    localStorage.removeItem(key)
+    document.cookie = `${key}=;expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+    return hasItem
+  },
 }
 
 const overrideMap = window.importMapOverrides.getOverrideMap()

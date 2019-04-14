@@ -8,8 +8,8 @@ to dynamically change the url for javascript modules by storing overrides in loc
 allow developers to override individual modules on deployed environments where they cannot easily change the html file.
 
 You should not use import-map-overrides as the **only** import map on your page, since you cannot count on everyone's local storage having
-valid values for all of your modules. Instead, this can be viewed as a developer experience enhancement and dev tool -- developers
-can develop and debug on deployed environments instead of having to boot up a local environment.
+valid values for all of your modules. Instead, import-map-overrides should be viewed as a developer experience enhancement and dev tool --
+developers can develop and debug on deployed environments instead of having to boot up a local environment.
 
 ## Installation
 The import-map-overrides library is used via a global variable `window.importMapOverrides`. The global variable exists because import-map-overrides needs

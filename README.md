@@ -15,7 +15,7 @@ The import-map-overrides library is used via a global variable `window.importMap
 to be usable regardless of build config and without dependence on ESM modules, since
 [once you use ESM modules you can no longer modify the import map](https://github.com/WICG/import-maps/blob/master/spec.md#acquiring-import-maps).
 
-You can install import-map-overrides either through a script tag:
+It is preferred to install import-map-overrides with a `<script>` tag in your html file.
 
 ```html
 <!--
@@ -81,7 +81,7 @@ console.log(overrideMap)
 ### `window.importMapOverrides.addOverride(moduleName, url)`
 
 Accepts a string `moduleName` and a string `url` as arguments. This will set up an override **which takes effect
-the next time you reload the page**.
+the next time you reload the page**. Returns undefined.
 
 ```js
 window.importMapOverrides.addOverride('react', 'https://unpkg.com/react')

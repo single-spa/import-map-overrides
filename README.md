@@ -97,3 +97,8 @@ reload the page**. Returns a boolean that indicates whether the override existed
 const wasRemoved = window.importMapOverrides.removeOverride('vue')
 console.log(wasRemoved) // Either true or false
 ```
+
+### `window.importMapOverrides.resetOverrides()`
+
+Removes all overrides from local storage, so that the next time the page is reloaded an override import map won't be created. Accepts
+no arguments and returns undefined.

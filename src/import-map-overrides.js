@@ -1,11 +1,11 @@
 const localStoragePrefix = 'import-map-override:'
 
 window.importMapOverrides = {
-  addOverride: function addOverride(moduleName, url) {
+  addOverride(moduleName, url) {
     const key = localStoragePrefix + moduleName
     localStorage.setItem(key, url)
   },
-  getOverrideMap: function getOverrideMap() {
+  getOverrideMap() {
     const overrides = {imports: {}}
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i)
@@ -16,11 +16,16 @@ window.importMapOverrides = {
 
     return overrides
   },
-  removeOverride: function removeOverride(moduleName) {
+  removeOverride(moduleName) {
     const key = localStoragePrefix + moduleName
     const hasItem = localStorage.getItem(key) === null
     localStorage.removeItem(key)
     return hasItem
+  },
+  resetOverrides() {
+    Object.keys(window.importMapOverrides.getOverrideMap().imports).map(moduleName => {
+      window.importMapOverrides.removeOverride(moduleName)
+    })
   },
 }
 

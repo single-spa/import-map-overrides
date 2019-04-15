@@ -102,3 +102,7 @@ console.log(wasRemoved) // Either true or false
 
 Removes all overrides from local storage, so that the next time the page is reloaded an override import map won't be created. Accepts
 no arguments and returns undefined.
+
+```js
+window.importMapOverrides.resetOverrides()
+```

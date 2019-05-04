@@ -4,6 +4,7 @@ window.importMapOverrides = {
   addOverride(moduleName, url) {
     const key = localStoragePrefix + moduleName
     localStorage.setItem(key, url)
+    return window.importMapOverrides.getOverrideMap()
   },
   getOverrideMap() {
     const overrides = {imports: {}}
@@ -26,6 +27,7 @@ window.importMapOverrides = {
     Object.keys(window.importMapOverrides.getOverrideMap().imports).map(moduleName => {
       window.importMapOverrides.removeOverride(moduleName)
     })
+    return window.importMapOverrides.getOverrideMap()
   },
 }
 
@@ -33,7 +35,7 @@ const overrideMap = window.importMapOverrides.getOverrideMap()
 
 if (Object.keys(overrideMap.imports).length > 0) {
   const importMapMetaElement = document.querySelector('meta[name="importmap-type"]')
-  const scriptType = importMapMetaElement && importMapMetaElement.getAttribute('content') || 'import-map'
+  const scriptType = importMapMetaElement ? importMapMetaElement.getAttribute('content') : 'import-map'
   const overrideMapElement = document.createElement('script')
   overrideMapElement.type = scriptType
   overrideMapElement.id = 'import-map-overrides' // just for debugging -- easier to find in html with an ID

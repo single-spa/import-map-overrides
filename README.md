@@ -82,7 +82,7 @@ console.log(overrideMap)
 ### `window.importMapOverrides.addOverride(moduleName, url)`
 
 Accepts a string `moduleName` and a string `url` as arguments. This will set up an override **which takes effect
-the next time you reload the page**. Returns undefined.
+the next time you reload the page**. Returns the new override import map.
 
 ```js
 window.importMapOverrides.addOverride('react', 'https://unpkg.com/react')
@@ -101,7 +101,7 @@ console.log(wasRemoved) // Either true or false
 ### `window.importMapOverrides.resetOverrides()`
 
 Removes all overrides from local storage, so that the next time the page is reloaded an override import map won't be created. Accepts
-no arguments and returns undefined.
+no arguments and returns the reset override import map.
 
 ```js
 window.importMapOverrides.resetOverrides()

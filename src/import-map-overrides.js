@@ -18,7 +18,7 @@ window.importMapOverrides = {
   },
   removeOverride(moduleName) {
     const key = localStoragePrefix + moduleName
-    const hasItem = localStorage.getItem(key) === null
+    const hasItem = localStorage.getItem(key) !== null
     localStorage.removeItem(key)
     return hasItem
   },

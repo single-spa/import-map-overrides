@@ -3,12 +3,16 @@ A browser javascript library for being able to override [import maps](https://gi
 with native browser import maps or with the [SystemJS](https://github.com/systemjs/systemjs) polyfill for import maps.
 
 ## Motivation
+<img src="https://drive.google.com/uc?id=1cOpCP-Gfsn_sX9AuIft7UvbMHi5Z1KVm">
+
 Import maps are a way of controlling which url to download javascript modules from. The import-map-overrides library allows you
 to dynamically change the url for javascript modules by storing overrides in local storage. This allows developers to override individual modules on deployed environments where they cannot easily change the html file.
 
 You should not use import-map-overrides as the **only** import map on your page, since you cannot count on everyone's local storage having
 valid values for all of your modules. Instead, import-map-overrides should be viewed as a developer experience enhancement and dev tool --
 developers can develop and debug on deployed environments instead of having to boot up a local environment.
+
+The UI shown in the above gif is not currently part of import-map-overrides. Instead, to use import-map-overrides, you must run commands in the browser console. If you'd like to see that UI added to import-map-overrides, show your support for the feature in [issue 1](https://github.com/joeldenning/import-map-overrides/issues/1).
 
 ## Installation
 The import-map-overrides library is used via a global variable `window.importMapOverrides`. The global variable exists because import-map-overrides needs

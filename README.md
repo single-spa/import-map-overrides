@@ -6,7 +6,7 @@ with native browser import maps or with the [SystemJS](https://github.com/system
 <img src="https://drive.google.com/uc?id=1cOpCP-Gfsn_sX9AuIft7UvbMHi5Z1KVm">
 
 Import maps are a way of controlling which url to download javascript modules from. The import-map-overrides library allows you
-to dynamically change the url for javascript modules by storing overrides in local storage. This allows developers to override individual modules on deployed environments where they cannot easily change the html file.
+to dynamically change the url for javascript modules by storing overrides in local storage. This allows developers to **override individual modules to point to their localhost during development of a module, without having to boot up a local environment with all the other modules and a backend server.**
 
 You should not use import-map-overrides as the **only** import map on your page, since you cannot count on everyone's local storage having
 valid values for all of your modules. Instead, import-map-overrides should be viewed as a developer experience enhancement and dev tool --

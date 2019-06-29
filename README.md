@@ -123,6 +123,25 @@ no arguments and returns the reset override import map.
 window.importMapOverrides.resetOverrides();
 ```
 
+## Events
+
+The import-map-overrides library fires an event called `import-map-overrides:change` on the window whenever the
+override import map changes. The event is a [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent)
+that has no [detail property](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail).
+
+Example usage:
+
+```js
+window.addEventListener("import-map-overrides:change", logImportMap);
+
+// Later on you can remove the event listener
+window.removeEventListener("import-map-overrides:change", logImportMap);
+
+function logImportMap(evt) {
+  console.log(window.importMapOverrides.getOverrideMap());
+}
+```
+
 ## User Interface
 
 The UI for import-map-overrides gives visual indication when any module is overridden, so that you know whether to blame your override

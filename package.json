@@ -6,8 +6,9 @@
   "author": "Joel Denning <joeldenning@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rimraf dist && rollup -c",
     "watch": "rollup -c --watch",
+    "test": "npm run build && copyfiles test/index.html dist -f && serve .",
     "prepublishOnly": "yarn build"
   },
   "husky": {
@@ -23,14 +24,20 @@
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-env": "^7.4.5",
+    "copyfiles": "^2.1.0",
     "husky": "^2.4.0",
     "preact": "^8.4.2",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.0",
+    "rimraf": "^2.6.3",
     "rollup": "^1.14.4",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-node-resolve": "^5.0.1",
     "rollup-plugin-postcss": "^2.0.3",
-    "rollup-plugin-terser": "^5.0.0"
+    "rollup-plugin-terser": "^5.0.0",
+    "serve": "^11.0.2"
+  },
+  "dependencies": {
+    "fhirclient": "^0.1.15"
   }
 }

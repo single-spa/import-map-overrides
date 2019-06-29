@@ -1,14 +1,14 @@
-import { h, Component } from "preact";
+import { h, Component, render } from "preact";
 import { importMapType } from "../../api/js-api";
 import ModuleDialog from "./module-dialog.component";
 
 export default class List extends Component {
   state = {
-    finalImportMap: { imports: {} },
+    notOverriddenMap: { imports: {} },
     dialogModule: null
   };
   componentDidMount() {
-    const finalMapPromise = Array.prototype.reduce.call(
+    const notOverriddenMapPromise = Array.prototype.reduce.call(
       document.querySelectorAll(`script[type="${importMapType}"]`),
       (promise, scriptEl) => {
         if (scriptEl.id === "import-map-overrides") {
@@ -26,12 +26,31 @@ export default class List extends Component {
           );
         }
       },
-      Promise.resolve(this.state.finalImportMap)
+      Promise.resolve(this.state.notOverriddenMap)
     );
 
-    finalMapPromise.then(finalImportMap => {
-      this.setState({ finalImportMap });
+    notOverriddenMapPromise.then(notOverriddenMap => {
+      this.setState({ notOverriddenMap });
     });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.dialogModule && this.state.dialogModule) {
+      this.dialogContainer = document.createElement("div");
+      document.body.appendChild(this.dialogContainer);
+      render(
+        <ModuleDialog
+          module={this.state.dialogModule}
+          cancel={this.cancel}
+          updateModuleUrl={this.updateModuleUrl}
+          addNewModule={this.addNewModule}
+        />,
+        this.dialogContainer
+      );
+    } else if (prevState.dialogModule && !this.state.dialogModule) {
+      render(null, this.dialogContainer);
+      this.dialogContainer.remove();
+      delete this.dialogContainer;
+    }
   }
   render() {
     const overriddenModules = [],
@@ -39,10 +58,10 @@ export default class List extends Component {
 
     const overrideMap = window.importMapOverrides.getOverrideMap().imports;
 
-    Object.keys(this.state.finalImportMap.imports).forEach(moduleName => {
+    Object.keys(this.state.notOverriddenMap.imports).forEach(moduleName => {
       const mod = {
         moduleName,
-        defaultUrl: this.state.finalImportMap.imports[moduleName],
+        defaultUrl: this.state.notOverriddenMap.imports[moduleName],
         overrideUrl: overrideMap[moduleName]
       };
       if (overrideMap[moduleName]) {
@@ -85,6 +104,17 @@ export default class List extends Component {
             ))}
           </div>
         </div>
+        <div className="imo-add-new">
+          <button
+            onClick={() =>
+              this.setState({
+                dialogModule: { moduleName: "New module", isNew: true }
+              })
+            }
+          >
+            Add new module
+          </button>
+        </div>
         <div>
           <h3>Default Modules</h3>
           <div className="imo-list">
@@ -101,13 +131,6 @@ export default class List extends Component {
             ))}
           </div>
         </div>
-        {this.state.dialogModule && (
-          <ModuleDialog
-            module={this.state.dialogModule}
-            cancel={this.cancel}
-            updateModuleUrl={this.updateModuleUrl}
-          />
-        )}
       </div>
     );
   }
@@ -130,22 +153,14 @@ export default class List extends Component {
       );
     }
 
-    this.setState(
-      prevState => ({
-        dialogModule: null,
-        finalImportMap: {
-          imports: {
-            ...prevState.finalImportMap.imports,
-            [this.state.dialogModule.moduleName]: newUrl
-          }
-        }
-      }),
-      () => {
-        if (this.props.importMapChanged) {
-          this.props.importMapChanged();
-        }
-      }
-    );
+    this.setState({ dialogModule: null });
+  };
+
+  addNewModule = (name, url) => {
+    if (name && url) {
+      window.importMapOverrides.addOverride(name, url);
+    }
+    this.setState({ dialogModule: null });
   };
 }
 

@@ -4,6 +4,7 @@ window.importMapOverrides = {
   addOverride(moduleName, url) {
     const key = localStoragePrefix + moduleName;
     localStorage.setItem(key, url);
+    fireChangedEvent();
     return window.importMapOverrides.getOverrideMap();
   },
   getOverrideMap() {
@@ -23,6 +24,7 @@ window.importMapOverrides = {
     const key = localStoragePrefix + moduleName;
     const hasItem = localStorage.getItem(key) !== null;
     localStorage.removeItem(key);
+    fireChangedEvent();
     return hasItem;
   },
   resetOverrides() {
@@ -31,9 +33,24 @@ window.importMapOverrides = {
         window.importMapOverrides.removeOverride(moduleName);
       }
     );
+    fireChangedEvent();
     return window.importMapOverrides.getOverrideMap();
+  },
+  hasOverrides() {
+    return (
+      Object.keys(window.importMapOverrides.getOverrideMap().imports).length > 0
+    );
   }
 };
+
+function fireChangedEvent() {
+  // Set timeout so that event fires after the change has totally finished
+  setTimeout(() => {
+    if (window.CustomEvent) {
+      window.dispatchEvent(new CustomEvent("import-map-overrides:change"));
+    }
+  });
+}
 
 const overrideMap = window.importMapOverrides.getOverrideMap();
 const importMapMetaElement = document.querySelector(

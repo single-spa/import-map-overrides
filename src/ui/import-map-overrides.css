@@ -1,0 +1,158 @@
+.imo-unstyled {
+  border: none;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  cursor: pointer;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+}
+
+.imo-unstyled::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+.imo-trigger {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: navajowhite;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-family: sans-serif;
+  z-index: 10500;
+}
+
+.imo-popup {
+  box-sizing: border-box;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  z-index: 10000;
+  background-color: black;
+  color: white;
+  font-family: sans-serif;
+  padding: 24px;
+}
+
+.imo-popup a:visited,
+imo-popup a {
+  color: white;
+}
+
+.imo-popup .imo-module-dialog {
+  left: calc(50% - 200px);
+}
+
+.imo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.imo-list {
+  margin-left: 16px;
+}
+
+.imo-list > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.imo-list-container {
+  font-family: sans-serif;
+}
+
+.imo-module-dialog {
+  position: fixed;
+  z-index: 30000000;
+  top: 30%;
+  max-width: 600px;
+  margin: 0 auto;
+  border: 4px solid navajowhite;
+}
+
+.imo-module-dialog input {
+  width: 100%;
+}
+
+.imo-module-dialog table {
+  margin-bottom: 16px;
+}
+
+.imo-module-dialog input {
+  font-size: 16px;
+}
+
+.imo-module-dialog table td:first-child {
+  text-align: right;
+  padding-right: 16px;
+  word-break: keep-all;
+}
+
+.imo-module-dialog table td {
+  word-break: break-all;
+}
+
+.imo-module-dialog.imo-overridden {
+  border: 4px solid salmon;
+}
+
+.imo-list-container button,
+.imo-modal-container button {
+  padding: 6px 16px;
+  font-size: 16px;
+  text-align: center;
+}
+
+button.imo-default {
+  background-color: navajowhite;
+}
+
+button.imo-overridden,
+.imo-trigger.imo-overridden {
+  background-color: salmon;
+  font-weight: bold;
+}
+
+.imo-add-new {
+  margin-top: 16px;
+  margin-left: 16px;
+}
+
+.imo-clear-input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.imo-modal-container {
+  font-family: sans-serif;
+}
+
+.imo-modal {
+  background-color: rgba(61, 70, 77, 0.6);
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 20000000;
+}

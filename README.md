@@ -147,7 +147,7 @@ function logImportMap(evt) {
 The UI for import-map-overrides gives visual indication when any module is overridden, so that you know whether to blame your override
 or not when things are broken. It also lets you view and modify urls for all the modules in your import map.
 
-## Usage
+### Usage
 
 You use the import-map-overrides UI via web components. This means you just need to put some HTML into the DOM in order for it to work.
 You have three options for the UI, depending on how much you want to customize the UI:

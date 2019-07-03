@@ -14,8 +14,6 @@ You should not use import-map-overrides as the **only** import map on your page,
 valid values for all of your modules. Instead, import-map-overrides should be viewed as a developer experience enhancement and dev tool --
 developers can develop and debug on deployed environments instead of having to boot up a local environment.
 
-The UI shown in the above gif is not currently part of import-map-overrides. Instead, to use import-map-overrides, you must run commands in the browser console. If you'd like to see that UI added to import-map-overrides, show your support for the feature in [issue 1](https://github.com/joeldenning/import-map-overrides/issues/1).
-
 ## Installation
 
 The import-map-overrides library is used via a global variable `window.importMapOverrides`. The global variable exists because import-map-overrides needs

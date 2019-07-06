@@ -47,6 +47,7 @@
   color: white;
   font-family: sans-serif;
   padding: 24px;
+  overflow-y: auto;
 }
 
 .imo-popup a:visited,

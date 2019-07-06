@@ -87,14 +87,13 @@ imo-popup a {
 
 .imo-module-dialog input {
   width: 100%;
+  font-size: 16px;
+  box-sizing: border-box;
+  padding-right: 20px;
 }
 
 .imo-module-dialog table {
   margin-bottom: 16px;
-}
-
-.imo-module-dialog input {
-  font-size: 16px;
 }
 
 .imo-module-dialog table td:first-child {
@@ -136,7 +135,7 @@ button.imo-overridden,
 .imo-clear-input {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 4px;
   cursor: pointer;
   display: flex;
   align-items: center;

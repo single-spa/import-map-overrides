@@ -7,7 +7,7 @@ import List from "./list/list.component";
 if (window.customElements) {
   window.customElements.define(
     "import-map-overrides-full",
-    preactCustomElement(FullUI)
+    preactCustomElement(FullUI, ["show-when-local-storage"])
   );
   window.customElements.define(
     "import-map-overrides-popup",
@@ -19,13 +19,27 @@ if (window.customElements) {
   );
 }
 
-function preactCustomElement(Comp) {
+function preactCustomElement(Comp, observedAttributes = []) {
   return class PreactCustomElement extends HTMLElement {
     connectedCallback() {
-      render(h(Comp, this), this);
+      this.renderWithPreact();
     }
     disconnectedCallback() {
       render(null, this);
+      this.renderedEl = null;
+    }
+    static get observedAttributes() {
+      return observedAttributes;
+    }
+    attributeChangedCallback() {
+      this.renderWithPreact();
+    }
+    renderWithPreact() {
+      this.renderedEl = render(
+        h(Comp, { customElement: this }),
+        this,
+        this.renderedEl
+      );
     }
   };
 }

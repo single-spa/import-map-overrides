@@ -151,8 +151,19 @@ You use the import-map-overrides UI via web components. This means you just need
 You have three options for the UI, depending on how much you want to customize the UI:
 
 ```html
-<!-- The full UI, including the omnipresent "trigger" button that pops up the UI -->
-<import-map-overrides-full></import-map-overrides-full>
+<!--
+  The full UI, including the omnipresent "trigger" button that pops up the UI.
+
+  If you omit the show-when-local-storage attribute, the yellow/orange rectangle always shows.
+  When you have the show-when-local-storage attribute, the yellow/orange rectangle will only show
+  when the user has set a local storage value of "true" for the key specified.
+
+  For example, in the below example you must run the follow command in order to see the overrides "trigger" rectangle.
+  localStorage.setItem('overrides-ui', true);
+ -->
+<import-map-overrides-full
+  show-when-local-storage="overrides-ui"
+></import-map-overrides-full>
 
 <!-- Alternatively, just the black popup itself -->
 <import-map-overrides-popup></import-map-overrides-popup>

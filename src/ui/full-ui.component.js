@@ -6,6 +6,16 @@ export default class FullUI extends Component {
     showingPopup: false
   };
   render(props, state) {
+    const shouldShow =
+      !props.customElement.hasAttribute("show-when-local-storage") ||
+      localStorage.getItem(
+        props.customElement.getAttribute("show-when-local-storage")
+      ) === "true";
+
+    if (!shouldShow) {
+      return null;
+    }
+
     const atLeastOneOverride =
       Object.keys(window.importMapOverrides.getOverrideMap().imports).length >
       0;

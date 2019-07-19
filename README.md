@@ -152,7 +152,7 @@ You have three options for the UI, depending on how much you want to customize t
 
 ```html
 <!--
-  The full UI, including the omnipresent "trigger" button that pops up the UI.
+  The full UI, including the "trigger" button that pops up the UI.
 
   If you omit the show-when-local-storage attribute, the yellow/orange rectangle always shows.
   When you have the show-when-local-storage attribute, the yellow/orange rectangle will only show

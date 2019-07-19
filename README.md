@@ -158,7 +158,7 @@ You have three options for the UI, depending on how much you want to customize t
   When you have the show-when-local-storage attribute, the yellow/orange rectangle will only show
   when the user has set a local storage value of "true" for the key specified.
 
-  For example, in the below example you must run the follow command in order to see the overrides "trigger" rectangle.
+  For example, in the below example you must run the follow command in order to see the full-ui.
   localStorage.setItem('overrides-ui', true);
  -->
 <import-map-overrides-full

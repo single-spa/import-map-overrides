@@ -19,6 +19,9 @@
   "browserslist": [
     "IE >= 11"
   ],
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",

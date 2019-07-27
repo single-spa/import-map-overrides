@@ -29,7 +29,7 @@ AFTER all other import maps
 -->
 <script
   type="text/javascript"
-  src="https://unpkg.com/import-map-overrides"
+  src="https://cdn.jsdelivr.net/npm/import-map-overrides/dist/import-map-overrides.min.js"
 ></script>
 <!-- optionally include the UI for import map overrides -->
 <import-map-overrides-full></import-map-overrides-full>

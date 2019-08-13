@@ -5,6 +5,13 @@ export default class FullUI extends Component {
   state = {
     showingPopup: false
   };
+  componentDidMount() {
+    window.addEventListener("import-map-overrides:change", this.doUpdate);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("import-map-overrides:change", this.doUpdate);
+  }
+  doUpdate = () => this.forceUpdate();
   render(props, state) {
     const shouldShow =
       !props.customElement.hasAttribute("show-when-local-storage") ||

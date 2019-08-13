@@ -32,6 +32,10 @@ export default class List extends Component {
     notOverriddenMapPromise.then(notOverriddenMap => {
       this.setState({ notOverriddenMap });
     });
+    window.addEventListener("import-map-overrides:change", this.doUpdate);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("import-map-overrides:change", this.doUpdate);
   }
   componentDidUpdate(prevProps, prevState) {
     if (!prevState.dialogModule && this.state.dialogModule) {
@@ -155,6 +159,8 @@ export default class List extends Component {
 
     this.setState({ dialogModule: null });
   };
+
+  doUpdate = () => this.forceUpdate();
 
   addNewModule = (name, url) => {
     if (name && url) {

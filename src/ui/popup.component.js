@@ -4,10 +4,13 @@ import List from "./list/list.component";
 export default class Popup extends Component {
   componentDidMount() {
     window.addEventListener("keydown", this.keydownListener);
+    window.addEventListener("import-map-overrides:change", this.doUpdate);
   }
   componentWillUnmount() {
     window.removeEventListener("keydown", this.keydownListener);
+    window.removeEventListener("import-map-overrides:change", this.doUpdate);
   }
+  doUpdate = () => this.forceUpdate();
   render(props) {
     return (
       <div className="imo-popup">

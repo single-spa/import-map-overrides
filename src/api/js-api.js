@@ -1,7 +1,12 @@
 const localStoragePrefix = "import-map-override:";
 
+const portRegex = /^\d+$/g;
+
 window.importMapOverrides = {
   addOverride(moduleName, url) {
+    if (portRegex.test(url)) {
+      url = window.importMapOverrides.getUrlFromPort(moduleName, url);
+    }
     const key = localStoragePrefix + moduleName;
     localStorage.setItem(key, url);
     fireChangedEvent();
@@ -40,6 +45,10 @@ window.importMapOverrides = {
     return (
       Object.keys(window.importMapOverrides.getOverrideMap().imports).length > 0
     );
+  },
+  getUrlFromPort(moduleName, port) {
+    const fileName = moduleName.replace(/@/g, "").replace(/\//g, "-");
+    return `//localhost:${port}/${fileName}.js`;
   }
 };
 

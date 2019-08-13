@@ -2,11 +2,16 @@ import { h, Component } from "preact";
 
 export default class ModuleDialog extends Component {
   getInitialOverrideUrl = () => {
-    const regex = new RegExp(
-      `//localhost:([0-9]+)/${defaultFileName(this.props.module.moduleName)}`
-    );
+    const regex = new RegExp(`//localhost:([0-9]+)/`);
     const match = regex.exec(this.props.module.overrideUrl);
-    if (match) {
+    if (
+      match &&
+      this.props.module.overrideUrl ===
+        window.importMapOverrides.getUrlFromPort(
+          this.props.module.moduleName,
+          match[1]
+        )
+    ) {
       return match[1];
     } else if (this.props.module.overrideUrl) {
       return this.props.module.overrideUrl;
@@ -154,11 +159,10 @@ export default class ModuleDialog extends Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
-    const fullUrl = this.getDerivedUrl();
     if (this.props.module.isNew) {
-      this.props.addNewModule(this.state.moduleName, fullUrl);
+      this.props.addNewModule(this.state.moduleName, this.state.overrideUrl);
     } else {
-      this.props.updateModuleUrl(fullUrl);
+      this.props.updateModuleUrl(this.state.overrideUrl);
     }
   };
 
@@ -167,7 +171,10 @@ export default class ModuleDialog extends Component {
       ? this.state.moduleName
       : this.props.module.moduleName;
     return portRegex.test(this.state.overrideUrl)
-      ? `//localhost:${this.state.overrideUrl}/${defaultFileName(moduleName)}`
+      ? window.importMapOverrides.getUrlFromPort(
+          moduleName,
+          this.state.overrideUrl
+        )
       : this.state.overrideUrl;
   };
 
@@ -197,12 +204,3 @@ export default class ModuleDialog extends Component {
 }
 
 const portRegex = /^\d+$/;
-const scopedPkgRegex = /^@.+\/.+$/;
-
-function defaultFileName(name) {
-  if (scopedPkgRegex.test(name)) {
-    name = name.slice(name.indexOf("/") + 1);
-  }
-
-  return name.replace(/\//g, "") + ".js";
-}

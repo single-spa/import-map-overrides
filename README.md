@@ -98,8 +98,13 @@ console.log(overrideMap);
 Accepts a string `moduleName` and a string `url` as arguments. This will set up an override **which takes effect
 the next time you reload the page**. Returns the new override import map.
 
+**Note that if you provide a port instead of a full url, that import-map-overrides will provide a default url to your localhost**.
+
 ```js
 window.importMapOverrides.addOverride("react", "https://unpkg.com/react");
+
+// Alternatively, provide a port number. Default url will be //localhost:8085/module1.js
+window.importMapOverrides.addOverride("module1", "8085");
 ```
 
 ### `window.importMapOverrides.removeOverride(moduleName)`
@@ -119,6 +124,30 @@ no arguments and returns the reset override import map.
 
 ```js
 window.importMapOverrides.resetOverrides();
+```
+
+### `window.importMapOverrides.getUrlFromPort(moduleName, port)`
+
+This API is used internally by import-map-overrides to create a full url when calling `addOverride()` with just a
+port number:
+
+```js
+const defaultOverrideUrl = window.importMapOverrides.getUrlFromPort(
+  "module1",
+  "8085"
+);
+console.log(defaultOverrideUrl); // "//localhost:8085/module1.js"
+```
+
+The `getUrlFromPort` function is exposed as an API to allow you to customize the logic yourself:
+
+```js
+window.importMapOverrides.getUrlFromPort = (moduleName, port) =>
+  `http://127.0.0.1:${port}/${moduleName}.js`;
+
+// Now whenever you call `addOverride()` with a port number, your custom logic will be called
+window.importMapOverrides.addOverride("module1", "8085");
+console.log(window.importMapOverrides.getOverrideMap().imports.module1); // "http://127.0.0.1:8085/module1.js"
 ```
 
 ## Events

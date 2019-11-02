@@ -5,7 +5,8 @@ import ModuleDialog from "./module-dialog.component";
 export default class List extends Component {
   state = {
     notOverriddenMap: { imports: {} },
-    dialogModule: null
+    dialogModule: null,
+    searchVal: ""
   };
   componentDidMount() {
     const notOverriddenMapPromise = Array.prototype.reduce.call(
@@ -61,8 +62,14 @@ export default class List extends Component {
       defaultModules = [];
 
     const overrideMap = window.importMapOverrides.getOverrideMap().imports;
+    const filteredSearchModuleNames = Object.keys(overrideMap).filter(
+      moduleName =>
+        this.state.searchVal.trim().length > 0
+          ? moduleName.includes(this.state.searchVal)
+          : true
+    );
 
-    Object.keys(this.state.notOverriddenMap.imports).forEach(moduleName => {
+    filteredSearchModuleNames.forEach(moduleName => {
       const mod = {
         moduleName,
         defaultUrl: this.state.notOverriddenMap.imports[moduleName],
@@ -75,7 +82,7 @@ export default class List extends Component {
       }
     });
 
-    Object.keys(overrideMap).forEach(overrideKey => {
+    filteredSearchModuleNames.forEach(overrideKey => {
       if (!overriddenModules.some(m => m.moduleName === overrideKey)) {
         overriddenModules.push({
           moduleName: overrideKey,
@@ -90,6 +97,16 @@ export default class List extends Component {
 
     return (
       <div className="imo-list-container">
+        <div>
+          <input
+            className="imo-list-search"
+            aria-label="Search modules"
+            placeholder="Search modules"
+            value={this.state.searchVal}
+            onInput={evt => this.setState({ searchVal: evt.target.value })}
+            autoFocus
+          />
+        </div>
         <div>
           <h3>Overridden Modules</h3>
           <div className="imo-list">

@@ -156,3 +156,7 @@ button.imo-overridden,
   left: 0;
   z-index: 20000000;
 }
+
+.imo-list-search {
+  font-size: 18px;
+}

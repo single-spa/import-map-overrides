@@ -67,7 +67,7 @@ const importMapMetaElement = document.querySelector(
 );
 export const importMapType = importMapMetaElement
   ? importMapMetaElement.getAttribute("content")
-  : "import-map";
+  : "importmap";
 
 if (Object.keys(overrideMap.imports).length > 0) {
   const overrideMapElement = document.createElement("script");

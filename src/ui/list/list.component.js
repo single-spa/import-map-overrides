@@ -62,35 +62,33 @@ export default class List extends Component {
       defaultModules = [];
 
     const overrideMap = window.importMapOverrides.getOverrideMap().imports;
-    const filteredSearchModuleNames = Object.keys(overrideMap).filter(
-      moduleName =>
-        this.state.searchVal.trim().length > 0
-          ? moduleName.includes(this.state.searchVal)
-          : true
-    );
 
-    filteredSearchModuleNames.forEach(moduleName => {
-      const mod = {
-        moduleName,
-        defaultUrl: this.state.notOverriddenMap.imports[moduleName],
-        overrideUrl: overrideMap[moduleName]
-      };
-      if (overrideMap[moduleName]) {
-        overriddenModules.push(mod);
-      } else {
-        defaultModules.push(mod);
-      }
-    });
+    Object.keys(this.state.notOverriddenMap.imports)
+      .filter(this.filterModuleNames)
+      .forEach(moduleName => {
+        const mod = {
+          moduleName,
+          defaultUrl: this.state.notOverriddenMap.imports[moduleName],
+          overrideUrl: overrideMap[moduleName]
+        };
+        if (overrideMap[moduleName]) {
+          overriddenModules.push(mod);
+        } else {
+          defaultModules.push(mod);
+        }
+      });
 
-    filteredSearchModuleNames.forEach(overrideKey => {
-      if (!overriddenModules.some(m => m.moduleName === overrideKey)) {
-        overriddenModules.push({
-          moduleName: overrideKey,
-          defaultUrl: null,
-          overrideUrl: overrideMap[overrideKey]
-        });
-      }
-    });
+    Object.keys(overrideMap)
+      .filter(this.filterModuleNames)
+      .forEach(overrideKey => {
+        if (!overriddenModules.some(m => m.moduleName === overrideKey)) {
+          overriddenModules.push({
+            moduleName: overrideKey,
+            defaultUrl: null,
+            overrideUrl: overrideMap[overrideKey]
+          });
+        }
+      });
 
     overriddenModules.sort(sorter);
     defaultModules.sort(sorter);
@@ -184,6 +182,12 @@ export default class List extends Component {
       window.importMapOverrides.addOverride(name, url);
     }
     this.setState({ dialogModule: null });
+  };
+
+  filterModuleNames = moduleName => {
+    return this.state.searchVal.trim().length > 0
+      ? moduleName.includes(this.state.searchVal)
+      : true;
   };
 }
 

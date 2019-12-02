@@ -193,7 +193,9 @@ You have three options for the UI, depending on how much you want to customize t
   localStorage.setItem('overrides-ui', true);
 
   The dev-libs attribute indicates that you prefer using development versions of third party libraries
-  like react when the import-map-overrides ui is active.
+  like react when the import-map-overrides ui is active. The presence of that attribute turns on this feature.
+  For example, if you have `react` in your import map pointing to https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js
+  the dev-libs attribute will automatically override it to https://cdn.jsdelivr.net/npm/react/umd/react.development.js.
  -->
 <import-map-overrides-full
   show-when-local-storage="overrides-ui"

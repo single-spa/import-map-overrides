@@ -9,9 +9,7 @@ export default class List extends Component {
     searchVal: ""
   };
   componentDidMount() {
-    console.log("getting default map");
     getDefaultMap().then(notOverriddenMap => {
-      console.log("notoverridden map", notOverriddenMap);
       this.setState({ notOverriddenMap });
     });
     window.addEventListener("import-map-overrides:change", this.doUpdate);

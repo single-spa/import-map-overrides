@@ -8,13 +8,15 @@
     <script type="importmap">
       {
         "imports": {
-          "a": "./a.js"
+          "a": "./a.js",
+          "react": "https://cdn.jsdelivr.net/npm/react@16.12.0/umd/react.production.min.js",
+          "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@16.12.0/umd/react-dom.production.min.js"
         }
       }
     </script>
     <script src="/import-map-overrides.js"></script>
   </head>
   <body>
-    <import-map-overrides-full></import-map-overrides-full>
+    <import-map-overrides-full dev-libs></import-map-overrides-full>
   </body>
 </html>

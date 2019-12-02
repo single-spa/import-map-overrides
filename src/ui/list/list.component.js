@@ -9,28 +9,9 @@ export default class List extends Component {
     searchVal: ""
   };
   componentDidMount() {
-    const notOverriddenMapPromise = Array.prototype.reduce.call(
-      document.querySelectorAll(`script[type="${importMapType}"]`),
-      (promise, scriptEl) => {
-        if (scriptEl.id === "import-map-overrides") {
-          return promise;
-        } else {
-          let nextPromise;
-          if (scriptEl.src) {
-            nextPromise = fetch(scriptEl.src).then(resp => resp.json());
-          } else {
-            nextPromise = Promise.resolve(JSON.parse(scriptEl.textContent));
-          }
-
-          return Promise.all([promise, nextPromise]).then(
-            ([originalMap, newMap]) => mergeImportMap(originalMap, newMap)
-          );
-        }
-      },
-      Promise.resolve(this.state.notOverriddenMap)
-    );
-
-    notOverriddenMapPromise.then(notOverriddenMap => {
+    console.log("getting default map");
+    getDefaultMap().then(notOverriddenMap => {
+      console.log("notoverridden map", notOverriddenMap);
       this.setState({ notOverriddenMap });
     });
     window.addEventListener("import-map-overrides:change", this.doUpdate);
@@ -189,6 +170,29 @@ export default class List extends Component {
       ? moduleName.includes(this.state.searchVal)
       : true;
   };
+}
+
+export function getDefaultMap() {
+  return Array.prototype.reduce.call(
+    document.querySelectorAll(`script[type="${importMapType}"]`),
+    (promise, scriptEl) => {
+      if (scriptEl.id === "import-map-overrides") {
+        return promise;
+      } else {
+        let nextPromise;
+        if (scriptEl.src) {
+          nextPromise = fetch(scriptEl.src).then(resp => resp.json());
+        } else {
+          nextPromise = Promise.resolve(JSON.parse(scriptEl.textContent));
+        }
+
+        return Promise.all([promise, nextPromise]).then(
+          ([originalMap, newMap]) => mergeImportMap(originalMap, newMap)
+        );
+      }
+    },
+    Promise.resolve({ imports: {} })
+  );
 }
 
 function mergeImportMap(originalMap, newMap) {

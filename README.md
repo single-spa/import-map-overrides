@@ -1,4 +1,5 @@
 # import-map-overrides
+
 [![](https://data.jsdelivr.com/v1/package/npm/import-map-overrides/badge)](https://www.jsdelivr.com/package/npm/import-map-overrides)
 
 A browser javascript library for being able to override [import maps](https://github.com/WICG/import-maps). This works
@@ -190,9 +191,13 @@ You have three options for the UI, depending on how much you want to customize t
 
   For example, in the below example you must run the follow command in order to see the full-ui.
   localStorage.setItem('overrides-ui', true);
+
+  The dev-libs attribute indicates that you prefer using development versions of third party libraries
+  like react when the import-map-overrides ui is active.
  -->
 <import-map-overrides-full
   show-when-local-storage="overrides-ui"
+  dev-libs
 ></import-map-overrides-full>
 
 <!-- Alternatively, just the black popup itself -->

@@ -1,5 +1,8 @@
 import { h, Component } from "preact";
 import Popup from "./popup.component";
+import DevLibOverrides, {
+  overridesBesidesDevLibs
+} from "./dev-lib-overrides.component";
 
 export default class FullUI extends Component {
   state = {
@@ -23,20 +26,19 @@ export default class FullUI extends Component {
       return null;
     }
 
-    const atLeastOneOverride =
-      Object.keys(window.importMapOverrides.getOverrideMap().imports).length >
-      0;
-
     return (
       <div>
         <button
           onClick={this.toggleTrigger}
           className={`imo-unstyled imo-trigger ${
-            atLeastOneOverride ? "imo-overridden" : ""
+            this.atLeastOneOverride() ? "imo-overridden" : ""
           }`}
         >
           {"{\u00B7\u00B7\u00B7}"}
         </button>
+        {this.props.customElement.hasAttribute("dev-libs") && (
+          <DevLibOverrides />
+        )}
         {state.showingPopup && (
           <Popup
             close={this.toggleTrigger}
@@ -53,5 +55,15 @@ export default class FullUI extends Component {
   };
   importMapChanged = () => {
     this.forceUpdate();
+  };
+  atLeastOneOverride = () => {
+    if (this.props.customElement.hasAttribute("dev-libs")) {
+      return overridesBesidesDevLibs();
+    } else {
+      return (
+        Object.keys(window.importMapOverrides.getOverrideMap().imports).length >
+        0
+      );
+    }
   };
 }

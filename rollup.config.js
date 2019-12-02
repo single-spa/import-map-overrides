@@ -3,6 +3,8 @@ import { terser } from "rollup-plugin-terser";
 import resolve from "rollup-plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export default [
   // Full library with UI
   {
@@ -18,12 +20,13 @@ export default [
       }),
       resolve(),
       postcss(),
-      terser({
-        compress: {
-          passes: 2
-        },
-        sourcemap: true
-      })
+      isProduction &&
+        terser({
+          compress: {
+            passes: 2
+          },
+          sourcemap: true
+        })
     ]
   },
   // Only the global variable API. No UI
@@ -38,13 +41,13 @@ export default [
       babel({
         exclude: "node_modules/**"
       }),
-      terser({
-        compress: {
-          unsafe: true,
-          passes: 2
-        },
-        sourcemap: true
-      })
+      isProduction &&
+        terser({
+          compress: {
+            passes: 2
+          },
+          sourcemap: true
+        })
     ]
   }
 ];

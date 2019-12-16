@@ -213,6 +213,6 @@ You have three options for the UI, depending on how much you want to customize t
 
 The UI is completely optional. If you don't want to use it, simply don't include the `<import-map-overrides-full>`
 custom element in your page. Additionally, you can use the
-[`/dist/import-map-overrides-api.js` file](https://unpkg.com/import-map-overrides/dist/import-map-overrides-api.js)
-instead of [`/dist/import-map-overrides.js`](https://unpkg.com/import-map-overrides/dist/import-map-overrides-api.js),
+[`/dist/import-map-overrides-api.js` file](https://unpkg.com/browse/import-map-overrides/dist/import-map-overrides-api.js)
+instead of [`/dist/import-map-overrides.js`](https://unpkg.com/browse/import-map-overrides/dist/import-map-overrides.js),
 which avoids downloading the code for the UI and reduces the library size.

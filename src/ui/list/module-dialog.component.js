@@ -71,6 +71,7 @@ export default class ModuleDialog extends Component {
                     <td style={{ position: "relative" }}>
                       <input
                         type="text"
+                        tabIndex={1}
                         value={this.state.moduleName}
                         aria-labelledby="module-name-label"
                         onInput={evt =>
@@ -81,7 +82,7 @@ export default class ModuleDialog extends Component {
                       />
                       <div
                         role="button"
-                        tabIndex={0}
+                        tabIndex={3}
                         className="imo-clear-input"
                         onClick={this.clearModuleName}
                       >
@@ -100,13 +101,14 @@ export default class ModuleDialog extends Component {
                       type="text"
                       value={this.state.overrideUrl}
                       aria-labelledby="override-url-label"
+                      tabIndex={2}
                       onInput={evt =>
                         this.setState({ overrideUrl: evt.target.value })
                       }
                     />
                     <div
                       role="button"
-                      tabIndex={0}
+                      tabIndex={4}
                       className="imo-clear-input"
                       onClick={this.clearInput}
                     >
@@ -125,6 +127,7 @@ export default class ModuleDialog extends Component {
             <div className="imo-dialog-actions">
               <button
                 type="button"
+                tabIndex={5}
                 onClick={this.props.cancel}
                 style={{ marginRight: "16px" }}
               >
@@ -132,6 +135,7 @@ export default class ModuleDialog extends Component {
               </button>
               <button
                 type="submit"
+                tabIndex={6}
                 className={
                   this.state.overrideUrl ? "imo-overridden" : "imo-default"
                 }

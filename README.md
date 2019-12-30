@@ -16,6 +16,11 @@ You should not use import-map-overrides as the **only** import map on your page,
 valid values for all of your modules. Instead, import-map-overrides should be viewed as a developer experience enhancement and dev tool --
 developers can develop and debug on deployed environments instead of having to boot up a local environment.
 
+Here are some tutorial videos that explain this in more depth:
+- [In-browser vs build-time modules](https://www.youtube.com/watch?v=Jxqiu6pdMSU&list=PLLUD8RtHvsAOhtHnyGx57EYXoaNsxGrTU&index=2)
+- [Import Maps](https://www.youtube.com/watch?v=Lfm2Ge_RUxs&list=PLLUD8RtHvsAOhtHnyGx57EYXoaNsxGrTU&index=3)
+- [Local development with import map overrides](https://www.youtube.com/watch?v=vjjcuIxqIzY&list=PLLUD8RtHvsAOhtHnyGx57EYXoaNsxGrTU&index=4)
+
 ## Installation
 
 The import-map-overrides library is used via a global variable `window.importMapOverrides`. The global variable exists because import-map-overrides needs

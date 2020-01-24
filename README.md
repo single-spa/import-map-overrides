@@ -157,6 +157,12 @@ window.importMapOverrides.addOverride("module1", "8085");
 console.log(window.importMapOverrides.getOverrideMap().imports.module1); // "http://127.0.0.1:8085/module1.js"
 ```
 
+### `window.importMapOverrides.enableUI()`
+
+This will force the full import map overrides UI to be displayed (as long as the code for it is loaded on the page).
+
+It will set local storage to match the `show-when-local-storage` key and/or it will append a `<import-map-overrides-full>` element to the DOM.
+
 ## Events
 
 The import-map-overrides library fires an event called `import-map-overrides:change` on the window whenever the

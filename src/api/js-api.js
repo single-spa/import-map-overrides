@@ -49,6 +49,23 @@ window.importMapOverrides = {
   getUrlFromPort(moduleName, port) {
     const fileName = moduleName.replace(/@/g, "").replace(/\//g, "-");
     return `//localhost:${port}/${fileName}.js`;
+  },
+  enableUI() {
+    const customElementName = "import-map-overrides-full";
+    const showWhenLocalStorage = "show-when-local-storage";
+    let customElement = document.querySelector(customElementName);
+
+    if (!customElement) {
+      customElement = document.createElement(customElementName);
+      customElement.setAttribute(showWhenLocalStorage, "devtools");
+      document.body.appendChild(customElement);
+    }
+
+    const localStorageKey = customElement.getAttribute(showWhenLocalStorage);
+    if (localStorageKey) {
+      localStorage.setItem(localStorageKey, true);
+      customElement.renderWithPreact();
+    }
   }
 };
 

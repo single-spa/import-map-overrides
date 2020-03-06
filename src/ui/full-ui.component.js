@@ -36,9 +36,7 @@ export default class FullUI extends Component {
         >
           {"{\u00B7\u00B7\u00B7}"}
         </button>
-        {this.props.customElement.hasAttribute("dev-libs") && (
-          <DevLibOverrides />
-        )}
+        {this.useDevLibs() && <DevLibOverrides />}
         {state.showingPopup && (
           <Popup
             close={this.toggleTrigger}
@@ -56,8 +54,16 @@ export default class FullUI extends Component {
   importMapChanged = () => {
     this.forceUpdate();
   };
+  useDevLibs = () => {
+    const localStorageValue = localStorage.getItem(
+      "import-map-overrides-dev-libs"
+    );
+    return localStorageValue
+      ? localStorageValue === "true"
+      : this.props.customElement.hasAttribute("dev-libs");
+  };
   atLeastOneOverride = () => {
-    if (this.props.customElement.hasAttribute("dev-libs")) {
+    if (this.useDevLibs()) {
       return overridesBesidesDevLibs();
     } else {
       return (

@@ -17,6 +17,7 @@ valid values for all of your modules. Instead, import-map-overrides should be vi
 developers can develop and debug on deployed environments instead of having to boot up a local environment.
 
 Here are some tutorial videos that explain this in more depth:
+
 - [In-browser vs build-time modules](https://www.youtube.com/watch?v=Jxqiu6pdMSU&list=PLLUD8RtHvsAOhtHnyGx57EYXoaNsxGrTU&index=2)
 - [Import Maps](https://www.youtube.com/watch?v=Lfm2Ge_RUxs&list=PLLUD8RtHvsAOhtHnyGx57EYXoaNsxGrTU&index=3)
 - [Local development with import map overrides](https://www.youtube.com/watch?v=vjjcuIxqIzY&list=PLLUD8RtHvsAOhtHnyGx57EYXoaNsxGrTU&index=4)
@@ -207,6 +208,8 @@ You have three options for the UI, depending on how much you want to customize t
   like react when the import-map-overrides ui is active. The presence of that attribute turns on this feature.
   For example, if you have `react` in your import map pointing to https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js
   the dev-libs attribute will automatically override it to https://cdn.jsdelivr.net/npm/react/umd/react.development.js.
+  You can also turn this feature on/off via localStorage. `localStorage.setItem('import-map-overrides-dev-libs', false)` will
+  forcibly turn this feature off, while calling it with `true` will turn it on.
  -->
 <import-map-overrides-full
   show-when-local-storage="overrides-ui"

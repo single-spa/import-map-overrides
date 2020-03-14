@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Import Map Overrides test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="importmap-type" content="systemjs-importmap" />
     <script type="importmap">
       {
         "imports": {
@@ -15,8 +16,12 @@
       }
     </script>
     <script src="/import-map-overrides.js"></script>
+    <script src="https://unpkg.com/systemjs/dist/system.js"></script>
   </head>
   <body>
+    <script>
+      System.import("single-spa");
+    </script>
     <import-map-overrides-full dev-libs></import-map-overrides-full>
   </body>
 </html>

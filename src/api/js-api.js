@@ -1,4 +1,5 @@
 const localStoragePrefix = "import-map-override:";
+const externalMapsLocalStorageKey = "import-map-external-overrides";
 
 const portRegex = /^\d+$/g;
 
@@ -66,6 +67,36 @@ window.importMapOverrides = {
       localStorage.setItem(localStorageKey, true);
       customElement.renderWithPreact();
     }
+  },
+  addExternalMap(url) {
+    if (typeof url !== "string") {
+      throw Error(`url string required`);
+    }
+    const externalMaps = window.importMapOverrides.getExternalMaps();
+    if (!externalMaps.some(m => m === url)) {
+      localStorage.setItem(
+        externalMapsLocalStorageKey,
+        JSON.stringify(externalMaps.concat(url))
+      );
+      fireChangedEvent();
+      return true;
+    } else {
+      return false;
+    }
+  },
+  getExternalMaps() {
+    const value = localStorage.getItem(externalMapsLocalStorageKey);
+    return value ? JSON.parse(value) : [];
+  },
+  clearExternalMaps() {
+    const maps = window.importMapOverrides.getExternalMaps();
+    localStorage.removeItem(externalMapsLocalStorageKey);
+    if (maps.length > 0) {
+      fireChangedEvent();
+      return true;
+    } else {
+      return false;
+    }
   }
 };
 
@@ -78,7 +109,6 @@ function fireChangedEvent() {
   });
 }
 
-const overrideMap = window.importMapOverrides.getOverrideMap();
 const importMapMetaElement = document.querySelector(
   'meta[name="importmap-type"]'
 );
@@ -86,21 +116,33 @@ export const importMapType = importMapMetaElement
   ? importMapMetaElement.getAttribute("content")
   : "importmap";
 
+window.importMapOverrides.getExternalMaps().forEach((url, index) => {
+  const mapEl = document.createElement("script");
+  mapEl.type = importMapType;
+  mapEl.id = `import-map-external-overrides-${index}`; // for debugging
+  mapEl.src = url;
+  insertImportMap(mapEl);
+});
+
+const overrideMap = window.importMapOverrides.getOverrideMap();
 if (Object.keys(overrideMap.imports).length > 0) {
   const overrideMapElement = document.createElement("script");
   overrideMapElement.type = importMapType;
   overrideMapElement.id = "import-map-overrides"; // for debugging and for UI to identify this import map as special
   overrideMapElement.innerHTML = JSON.stringify(overrideMap);
+  insertImportMap(overrideMapElement);
+}
 
+function insertImportMap(scriptEl) {
   const importMaps = document.querySelectorAll(
     `script[type="${importMapType}"]`
   );
   if (importMaps.length > 0) {
     importMaps[importMaps.length - 1].insertAdjacentElement(
       "afterend",
-      overrideMapElement
+      scriptEl
     );
   } else {
-    document.head.appendChild(overrideMapElement);
+    document.head.appendChild(scriptEl);
   }
 }

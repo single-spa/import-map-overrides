@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "single-spa": "https://unpkg.com/single-spa/lib/system/single-spa.dev.js"
+  }
+}

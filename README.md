@@ -22,6 +22,15 @@ Here are some tutorial videos that explain this in more depth:
 - [Import Maps](https://www.youtube.com/watch?v=Lfm2Ge_RUxs&list=PLLUD8RtHvsAOhtHnyGx57EYXoaNsxGrTU&index=3)
 - [Local development with import map overrides](https://www.youtube.com/watch?v=vjjcuIxqIzY&list=PLLUD8RtHvsAOhtHnyGx57EYXoaNsxGrTU&index=4)
 
+## Security
+
+import-map-overrides allows a user to modify which javascript code is executed in their browser. This is something the user can do to themself **even without import-map-overrides** by executing code in the browser console or by falling victim to a [self XSS](https://en.wikipedia.org/wiki/Self-XSS) attack. Import map overrides does not make it more possible for the user to fall victim to such an attack.
+
+However, there are things you can do to protect your users from self XSS, both generally and specific to import-map-overrides. The following are security best practices:
+
+1. (**Most Important**) Configure your server to set a [Content-Security-Policy]() HTTP header for your HTML file. In it, consider safelisting the domains that you trust. Doing so is important to protect your users from all XSS attacks, along with a variety of other security attack vectors.
+1. Consider removing import-map-overrides from your production application's HTML file. If you properly set a Content-Security-Policy header, this provides no extra security. However, if you have not configured CSP, this will at least make it a bit harder for the user to self XSS. My recommendation is to do CSP instead of this whenever possible.
+
 ## Installation
 
 The import-map-overrides library is used via a global variable `window.importMapOverrides`. The global variable exists because import-map-overrides needs

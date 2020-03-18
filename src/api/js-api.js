@@ -96,21 +96,24 @@ function fireChangedEvent() {
 
 const overrideMap = window.importMapOverrides.getOverrideMap();
 
-if (Object.keys(overrideMap.imports).length > 0) {
-  const overrideMapElement = document.createElement("script");
-  overrideMapElement.type = importMapType;
-  overrideMapElement.id = "import-map-overrides"; // for debugging and for UI to identify this import map as special
-  overrideMapElement.innerHTML = JSON.stringify(overrideMap);
+if (window.importMap) {
+} else {
+  if (Object.keys(overrideMap.imports).length > 0) {
+    const overrideMapElement = document.createElement("script");
+    overrideMapElement.type = importMapType;
+    overrideMapElement.id = "import-map-overrides"; // for debugging and for UI to identify this import map as special
+    overrideMapElement.innerHTML = JSON.stringify(overrideMap);
 
-  const importMaps = document.querySelectorAll(
-    `script[type="${importMapType}"]`
-  );
-  if (importMaps.length > 0) {
-    importMaps[importMaps.length - 1].insertAdjacentElement(
-      "afterend",
-      overrideMapElement
+    const importMaps = document.querySelectorAll(
+      `script[type="${importMapType}"]`
     );
-  } else {
-    document.head.appendChild(overrideMapElement);
+    if (importMaps.length > 0) {
+      importMaps[importMaps.length - 1].insertAdjacentElement(
+        "afterend",
+        overrideMapElement
+      );
+    } else {
+      document.head.appendChild(overrideMapElement);
+    }
   }
 }

@@ -2,6 +2,16 @@ const localStoragePrefix = "import-map-override:";
 
 const portRegex = /^\d+$/g;
 
+const importMapMetaElement = document.querySelector(
+  'meta[name="importmap-type"]'
+);
+
+export const importMapType = importMapMetaElement
+  ? importMapMetaElement.getAttribute("content")
+  : "importmap";
+
+const serverOverrides = importMapType === "server";
+
 window.importMapOverrides = {
   addOverride(moduleName, url) {
     if (portRegex.test(url)) {
@@ -9,6 +19,9 @@ window.importMapOverrides = {
     }
     const key = localStoragePrefix + moduleName;
     localStorage.setItem(key, url);
+    if (serverOverrides) {
+      document.cookie = `${key}=${url}`;
+    }
     fireChangedEvent();
     return window.importMapOverrides.getOverrideMap();
   },
@@ -29,6 +42,9 @@ window.importMapOverrides = {
     const key = localStoragePrefix + moduleName;
     const hasItem = localStorage.getItem(key) !== null;
     localStorage.removeItem(key);
+    if (serverOverrides) {
+      document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+    }
     fireChangedEvent();
     return hasItem;
   },
@@ -79,12 +95,6 @@ function fireChangedEvent() {
 }
 
 const overrideMap = window.importMapOverrides.getOverrideMap();
-const importMapMetaElement = document.querySelector(
-  'meta[name="importmap-type"]'
-);
-export const importMapType = importMapMetaElement
-  ? importMapMetaElement.getAttribute("content")
-  : "importmap";
 
 if (Object.keys(overrideMap.imports).length > 0) {
   const overrideMapElement = document.createElement("script");

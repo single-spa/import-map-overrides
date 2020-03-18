@@ -70,15 +70,25 @@ import "import-map-overrides"; // this only will work if you compile the `import
 
 ## Configuration
 
-If you are using import-map-overrides for native import maps, no configuration is required.
-
-However, if you're using SystemJS as a polyfill for import maps, you'll need to tell import-map-overrides to make a
-`<script type="systemjs-importmap">` element instead of `<script type="importmap">`. To do this, you must add a `<meta>`
+You must indicate what kind of import map you are setting overrides for. You do this by inserting you must add a `<meta>`
 element to your html file **before the import-map-overrides library is loaded**.
 
 ```html
+<!-- example configuration for a SystemJS import map -->
 <meta name="importmap-type" content="systemjs-importmap" />
 ```
+
+| Import Map type                                                  | `importmap-type`      |
+| ---------------------------------------------------------------- | --------------------- |
+| Native <sup>1</sup>                                              | `importmap` (default) |
+| [SystemJS](https://github.com/systemjs/systemjs)                 | `systemjs-importmap`  |
+| [es-module-shims](https://github.com/guybedford/es-module-shims) | `importmap-shim`      |
+| Server rendered <sup>2</sup>                                     | `server`              |
+
+**Notes:**
+
+1. Native import maps are only supported in Chrome@>=76 under the _Experimental Web Platform Features_ flag. Only one import map (including the import-map-overrides map) can be on a web page at a time when using native import maps. ([Details](https://github.com/WICG/import-maps/issues/199))
+2. A "server rendered import map" is when the web server for your HTML file embeds an inline import map. You can still use import-map-overrides for such import maps if your server is cooperative. Import map overrides will set a cookie called `import-map-overrides:module-name` whose value is the override URL. A cooperative server is one that applies the URL in the cookie to the inlined import map sent in the response HTML.
 
 ## Integration with other import maps
 

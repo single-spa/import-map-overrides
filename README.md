@@ -87,7 +87,7 @@ element to your html file **before the import-map-overrides library is loaded**.
 
 **Notes:**
 
-1. Native import maps are only supported in Chrome@>=76 under the _Experimental Web Platform Features_ flag. Only one import map (including the import-map-overrides map) can be on a web page at a time when using native import maps. ([Details](https://github.com/WICG/import-maps/issues/199))
+1. Native import maps are only supported in Chrome@>=76 under the _Experimental Web Platform Features_ flag. Only one import map (including the import-map-overrides map) can be on a web page at a time when using native import maps. ([Details](https://github.com/WICG/import-maps/issues/199)). Please use [single import map method]().
 2. A "server rendered import map" is when the web server for your HTML file embeds an inline import map. You can still use import-map-overrides for such import maps if your server is cooperative. Import map overrides will set a cookie called `import-map-overrides:module-name` whose value is the override URL. A cooperative server is one that applies the URL in the cookie to the inlined import map sent in the response HTML.
 
 ## Integration with other import maps
@@ -95,6 +95,25 @@ element to your html file **before the import-map-overrides library is loaded**.
 The import-map-overrides library can override a server-rendered inline import map, an import map that is loaded via `src=""`, or
 any other import map. The key to making this work is to ensure that the import-map-overrides library is loaded **after** all other
 import maps that are on the page, but **before** the first `<script type="module">` or `System.import()`.
+
+## Single import map mode
+
+The import maps specification [only allows for a single import map per web page](https://github.com/WICG/import-maps/#multiple-import-map-support). Many import map polyfills, including systemjs and es-module-shims, allow for multiple import maps that are merged together.
+
+import-map-overrides can be configured to work either with a single import map or multiple import maps. To use single import map mode, change the `type` attribute of your import map to be `overridable-importmap`:
+
+```html
+<script type="overridable-importmap">
+  {
+    "imports": {
+      "foo": "./foo.df67s.js"
+    }
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/import-map-overrides/dist/import-map-overrides.js"></script>
+```
+
+The `overridable-importmap` will be ignored by the browser, but import-map-overrides will insert an import map with the correct script `type` attribute and overrides applied, which will be used by the browser.
 
 ## Javascript API
 

@@ -172,7 +172,9 @@ export default class List extends Component {
 
 export function getDefaultMap() {
   return Array.prototype.reduce.call(
-    document.querySelectorAll(`script[type="${importMapType}"]`),
+    document.querySelectorAll(
+      `script[type="${importMapType}"], script[type="overridable-importmap"]`
+    ),
     (promise, scriptEl) => {
       if (scriptEl.id === "import-map-overrides") {
         return promise;
@@ -184,23 +186,16 @@ export function getDefaultMap() {
           nextPromise = Promise.resolve(JSON.parse(scriptEl.textContent));
         }
 
-        return Promise.all([promise, nextPromise]).then(
-          ([originalMap, newMap]) => mergeImportMap(originalMap, newMap)
+        return Promise.all([
+          promise,
+          nextPromise
+        ]).then(([originalMap, newMap]) =>
+          window.importMapOverrides.mergeImportMap(originalMap, newMap)
         );
       }
     },
     Promise.resolve({ imports: {} })
   );
-}
-
-function mergeImportMap(originalMap, newMap) {
-  for (let i in newMap.imports) {
-    originalMap.imports[i] = newMap.imports[i];
-  }
-  for (let i in newMap.scopes) {
-    originalMap.scopes[i] = newMap.scopes[i];
-  }
-  return originalMap;
 }
 
 function sorter(first, second) {

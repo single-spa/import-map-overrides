@@ -139,7 +139,7 @@ function insertOverrideMap(map, referenceNode) {
   const overrideMapElement = document.createElement("script");
   overrideMapElement.type = importMapType;
   overrideMapElement.id = "import-map-overrides"; // for debugging and for UI to identify this import map as special
-  overrideMapElement.innerHTML = JSON.stringify(map, null, 2);
+  overrideMapElement.textContent = JSON.stringify(map, null, 2);
 
   if (referenceNode) {
     referenceNode.insertAdjacentElement("afterend", overrideMapElement);

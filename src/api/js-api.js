@@ -107,6 +107,11 @@ const overridableImportMap = document.querySelector(
 );
 
 if (overridableImportMap) {
+  if (overridableImportMap.src) {
+    throw Error(
+      `import-map-overrides: external import maps with type="overridable-importmap" are not supported`
+    );
+  }
   let originalMap;
   try {
     originalMap = JSON.parse(overridableImportMap.textContent);

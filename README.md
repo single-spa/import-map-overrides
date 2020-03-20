@@ -113,7 +113,7 @@ import-map-overrides can be configured to work either with a single import map o
 <script src="https://cdn.jsdelivr.net/npm/import-map-overrides/dist/import-map-overrides.js"></script>
 ```
 
-The `overridable-importmap` will be ignored by the browser, but import-map-overrides will insert an import map with the correct script `type` attribute and overrides applied, which will be used by the browser.
+The `overridable-importmap` will be ignored by the browser, but import-map-overrides will insert an import map with the correct script `type` attribute and overrides applied, which will be used by the browser. Note that single import map cannot be used with external import maps (those with a `src` attribute instead of inlined content).
 
 ## Javascript API
 

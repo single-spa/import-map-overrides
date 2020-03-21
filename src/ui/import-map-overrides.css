@@ -73,8 +73,10 @@ imo-popup a {
   margin-bottom: 8px;
 }
 
-.imo-list-container {
+.imo-list-container *,
+.imo-modal-container * {
   font-family: sans-serif;
+  box-sizing: border-box;
 }
 
 .imo-module-dialog {
@@ -111,25 +113,58 @@ imo-popup a {
   border: 4px solid salmon;
 }
 
-.imo-list-container button,
-.imo-modal-container button {
-  padding: 6px 16px;
-  font-size: 16px;
-  text-align: center;
+.imo-table-header-actions {
+  display: flex;
+  align-items: center;
 }
 
-button.imo-default {
-  background-color: navajowhite;
+.imo-overrides-table {
+  border-collapse: collapse;
+  margin-top: 32px;
 }
 
-button.imo-overridden,
-.imo-trigger.imo-overridden {
+.imo-overrides-table tr td:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.imo-status {
+  height: 16px;
+  width: 16px;
+  border-radius: 8px;
+  border: 1px solid white;
+  margin-right: 8px;
+}
+
+.imo-disabled-override {
+  background-color: lightblue;
+}
+
+.imo-next-override {
+  background-color: darkred;
+}
+
+.imo-current-override {
   background-color: salmon;
-  font-weight: bold;
+}
+
+.imo-default-module {
+  background-color: lightgoldenrodyellow;
+}
+
+.imo-overrides-table tbody tr:hover {
+  cursor: pointer;
+  background-color: #404040;
+}
+
+.imo-overrides-table td,
+.imo-overrides-table th {
+  line-height: 18px;
+  padding: 16px;
+  border: 1px solid white;
 }
 
 .imo-add-new {
-  margin-top: 16px;
   margin-left: 16px;
 }
 
@@ -157,6 +192,16 @@ button.imo-overridden,
   z-index: 20000000;
 }
 
+.imo-list-search,
+.imo-list-container button,
+.imo-modal-container button {
+  font-size: 14px;
+  height: 27px;
+  line-height: 27px;
+}
+
 .imo-list-search {
-  font-size: 18px;
+  line-height: 22px;
+  border: none;
+  padding: 5px;
 }

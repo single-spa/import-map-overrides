@@ -7,7 +7,7 @@ with native browser import maps or with the [SystemJS](https://github.com/system
 
 ## Motivation
 
-![import-map-overrides-ui](https://user-images.githubusercontent.com/5524384/60623188-484ede80-9d9f-11e9-9c1c-cb9fb09f8bee.gif)
+![import map overrides 3](https://user-images.githubusercontent.com/5524384/77237035-07476600-6b8a-11ea-9041-8b70f633d5d0.gif)
 
 Import maps are a way of controlling which url to download javascript modules from. The import-map-overrides library allows you
 to dynamically change the url for javascript modules by storing overrides in local storage. This allows developers to **override individual modules to point to their localhost during development of a module, without having to boot up a local environment with all the other modules and a backend server.**
@@ -120,11 +120,13 @@ The `overridable-importmap` will be ignored by the browser, but import-map-overr
 import-map-overrides provides the following functions. Note that these functions are always put onto window.importMapOverrides, even
 if you installed it as an npm package.
 
-### `window.importMapOverrides.getOverrideMap()`
+### `window.importMapOverrides.getOverrideMap(includeDisabled? = false)`
 
 Returns the override import map as an object. The returned object represents the overrides
 **that will take effect the next time you reload the page**, including any additions or removals you've recently made after
 the current page's [acquiringImportMaps boolean](https://github.com/WICG/import-maps/blob/master/spec.md#acquiring-import-maps) was set to false.
+
+`includeDisabled` is an optional boolean you can pass in to include any "disabled overrides." See `disableOverride()` for more information.
 
 ```js
 const overrideMap = window.importMapOverrides.getOverrideMap();
@@ -204,7 +206,39 @@ It will set local storage to match the `show-when-local-storage` key and/or it w
 
 ### `window.importMapOverrides.mergeImportMap(firstMap, secondMap)`
 
-Merges the second import map into the first. This API mutates the firstMap, it does not create a new map. Returns the modified firstMap.
+Creates a new import map that is the first map merged with the second map. Items in the second map take priority.
+
+### `window.importMapOverrides.getDefaultMap()`
+
+This returns the import map(s) on the page, without the presence of any import map overrides.
+
+### `window.importMapOverrides.getCurrentPageMap()`
+
+This returns the final import map (including overrides) that was applied to the current page. Any overrides set after the page load will not be included.
+
+### `window.importMapOverrides.getNextPageMap()`
+
+This returns the final import map (including overrides) that will be applied the next time the page is reloaded.
+
+### `window.importMapOverrides.disableOverride(moduleName)`
+
+This will temporarily disable an import map override. This is similar to `removeOverride()` except that it will preserve what the override URL was so that you can toggle the override on and off.
+
+Returns true if the module was already disabled, and false otherwise.
+
+### `window.importMapOverrides.enableOverride(moduleName)`
+
+This will re-renable an import map override that was previously disabled via `disableOverride()`.
+
+Returns true if the module was already disabled, and false otherwise.
+
+### `window.importMapOverrides.getDisabledOverrides()`
+
+Returns an array of strings, where each string is the name of a module that is currently disabled.
+
+### `window.importMapOverrides.isDisabled(moduleName)`
+
+Returns a boolean indicated whether the string module name is a currently disabled or not.
 
 ## Events
 

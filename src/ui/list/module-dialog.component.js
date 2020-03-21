@@ -133,9 +133,30 @@ export default class ModuleDialog extends Component {
               >
                 Cancel
               </button>
+              {this.props.module.overrideUrl && !this.props.module.disabled && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (this.props.module.disabled) {
+                      window.importMapOverrides.enableOverride(
+                        this.props.module.moduleName
+                      );
+                    } else {
+                      window.importMapOverrides.disableOverride(
+                        this.props.module.moduleName
+                      );
+                    }
+                    this.props.cancel();
+                  }}
+                  tabIndex={6}
+                  style={{ marginRight: "16px" }}
+                >
+                  {this.props.module.disabled ? "Enable" : "Disable"} Override
+                </button>
+              )}
               <button
                 type="submit"
-                tabIndex={6}
+                tabIndex={7}
                 className={
                   this.state.overrideUrl ? "imo-overridden" : "imo-default"
                 }
@@ -163,6 +184,12 @@ export default class ModuleDialog extends Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
+    if (
+      this.props.module.moduleName &&
+      window.importMapOverrides.isDisabled(this.props.module.moduleName)
+    ) {
+      window.importMapOverrides.enableOverride(this.props.module.moduleName);
+    }
     if (this.props.module.isNew) {
       this.props.addNewModule(this.state.moduleName, this.state.overrideUrl);
     } else {

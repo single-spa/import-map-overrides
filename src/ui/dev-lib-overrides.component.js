@@ -1,9 +1,8 @@
 import { h, Component } from "preact";
-import { getDefaultMap } from "./list/list.component";
 
 export default class DevLibOverrides extends Component {
   componentDidMount() {
-    getDefaultMap().then(addDevLibOverrides);
+    window.importMapOverrides.getDefaultMap().then(addDevLibOverrides);
   }
   render() {
     return null;
@@ -12,7 +11,8 @@ export default class DevLibOverrides extends Component {
 
 const devLibs = {
   react: url => url.replace("production.min", "development"),
-  "react-dom": url => url.replace("production.min", "development")
+  "react-dom": url => url.replace("production.min", "development"),
+  "single-spa": url => url.replace("single-spa.min.js", "single-spa.dev.js")
 };
 
 function addDevLibOverrides(notOverriddenMap) {

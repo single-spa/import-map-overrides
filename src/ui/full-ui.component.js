@@ -31,7 +31,7 @@ export default class FullUI extends Component {
         <button
           onClick={this.toggleTrigger}
           className={`imo-unstyled imo-trigger ${
-            this.atLeastOneOverride() ? "imo-overridden" : ""
+            this.atLeastOneOverride() ? "imo-current-override" : ""
           }`}
         >
           {"{\u00B7\u00B7\u00B7}"}

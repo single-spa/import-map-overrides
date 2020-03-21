@@ -87,7 +87,7 @@ element to your html file **before the import-map-overrides library is loaded**.
 
 **Notes:**
 
-1. Native import maps are only supported in Chrome@>=76 under the _Experimental Web Platform Features_ flag. Only one import map (including the import-map-overrides map) can be on a web page at a time when using native import maps. ([Details](https://github.com/WICG/import-maps/issues/199)). Please use [single import map method]().
+1. Native import maps are only supported in Chrome@>=76 under the _Experimental Web Platform Features_ flag. Only one import map (including the import-map-overrides map) can be on a web page at a time when using native import maps. ([Details](https://github.com/WICG/import-maps/issues/199)). Please use [single import map method](#single-import-map-mode).
 2. A "server rendered import map" is when the web server for your HTML file embeds an inline import map. You can still use import-map-overrides for such import maps if your server is cooperative. Import map overrides will set a cookie called `import-map-overrides:module-name` whose value is the override URL. A cooperative server is one that applies the URL in the cookie to the inlined import map sent in the response HTML.
 
 ## Integration with other import maps

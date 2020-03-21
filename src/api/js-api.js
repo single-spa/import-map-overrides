@@ -15,7 +15,7 @@ const serverOverrides = importMapType === "server";
 window.importMapOverrides = {
   addOverride(moduleName, url) {
     if (portRegex.test(url)) {
-      url = window.importMapOverrides.getUrlFromPort(moduleName, url);
+      url = imo.getUrlFromPort(moduleName, url);
     }
     const key = localStoragePrefix + moduleName;
     localStorage.setItem(key, url);
@@ -23,7 +23,7 @@ window.importMapOverrides = {
       document.cookie = `${key}=${url}`;
     }
     fireChangedEvent();
-    return window.importMapOverrides.getOverrideMap();
+    return imo.getOverrideMap();
   },
   getOverrideMap() {
     const overrides = { imports: {} };
@@ -49,18 +49,14 @@ window.importMapOverrides = {
     return hasItem;
   },
   resetOverrides() {
-    Object.keys(window.importMapOverrides.getOverrideMap().imports).forEach(
-      moduleName => {
-        window.importMapOverrides.removeOverride(moduleName);
-      }
-    );
+    Object.keys(imo.getOverrideMap().imports).forEach(moduleName => {
+      imo.removeOverride(moduleName);
+    });
     fireChangedEvent();
-    return window.importMapOverrides.getOverrideMap();
+    return imo.getOverrideMap();
   },
   hasOverrides() {
-    return (
-      Object.keys(window.importMapOverrides.getOverrideMap().imports).length > 0
-    );
+    return Object.keys(imo.getOverrideMap().imports).length > 0;
   },
   getUrlFromPort(moduleName, port) {
     const fileName = moduleName.replace(/@/g, "").replace(/\//g, "-");
@@ -82,8 +78,19 @@ window.importMapOverrides = {
       localStorage.setItem(localStorageKey, true);
       customElement.renderWithPreact();
     }
+  },
+  mergeImportMap(originalMap, newMap) {
+    for (let i in newMap.imports) {
+      originalMap.imports[i] = newMap.imports[i];
+    }
+    for (let i in newMap.scopes) {
+      originalMap.scopes[i] = newMap.scopes[i];
+    }
+    return originalMap;
   }
 };
+
+const imo = window.importMapOverrides;
 
 function fireChangedEvent() {
   // Set timeout so that event fires after the change has totally finished
@@ -95,21 +102,47 @@ function fireChangedEvent() {
 }
 
 const overrideMap = window.importMapOverrides.getOverrideMap();
+const overridableImportMap = document.querySelector(
+  'script[type="overridable-importmap"]'
+);
 
-if (Object.keys(overrideMap.imports).length > 0) {
+if (overridableImportMap) {
+  if (overridableImportMap.src) {
+    throw Error(
+      `import-map-overrides: external import maps with type="overridable-importmap" are not supported`
+    );
+  }
+  let originalMap;
+  try {
+    originalMap = JSON.parse(overridableImportMap.textContent);
+  } catch (e) {
+    throw Error(
+      `Invalid <script type="overridable-importmap"> - text content must be json`
+    );
+  }
+
+  window.importMapOverrides.mergeImportMap(originalMap, overrideMap);
+  insertOverrideMap(originalMap, overridableImportMap);
+} else {
+  if (Object.keys(overrideMap.imports).length > 0) {
+    const importMaps = document.querySelectorAll(
+      `script[type="${importMapType}"]`
+    );
+    insertOverrideMap(
+      overrideMap,
+      importMaps ? importMaps[importMaps.length - 1] : null
+    );
+  }
+}
+
+function insertOverrideMap(map, referenceNode) {
   const overrideMapElement = document.createElement("script");
   overrideMapElement.type = importMapType;
   overrideMapElement.id = "import-map-overrides"; // for debugging and for UI to identify this import map as special
-  overrideMapElement.innerHTML = JSON.stringify(overrideMap);
+  overrideMapElement.textContent = JSON.stringify(map, null, 2);
 
-  const importMaps = document.querySelectorAll(
-    `script[type="${importMapType}"]`
-  );
-  if (importMaps.length > 0) {
-    importMaps[importMaps.length - 1].insertAdjacentElement(
-      "afterend",
-      overrideMapElement
-    );
+  if (referenceNode) {
+    referenceNode.insertAdjacentElement("afterend", overrideMapElement);
   } else {
     document.head.appendChild(overrideMapElement);
   }

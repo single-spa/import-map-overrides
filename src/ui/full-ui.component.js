@@ -1,12 +1,12 @@
 import { h, Component } from "preact";
 import Popup from "./popup.component";
 import DevLibOverrides, {
-  overridesBesidesDevLibs
+  overridesBesidesDevLibs,
 } from "./dev-lib-overrides.component";
 
 export default class FullUI extends Component {
   state = {
-    showingPopup: false
+    showingPopup: false,
   };
   componentDidMount() {
     window.addEventListener("import-map-overrides:change", this.doUpdate);
@@ -47,8 +47,8 @@ export default class FullUI extends Component {
     );
   }
   toggleTrigger = () => {
-    this.setState(prevState => ({
-      showingPopup: !prevState.showingPopup
+    this.setState((prevState) => ({
+      showingPopup: !prevState.showingPopup,
     }));
   };
   importMapChanged = () => {

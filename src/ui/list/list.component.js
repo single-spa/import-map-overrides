@@ -7,13 +7,13 @@ export default class List extends Component {
     notOverriddenMap: { imports: {} },
     currentPageMap: { imports: {} },
     dialogModule: null,
-    searchVal: ""
+    searchVal: "",
   };
   componentDidMount() {
-    window.importMapOverrides.getDefaultMap().then(notOverriddenMap => {
+    window.importMapOverrides.getDefaultMap().then((notOverriddenMap) => {
       this.setState({ notOverriddenMap });
     });
-    window.importMapOverrides.getCurrentPageMap().then(currentPageMap => {
+    window.importMapOverrides.getCurrentPageMap().then((currentPageMap) => {
       this.setState({ currentPageMap });
     });
     window.addEventListener("import-map-overrides:change", this.doUpdate);
@@ -53,12 +53,12 @@ export default class List extends Component {
 
     const disabledModules = window.importMapOverrides.getDisabledOverrides();
 
-    notOverriddenKeys.filter(this.filterModuleNames).forEach(moduleName => {
+    notOverriddenKeys.filter(this.filterModuleNames).forEach((moduleName) => {
       const mod = {
         moduleName,
         defaultUrl: this.state.notOverriddenMap.imports[moduleName],
         overrideUrl: overrideMap[moduleName],
-        disabled: disabledModules.includes(moduleName)
+        disabled: disabledModules.includes(moduleName),
       };
       if (mod.disabled) {
         disabledOverrides.push(mod);
@@ -78,13 +78,13 @@ export default class List extends Component {
 
     Object.keys(overrideMap)
       .filter(this.filterModuleNames)
-      .forEach(moduleName => {
+      .forEach((moduleName) => {
         if (!notOverriddenKeys.includes(moduleName)) {
           const mod = {
             moduleName,
             defaultUrl: null,
             overrideUrl: overrideMap[moduleName],
-            disabled: disabledModules.includes(moduleName)
+            disabled: disabledModules.includes(moduleName),
           };
 
           if (mod.disabled) {
@@ -112,14 +112,14 @@ export default class List extends Component {
             aria-label="Search modules"
             placeholder="Search modules"
             value={this.state.searchVal}
-            onInput={evt => this.setState({ searchVal: evt.target.value })}
-            ref={ref => (this.inputRef = ref)}
+            onInput={(evt) => this.setState({ searchVal: evt.target.value })}
+            ref={(ref) => (this.inputRef = ref)}
           />
           <div className="imo-add-new">
             <button
               onClick={() =>
                 this.setState({
-                  dialogModule: { moduleName: "New module", isNew: true }
+                  dialogModule: { moduleName: "New module", isNew: true },
                 })
               }
             >
@@ -142,7 +142,7 @@ export default class List extends Component {
             </tr>
           </thead>
           <tbody>
-            {nextOverriddenModules.map(mod => (
+            {nextOverriddenModules.map((mod) => (
               <tr
                 role="button"
                 tabIndex={0}
@@ -157,7 +157,7 @@ export default class List extends Component {
                 <td>{toFileName(mod)}</td>
               </tr>
             ))}
-            {disabledOverrides.map(mod => (
+            {disabledOverrides.map((mod) => (
               <tr
                 role="button"
                 tabIndex={0}
@@ -172,7 +172,7 @@ export default class List extends Component {
                 <td>{toFileName(mod)}</td>
               </tr>
             ))}
-            {overriddenModules.map(mod => (
+            {overriddenModules.map((mod) => (
               <tr
                 role="button"
                 tabIndex={0}
@@ -187,7 +187,7 @@ export default class List extends Component {
                 <td>{toFileName(mod)}</td>
               </tr>
             ))}
-            {defaultModules.map(mod => (
+            {defaultModules.map((mod) => (
               <tr
                 role="button"
                 tabIndex={0}
@@ -212,7 +212,7 @@ export default class List extends Component {
     this.setState({ dialogModule: null });
   };
 
-  updateModuleUrl = newUrl => {
+  updateModuleUrl = (newUrl) => {
     newUrl = newUrl || null;
 
     if (newUrl === null) {
@@ -238,7 +238,7 @@ export default class List extends Component {
     this.setState({ dialogModule: null });
   };
 
-  filterModuleNames = moduleName => {
+  filterModuleNames = (moduleName) => {
     return this.state.searchVal.trim().length > 0
       ? moduleName.includes(this.state.searchVal)
       : true;

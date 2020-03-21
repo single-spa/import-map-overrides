@@ -12,22 +12,22 @@ export default [
     output: {
       file: "dist/import-map-overrides.js",
       format: "iife",
-      sourcemap: true
+      sourcemap: true,
     },
     plugins: [
       babel({
-        exclude: "node_modules/**"
+        exclude: "node_modules/**",
       }),
       resolve(),
       postcss(),
       isProduction &&
         terser({
           compress: {
-            passes: 2
+            passes: 2,
           },
-          sourcemap: true
-        })
-    ]
+          sourcemap: true,
+        }),
+    ],
   },
   // Only the global variable API. No UI
   {
@@ -35,19 +35,19 @@ export default [
     output: {
       file: "dist/import-map-overrides-api.js",
       format: "iife",
-      sourcemap: true
+      sourcemap: true,
     },
     plugins: [
       babel({
-        exclude: "node_modules/**"
+        exclude: "node_modules/**",
       }),
       isProduction &&
         terser({
           compress: {
-            passes: 2
+            passes: 2,
           },
-          sourcemap: true
-        })
-    ]
-  }
+          sourcemap: true,
+        }),
+    ],
+  },
 ];

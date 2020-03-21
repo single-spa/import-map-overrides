@@ -10,15 +10,15 @@ export default class DevLibOverrides extends Component {
 }
 
 const devLibs = {
-  react: url => url.replace("production.min", "development"),
-  "react-dom": url => url.replace("production.min", "development"),
-  "single-spa": url => url.replace("single-spa.min.js", "single-spa.dev.js")
+  react: (url) => url.replace("production.min", "development"),
+  "react-dom": (url) => url.replace("production.min", "development"),
+  "single-spa": (url) => url.replace("single-spa.min.js", "single-spa.dev.js"),
 };
 
 function addDevLibOverrides(notOverriddenMap) {
   Object.keys(notOverriddenMap.imports)
-    .filter(libName => devLibs[libName])
-    .forEach(libName => {
+    .filter((libName) => devLibs[libName])
+    .forEach((libName) => {
       window.importMapOverrides.addOverride(
         libName,
         devLibs[libName](notOverriddenMap.imports[libName])
@@ -29,7 +29,7 @@ function addDevLibOverrides(notOverriddenMap) {
 export function overridesBesidesDevLibs() {
   return (
     Object.keys(window.importMapOverrides.getOverrideMap().imports).filter(
-      k => !devLibs[k]
+      (k) => !devLibs[k]
     ).length > 0
   );
 }

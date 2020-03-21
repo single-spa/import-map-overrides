@@ -54,7 +54,7 @@ window.importMapOverrides = {
     return hasItem;
   },
   resetOverrides() {
-    Object.keys(imo.getOverrideMap(true).imports).forEach(moduleName => {
+    Object.keys(imo.getOverrideMap(true).imports).forEach((moduleName) => {
       imo.removeOverride(moduleName);
     });
     localStorage.removeItem(disabledOverridesLocalStorageKey);
@@ -114,14 +114,14 @@ window.importMapOverrides = {
           } else {
             let nextPromise;
             if (scriptEl.src) {
-              nextPromise = fetch(scriptEl.src).then(resp => resp.json());
+              nextPromise = fetch(scriptEl.src).then((resp) => resp.json());
             } else {
               nextPromise = Promise.resolve(JSON.parse(scriptEl.textContent));
             }
 
             return Promise.all([
               promise,
-              nextPromise
+              nextPromise,
             ]).then(([originalMap, newMap]) =>
               imo.mergeImportMap(originalMap, newMap)
             );
@@ -132,7 +132,7 @@ window.importMapOverrides = {
     );
   },
   getCurrentPageMap() {
-    return imo.getDefaultMap().then(defaultMap => {
+    return imo.getDefaultMap().then((defaultMap) => {
       const overrideEl = document.querySelector("#import-map-overrides");
       const overrideMap = overrideEl
         ? JSON.parse(overrideEl.textContent)
@@ -141,7 +141,7 @@ window.importMapOverrides = {
     });
   },
   getNextPageMap() {
-    return imo.getDefaultMap().then(defaultMap => {
+    return imo.getDefaultMap().then((defaultMap) => {
       return imo.mergeImportMap(defaultMap, imo.getOverrideMap());
     });
   },
@@ -181,7 +181,7 @@ window.importMapOverrides = {
   },
   isDisabled(moduleName) {
     return imo.getDisabledOverrides().includes(moduleName);
-  }
+  },
 };
 
 const imo = window.importMapOverrides;

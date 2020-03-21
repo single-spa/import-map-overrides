@@ -37,7 +37,7 @@ export default class Popup extends Component {
       </div>
     );
   }
-  keydownListener = evt => {
+  keydownListener = (evt) => {
     if (evt.key === "Escape" && this.props.close) {
       this.props.close();
     }

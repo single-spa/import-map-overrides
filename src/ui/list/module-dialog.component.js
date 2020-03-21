@@ -21,7 +21,7 @@ export default class ModuleDialog extends Component {
   };
   state = {
     overrideUrl: this.getInitialOverrideUrl(),
-    moduleName: ""
+    moduleName: "",
   };
   inputEl = null;
   moduleNameEl = null;
@@ -74,7 +74,7 @@ export default class ModuleDialog extends Component {
                         tabIndex={1}
                         value={this.state.moduleName}
                         aria-labelledby="module-name-label"
-                        onInput={evt =>
+                        onInput={(evt) =>
                           this.setState({ moduleName: evt.target.value })
                         }
                         ref={this.handleModuleNameRef}
@@ -102,7 +102,7 @@ export default class ModuleDialog extends Component {
                       value={this.state.overrideUrl}
                       aria-labelledby="override-url-label"
                       tabIndex={2}
-                      onInput={evt =>
+                      onInput={(evt) =>
                         this.setState({ overrideUrl: evt.target.value })
                       }
                     />
@@ -170,19 +170,19 @@ export default class ModuleDialog extends Component {
     );
   }
 
-  handleInputRef = el => {
+  handleInputRef = (el) => {
     this.inputEl = el;
   };
 
-  handleModuleNameRef = el => {
+  handleModuleNameRef = (el) => {
     this.moduleNameEl = el;
   };
 
-  dialogRef = el => {
+  dialogRef = (el) => {
     this.dialogEl = el;
   };
 
-  handleSubmit = evt => {
+  handleSubmit = (evt) => {
     evt.preventDefault();
     if (
       this.props.module.moduleName &&
@@ -209,7 +209,7 @@ export default class ModuleDialog extends Component {
       : this.state.overrideUrl;
   };
 
-  keyDown = evt => {
+  keyDown = (evt) => {
     if (evt.key === "Escape") {
       evt.stopPropagation();
       this.props.cancel();

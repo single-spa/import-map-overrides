@@ -202,6 +202,10 @@ This will force the full import map overrides UI to be displayed (as long as the
 
 It will set local storage to match the `show-when-local-storage` key and/or it will append a `<import-map-overrides-full>` element to the DOM.
 
+### `window.importMapOverrides.mergeImportMap(firstMap, secondMap)`
+
+Merges the second import map into the first. This API mutates the firstMap, it does not create a new map. Returns the modified firstMap.
+
 ## Events
 
 The import-map-overrides library fires an event called `import-map-overrides:change` on the window whenever the

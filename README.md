@@ -168,7 +168,7 @@ The `overridable-importmap` will be ignored by the browser, but import-map-overr
 import-map-overrides provides the following functions. Note that these functions are always put onto window.importMapOverrides, even
 if you installed it as an npm package.
 
-### `window.importMapOverrides.getOverrideMap(includeDisabled? = false)`
+### getOverrideMap
 
 Returns the override import map as an object. The returned object represents the overrides
 **that will take effect the next time you reload the page**, including any additions or removals you've recently made after
@@ -178,10 +178,22 @@ the current page's [acquiringImportMaps boolean](https://github.com/WICG/import-
 
 ```js
 const overrideMap = window.importMapOverrides.getOverrideMap();
-console.log(overrideMap);
 /*
 {
   "imports": {
+    "module1": "https://mycdn.com/module1.js",
+    "lodash": "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.core.js"
+  }
+}
+*/
+
+const overrideMapWithDisabledOverrides = window.importMapOverrides.getOverrideMap(
+  true
+);
+/*
+{
+  "imports": {
+    "app1": "/app1.js",
     "module1": "https://mycdn.com/module1.js",
     "lodash": "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.core.js"
   }

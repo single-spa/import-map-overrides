@@ -90,6 +90,54 @@ element to your html file **before the import-map-overrides library is loaded**.
 1. Native import maps are only supported in Chrome@>=76 under the _Experimental Web Platform Features_ flag. Only one import map (including the import-map-overrides map) can be on a web page at a time when using native import maps. ([Details](https://github.com/WICG/import-maps/issues/199)). Please use [single import map method](#single-import-map-mode).
 2. A "server rendered import map" is when the web server for your HTML file embeds an inline import map. You can still use import-map-overrides for such import maps if your server is cooperative. Import map overrides will set a cookie called `import-map-overrides:module-name` whose value is the override URL. A cooperative server is one that applies the URL in the cookie to the inlined import map sent in the response HTML.
 
+## User Interface
+
+The UI for import-map-overrides gives visual indication when any module is overridden, so that you know whether to blame your override
+or not when things are broken. It also lets you view and modify urls for all the modules in your import map.
+
+### Usage
+
+You use the import-map-overrides UI via web components. This means you just need to put some HTML into the DOM in order for it to work.
+You have three options for the UI, depending on how much you want to customize the UI:
+
+```html
+<!--
+  The full UI, including the "trigger" button that pops up the UI.
+
+  If you omit the show-when-local-storage attribute, the yellow/orange rectangle always shows.
+  When you have the show-when-local-storage attribute, the yellow/orange rectangle will only show
+  when the user has set a local storage value of "true" for the key specified.
+
+  For example, in the below example you must run the follow command in order to see the full-ui.
+  localStorage.setItem('overrides-ui', true);
+
+  The dev-libs attribute indicates that you prefer using development versions of third party libraries
+  like react when the import-map-overrides ui is active. The presence of that attribute turns on this feature.
+  For example, if you have `react` in your import map pointing to https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js
+  the dev-libs attribute will automatically override it to https://cdn.jsdelivr.net/npm/react/umd/react.development.js.
+  You can also turn this feature on/off via localStorage. `localStorage.setItem('import-map-overrides-dev-libs', false)` will
+  forcibly turn this feature off, while calling it with `true` will turn it on.
+ -->
+<import-map-overrides-full
+  show-when-local-storage="overrides-ui"
+  dev-libs
+></import-map-overrides-full>
+
+<!-- Alternatively, just the black popup itself -->
+<import-map-overrides-popup></import-map-overrides-popup>
+
+<!-- Or if you only want the actual import map list and UI for overriding -->
+<import-map-overrides-list></import-map-overrides-list>
+```
+
+## Not using the UI
+
+The UI is completely optional. If you don't want to use it, simply don't include the `<import-map-overrides-full>`
+custom element in your page. Additionally, you can use the
+[`/dist/import-map-overrides-api.js` file](https://unpkg.com/browse/import-map-overrides/dist/import-map-overrides-api.js)
+instead of [`/dist/import-map-overrides.js`](https://unpkg.com/browse/import-map-overrides/dist/import-map-overrides.js),
+which avoids downloading the code for the UI and reduces the library size.
+
 ## Integration with other import maps
 
 The import-map-overrides library can override a server-rendered inline import map, an import map that is loaded via `src=""`, or
@@ -240,6 +288,30 @@ Returns an array of strings, where each string is the name of a module that is c
 
 Returns a boolean indicated whether the string module name is a currently disabled or not.
 
+### `window.importMapOverrides.addExternalOverride(urlToImportMap)`
+
+Set up an override to an external import map that is hosted at a different URL. The external import map has lower precendence than inline overrides created via `addOverride()` when using multiple import maps, and higher precedence when using a single import map.
+
+### `window.importMapOverrides.removeExternalOverride(urlToImportMap)`
+
+Remove an external import map override. Returns a boolean that indicates whether the override existed in the first place.
+
+### `window.importMapOverrides.getExternalOverrides()`
+
+Returns an array of string URLs, where each string is the URL to an external override import map.
+
+### `window.importMapOverrides.getCurrentPageExternalOverrides()`
+
+Similar to `getExternalOverrides()`, except it ignores any changes to the external overrides since the page was loaded.
+
+### `window.importMapOverrides.getExternalOverrideMap(urlsToImportMap?)`
+
+Returns a promise that resolves with the merged import map of all external override import maps. You can provide an array of strings `urlsToImportMap` to control which external import maps to fetch and merge.
+
+### `window.importMapOverrides.isExternalMapValid(urlToImportMap)`
+
+Takes one argument, `urlToImport`, and returns a promise that resolves with a boolean. When `true`, the url provided is one that hosts a valid import map. When `false`, the url provided doesn't host a valid import map.
+
 ## Events
 
 The import-map-overrides library fires an event called `import-map-overrides:change` on the window whenever the
@@ -258,51 +330,3 @@ function logImportMap(evt) {
   console.log(window.importMapOverrides.getOverrideMap());
 }
 ```
-
-## User Interface
-
-The UI for import-map-overrides gives visual indication when any module is overridden, so that you know whether to blame your override
-or not when things are broken. It also lets you view and modify urls for all the modules in your import map.
-
-### Usage
-
-You use the import-map-overrides UI via web components. This means you just need to put some HTML into the DOM in order for it to work.
-You have three options for the UI, depending on how much you want to customize the UI:
-
-```html
-<!--
-  The full UI, including the "trigger" button that pops up the UI.
-
-  If you omit the show-when-local-storage attribute, the yellow/orange rectangle always shows.
-  When you have the show-when-local-storage attribute, the yellow/orange rectangle will only show
-  when the user has set a local storage value of "true" for the key specified.
-
-  For example, in the below example you must run the follow command in order to see the full-ui.
-  localStorage.setItem('overrides-ui', true);
-
-  The dev-libs attribute indicates that you prefer using development versions of third party libraries
-  like react when the import-map-overrides ui is active. The presence of that attribute turns on this feature.
-  For example, if you have `react` in your import map pointing to https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js
-  the dev-libs attribute will automatically override it to https://cdn.jsdelivr.net/npm/react/umd/react.development.js.
-  You can also turn this feature on/off via localStorage. `localStorage.setItem('import-map-overrides-dev-libs', false)` will
-  forcibly turn this feature off, while calling it with `true` will turn it on.
- -->
-<import-map-overrides-full
-  show-when-local-storage="overrides-ui"
-  dev-libs
-></import-map-overrides-full>
-
-<!-- Alternatively, just the black popup itself -->
-<import-map-overrides-popup></import-map-overrides-popup>
-
-<!-- Or if you only want the actual import map list and UI for overriding -->
-<import-map-overrides-list></import-map-overrides-list>
-```
-
-## Not using the UI
-
-The UI is completely optional. If you don't want to use it, simply don't include the `<import-map-overrides-full>`
-custom element in your page. Additionally, you can use the
-[`/dist/import-map-overrides-api.js` file](https://unpkg.com/browse/import-map-overrides/dist/import-map-overrides-api.js)
-instead of [`/dist/import-map-overrides.js`](https://unpkg.com/browse/import-map-overrides/dist/import-map-overrides.js),
-which avoids downloading the code for the UI and reduces the library size.

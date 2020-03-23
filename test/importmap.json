@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "app1": "https://localhost:9543/app1.js"
+  }
+}

@@ -1,12 +1,14 @@
 import { h, Component, render } from "preact";
 import { importMapType } from "../../api/js-api";
 import ModuleDialog from "./module-dialog.component";
+import ExternalImportMap from "./external-importmap-dialog.component";
 
 export default class List extends Component {
   state = {
     notOverriddenMap: { imports: {} },
     currentPageMap: { imports: {} },
     dialogModule: null,
+    dialogExternalMap: null,
     searchVal: "",
   };
   componentDidMount() {
@@ -40,12 +42,29 @@ export default class List extends Component {
       this.dialogContainer.remove();
       delete this.dialogContainer;
     }
+
+    if (!prevState.dialogExternalMap && this.state.dialogExternalMap) {
+      this.dialogContainer = document.createElement("div");
+      document.body.appendChild(this.dialogContainer);
+      render(
+        <ExternalImportMap
+          dialogExternalMap={this.state.dialogExternalMap}
+          cancel={this.cancel}
+        />,
+        this.dialogContainer
+      );
+    } else if (prevState.dialogExternalMap && !this.state.dialogExternalMap) {
+      render(null, this.dialogContainer);
+      this.dialogContainer.remove();
+      delete this.dialogContainer;
+    }
   }
   render() {
     const overriddenModules = [],
       nextOverriddenModules = [],
       disabledOverrides = [],
-      defaultModules = [];
+      defaultModules = [],
+      externalOverrideModules = [];
 
     const overrideMap = window.importMapOverrides.getOverrideMap(true).imports;
 
@@ -71,8 +90,13 @@ export default class List extends Component {
         } else {
           nextOverriddenModules.push(mod);
         }
-      } else {
+      } else if (
+        this.state.notOverriddenMap.imports[moduleName] ===
+        this.state.currentPageMap.imports[moduleName]
+      ) {
         defaultModules.push(mod);
+      } else {
+        externalOverrideModules.push(mod);
       }
     });
 
@@ -104,6 +128,12 @@ export default class List extends Component {
     defaultModules.sort(sorter);
     nextOverriddenModules.sort(sorter);
 
+    const {
+      brokenMaps,
+      workingCurrentPageMaps,
+      workingNextPageMaps,
+    } = getExternalMaps();
+
     return (
       <div className="imo-list-container">
         <div className="imo-table-header-actions">
@@ -127,6 +157,17 @@ export default class List extends Component {
             </button>
           </div>
           <div className="imo-add-new">
+            <button
+              onClick={() => {
+                this.setState({
+                  dialogExternalMap: { url: "", isNew: true },
+                });
+              }}
+            >
+              Add import map
+            </button>
+          </div>
+          <div className="imo-add-new">
             <button onClick={() => window.importMapOverrides.resetOverrides()}>
               Reset all overrides
             </button>
@@ -147,6 +188,7 @@ export default class List extends Component {
                 role="button"
                 tabIndex={0}
                 onClick={() => this.setState({ dialogModule: mod })}
+                key={mod.moduleName}
               >
                 <td>
                   <div className="imo-status imo-next-override" />
@@ -162,6 +204,7 @@ export default class List extends Component {
                 role="button"
                 tabIndex={0}
                 onClick={() => this.setState({ dialogModule: mod })}
+                key={mod.moduleName}
               >
                 <td>
                   <div className="imo-status imo-disabled-override" />
@@ -177,10 +220,27 @@ export default class List extends Component {
                 role="button"
                 tabIndex={0}
                 onClick={() => this.setState({ dialogModule: mod })}
+                key={mod.moduleName}
               >
                 <td>
                   <div className="imo-status imo-current-override" />
-                  <div>Override</div>
+                  <div>Inline Override</div>
+                </td>
+                <td>{mod.moduleName}</td>
+                <td>{toDomain(mod)}</td>
+                <td>{toFileName(mod)}</td>
+              </tr>
+            ))}
+            {externalOverrideModules.map((mod) => (
+              <tr
+                role="button"
+                tabIndex={0}
+                onClick={() => this.setState({ dialogModule: mod })}
+                key={mod.moduleName}
+              >
+                <td>
+                  <div className="imo-status imo-external-override" />
+                  <div>External Override</div>
                 </td>
                 <td>{mod.moduleName}</td>
                 <td>{toDomain(mod)}</td>
@@ -192,6 +252,7 @@ export default class List extends Component {
                 role="button"
                 tabIndex={0}
                 onClick={() => this.setState({ dialogModule: mod })}
+                key={mod.moduleName}
               >
                 <td>
                   <div className="imo-status imo-default-module" />
@@ -204,12 +265,72 @@ export default class List extends Component {
             ))}
           </tbody>
         </table>
+        {(brokenMaps.length > 0 ||
+          workingCurrentPageMaps.length > 0 ||
+          workingNextPageMaps.length > 0) && (
+          <table className="imo-overrides-table">
+            <thead>
+              <th>Import Map Status</th>
+              <th>URL</th>
+            </thead>
+            <tbody>
+              {brokenMaps.map((url) => (
+                <tr
+                  role="button"
+                  tabIndex={0}
+                  onClick={() =>
+                    this.setState({ dialogExternalMap: { isNew: false, url } })
+                  }
+                  key={url}
+                >
+                  <td>
+                    <div className="imo-status imo-disabled-override" />
+                    <div>Invalid</div>
+                  </td>
+                  <td>{url}</td>
+                </tr>
+              ))}
+              {workingNextPageMaps.map((url) => (
+                <tr
+                  role="button"
+                  tabIndex={0}
+                  onClick={() =>
+                    this.setState({ dialogExternalMap: { isNew: false, url } })
+                  }
+                  key={url}
+                >
+                  <td>
+                    <div className="imo-status imo-next-override" />
+                    <div>Pending refresh</div>
+                  </td>
+                  <td>{url}</td>
+                </tr>
+              ))}
+              {workingCurrentPageMaps.map((url) => (
+                <tr
+                  role="button"
+                  tabIndex={0}
+                  onClick={() =>
+                    this.setState({ dialogExternalMap: { isNew: false, url } })
+                  }
+                  key={url}
+                >
+                  <td>
+                    <div className="imo-status imo-current-override" />
+                    <div>Override</div>
+                  </td>
+                  <td>{url}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     );
   }
 
   cancel = () => {
-    this.setState({ dialogModule: null });
+    this.setState({ dialogModule: null, dialogExternalMap: null });
   };
 
   updateModuleUrl = (newUrl) => {
@@ -275,4 +396,30 @@ function toURL(urlStr) {
   } catch {
     return null;
   }
+}
+
+function getExternalMaps() {
+  const allExternalMaps = window.importMapOverrides.getExternalOverrides();
+  const allCurrentPageMaps = window.importMapOverrides.getCurrentPageExternalOverrides();
+  const brokenMaps = [],
+    workingCurrentPageMaps = [],
+    workingNextPageMaps = [];
+
+  for (let externalMap of allExternalMaps) {
+    if (window.importMapOverrides.invalidExternalMaps.includes(externalMap)) {
+      brokenMaps.push(externalMap);
+    } else {
+      if (allCurrentPageMaps.includes(externalMap)) {
+        workingCurrentPageMaps.push(externalMap);
+      } else {
+        workingNextPageMaps.push(externalMap);
+      }
+    }
+  }
+
+  return {
+    brokenMaps,
+    workingCurrentPageMaps,
+    workingNextPageMaps,
+  };
 }

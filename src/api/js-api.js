@@ -321,9 +321,9 @@ if (overridableImportMap) {
     });
   }
 } else {
-  if (Object.keys(overrideMap.imports).length > 0) {
+  if (Object.keys(initialOverrideMap.imports).length > 0) {
     referenceNode = insertOverrideMap(
-      overrideMap,
+      initialOverrideMap,
       `import-map-overrides`,
       referenceNode
     );

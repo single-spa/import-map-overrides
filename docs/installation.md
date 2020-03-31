@@ -16,7 +16,9 @@ AFTER all other import maps
   src="https://cdn.jsdelivr.net/npm/import-map-overrides/dist/import-map-overrides.js"
 ></script>
 <!-- optionally include the UI for import map overrides -->
-<import-map-overrides-full></import-map-overrides-full>
+<import-map-overrides-full
+  show-when-local-storage="devtools"
+></import-map-overrides-full>
 ```
 
 Alternatively, you can use it as an npm package:

@@ -117,9 +117,9 @@ Once enabled, a cookie is sent to the server for each override. The format of th
 
 In addition to the cookie, the import-map-overrides library will automatically inject an overrides import map into the DOM.
 
-## Server-side multiple maps
+## Server-side single map
 
-To enable server-side multiple maps mode, add `server-cookie` and `server-only` attributes to your `<meta name="importmap-type">` element:
+To enable server-side single map mode, add `server-cookie` and `server-only` attributes to your `<meta name="importmap-type">` element:
 
 ```html
 <!-- "server-cookie" means the import map overrides will be sent to the server in a cookie --->

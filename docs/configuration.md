@@ -9,7 +9,7 @@ import-map-overrides has two primary configuration options:
 
 By default, import map overrides will assume you are working with native import maps. However, other import map polyfills (such as SystemJS) can also be used with import map overrides.
 
-If using an import map polyfill, you must indicate what kind of import map you are setting overrides for. You do this by inserting you must add a `<meta>`
+If using an import map polyfill, you must indicate what kind of import map you are setting overrides for. You do this by inserting a `<meta>`
 element to your html file **before the import-map-overrides library is loaded**.
 
 ```html
@@ -31,10 +31,10 @@ element to your html file **before the import-map-overrides library is loaded**.
 
 To support a variety of use cases, import map overrides has four "override modes" that control how and whether import-map-overrides inserts import maps into the DOM:
 
-1. [Client-side multiple maps](client-side-multiple-maps) (default)
-1. [Client-side single map](client-side-single-map)
-1. [Server-side multiple maps](server-side-multiple-maps)
-1. [Server-side single map](server-side-single-map)
+1. [Client-side multiple maps](#client-side-multiple-maps) (default)
+1. [Client-side single map](#client-side-single-map)
+1. [Server-side multiple maps](#server-side-multiple-maps)
+1. [Server-side single map](#server-side-single-map)
 
 If you're just getting started, first try client-side multiple import maps.
 

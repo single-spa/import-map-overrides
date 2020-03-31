@@ -15,7 +15,12 @@ export const importMapType = importMapMetaElement
   ? importMapMetaElement.getAttribute("content")
   : "importmap";
 
-const serverOverrides = importMapType === "server";
+const serverOverrides = importMapMetaElement
+  ? importMapMetaElement.hasAttribute("server-cookie")
+  : false;
+const serverOnly = importMapMetaElement
+  ? importMapMetaElement.hasAttribute("server-only")
+  : false;
 
 let defaultMapPromise;
 
@@ -278,48 +283,50 @@ function fireChangedEvent() {
 const initialOverrideMap = imo.getOverrideMap();
 const initialExternalOverrideMaps = imo.getExternalOverrides();
 
-const overridableImportMap = document.querySelector(
-  'script[type="overridable-importmap"]'
-);
-
-let referenceNode = overridableImportMap;
-
-if (!referenceNode) {
-  const importMaps = document.querySelectorAll(
-    `script[type="${importMapType}"]`
+if (!serverOnly) {
+  const overridableImportMap = document.querySelector(
+    'script[type="overridable-importmap"]'
   );
-  referenceNode = importMaps ? importMaps[importMaps.length - 1] : null;
-}
 
-if (overridableImportMap) {
-  if (overridableImportMap.src) {
-    throw Error(
-      `import-map-overrides: external import maps with type="overridable-importmap" are not supported`
+  let referenceNode = overridableImportMap;
+
+  if (!referenceNode) {
+    const importMaps = document.querySelectorAll(
+      `script[type="${importMapType}"]`
     );
-  }
-  let originalMap;
-  try {
-    originalMap = JSON.parse(overridableImportMap.textContent);
-  } catch (e) {
-    throw Error(
-      `Invalid <script type="overridable-importmap"> - text content must be json`
-    );
+    referenceNode = importMaps ? importMaps[importMaps.length - 1] : null;
   }
 
-  referenceNode = insertOverrideMap(
-    imo.mergeImportMap(originalMap, initialOverrideMap),
-    `import-map-overrides`,
-    referenceNode
-  );
-  insertAllExternalOverrideMaps();
-} else {
-  insertAllExternalOverrideMaps();
-  if (Object.keys(initialOverrideMap.imports).length > 0) {
+  if (overridableImportMap) {
+    if (overridableImportMap.src) {
+      throw Error(
+        `import-map-overrides: external import maps with type="overridable-importmap" are not supported`
+      );
+    }
+    let originalMap;
+    try {
+      originalMap = JSON.parse(overridableImportMap.textContent);
+    } catch (e) {
+      throw Error(
+        `Invalid <script type="overridable-importmap"> - text content must be json`
+      );
+    }
+
     referenceNode = insertOverrideMap(
-      initialOverrideMap,
+      imo.mergeImportMap(originalMap, initialOverrideMap),
       `import-map-overrides`,
       referenceNode
     );
+    insertAllExternalOverrideMaps();
+  } else {
+    insertAllExternalOverrideMaps();
+    if (Object.keys(initialOverrideMap.imports).length > 0) {
+      referenceNode = insertOverrideMap(
+        initialOverrideMap,
+        `import-map-overrides`,
+        referenceNode
+      );
+    }
   }
 }
 

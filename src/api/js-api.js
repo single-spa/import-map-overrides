@@ -317,16 +317,9 @@ if (!serverOnly) {
       `import-map-overrides`,
       referenceNode
     );
-
-    if (initialExternalOverrideMaps.length > 0) {
-      initialExternalOverrideMaps.forEach((mapUrl, index) => {
-        referenceNode = insertOverrideMap(
-          mapUrl,
-          `import-map-overrides-external-${index}`
-        );
-      });
-    }
+    insertAllExternalOverrideMaps();
   } else {
+    insertAllExternalOverrideMaps();
     if (Object.keys(initialOverrideMap.imports).length > 0) {
       referenceNode = insertOverrideMap(
         initialOverrideMap,

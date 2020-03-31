@@ -34,3 +34,5 @@ but AFTER any other import maps that are on the page.
 */
 import "import-map-overrides"; // this only will work if you compile the `import` down to an iife via webpack, rollup, parcel, etc
 ```
+
+Once installed, you may need to [configure import-map-overrides](/docs/configuration.md).

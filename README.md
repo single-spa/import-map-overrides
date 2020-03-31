@@ -26,6 +26,6 @@ Here are some tutorial videos that explain this in more depth:
 
 - [Security](/docs/security.md)
 - [Installation](/docs/installation.md)
-- [Configuration](/docs/security.md)
+- [Configuration](/docs/configuration.md)
 - [User Interface](/docs/ui.md)
 - [Javascript API](/docs/api.md)

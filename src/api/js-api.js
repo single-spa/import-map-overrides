@@ -393,3 +393,14 @@ function fetchExternalMap(url) {
 function createEmptyImportMap() {
   return { imports: {}, scopes: {} };
 }
+
+function insertAllExternalOverrideMaps() {
+  if (initialExternalOverrideMaps.length > 0) {
+    initialExternalOverrideMaps.forEach((mapUrl, index) => {
+      referenceNode = insertOverrideMap(
+        mapUrl,
+        `import-map-overrides-external-${index}`
+      );
+    });
+  }
+}

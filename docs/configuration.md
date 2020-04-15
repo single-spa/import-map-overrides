@@ -52,7 +52,7 @@ The table below shows the pros and cons of each mode
 **Notes:**
 
 1. "Server rendering" refers to when the web server uses the same modules as the browser to dynamically generate the HTML page.
-1. An [external import map](https://github.com/WICG/import-maps#installation) is one that is one with `<script type="importmap" src="/some-url.importmap">`. Import-map-overrides executes synchronously, which eliminates the possibility of using a single client-side map to override an external map (that must first be downloaded, before it can be injected into the DOM).
+1. An [external import map](https://github.com/WICG/import-maps#installation) is one with `<script type="importmap" src="/some-url.importmap">`. Import-map-overrides executes synchronously, which eliminates the possibility of using a single client-side map to override an external map (that must first be downloaded, before it can be injected into the DOM).
 1. When in server-side multiple maps mode, import-map-overrides will inject an override map into the DOM. However, it cannot ensure that the server respected the override to generate the HTML page.
 1. When using server-side single map mode, your server can ensure that the override is applied to both the server-side code and the client-code.
 

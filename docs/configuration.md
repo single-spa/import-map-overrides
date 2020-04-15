@@ -105,7 +105,7 @@ The `overridable-importmap` will be ignored by the browser, but import-map-overr
 
 Note that `overridable-importmap` scripts must be inline import maps, not external maps (those with `src=""`). This is because import-map-overrides executes synchronously to inject the single map, but downloading an external map is inherently asynchronous.
 
-## Server-side multiple maps
+### Server-side multiple maps
 
 If your server needs to be aware of import map overrides, you may use server-side multiple maps mode. To enable this mode, add a `server` attribute to your `<meta name="importmap-type">` element:
 
@@ -117,7 +117,7 @@ Once enabled, a cookie is sent to the server for each override. The format of th
 
 In addition to the cookie, the import-map-overrides library will automatically inject an overrides import map into the DOM.
 
-## Server-side single map
+### Server-side single map
 
 To enable server-side single map mode, add `server-cookie` and `server-only` attributes to your `<meta name="importmap-type">` element:
 

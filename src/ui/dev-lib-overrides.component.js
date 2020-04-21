@@ -2,7 +2,7 @@ import { h, Component } from "preact";
 
 export default class DevLibOverrides extends Component {
   componentDidMount() {
-    window.importMapOverrides.getDefaultMap().then(addDevLibOverrides);
+    window.importMapOverrides.getCurrentPageMap().then(addDevLibOverrides);
   }
   render() {
     return null;

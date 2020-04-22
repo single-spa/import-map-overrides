@@ -126,6 +126,21 @@ imo-popup a {
 .imo-overrides-table tr td:first-child {
   display: flex;
   align-items: center;
+  padding-right: 32px;
+  position: relative;
+}
+
+.imo-needs-refresh {
+  position: absolute;
+  right: 8px;
+  font-size: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.imo-needs-refresh::before {
+  content: "\27F2";
 }
 
 .imo-status {
@@ -154,6 +169,10 @@ imo-popup a {
 
 .imo-external-override {
   background-color: orange;
+}
+
+.imo-next-default {
+  background-color: darkgoldenrod;
 }
 
 .imo-overrides-table tbody tr:hover {

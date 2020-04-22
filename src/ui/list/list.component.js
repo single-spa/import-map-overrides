@@ -7,6 +7,7 @@ export default class List extends Component {
   state = {
     notOverriddenMap: { imports: {} },
     currentPageMap: { imports: {} },
+    nextPageMap: { imports: {} },
     dialogModule: null,
     dialogExternalMap: null,
     searchVal: "",
@@ -17,6 +18,9 @@ export default class List extends Component {
     });
     window.importMapOverrides.getCurrentPageMap().then((currentPageMap) => {
       this.setState({ currentPageMap });
+    });
+    window.importMapOverrides.getNextPageMap().then((nextPageMap) => {
+      this.setState({ nextPageMap });
     });
     window.addEventListener("import-map-overrides:change", this.doUpdate);
     this.inputRef.focus();
@@ -64,7 +68,8 @@ export default class List extends Component {
       nextOverriddenModules = [],
       disabledOverrides = [],
       defaultModules = [],
-      externalOverrideModules = [];
+      externalOverrideModules = [],
+      pendingRefreshDefaultModules = [];
 
     const overrideMap = window.importMapOverrides.getOverrideMap(true).imports;
 
@@ -95,6 +100,11 @@ export default class List extends Component {
         this.state.currentPageMap.imports[moduleName]
       ) {
         defaultModules.push(mod);
+      } else if (
+        this.state.notOverriddenMap.imports[moduleName] ===
+        this.state.nextPageMap.imports[moduleName]
+      ) {
+        pendingRefreshDefaultModules.push(mod);
       } else {
         externalOverrideModules.push(mod);
       }
@@ -192,7 +202,25 @@ export default class List extends Component {
               >
                 <td>
                   <div className="imo-status imo-next-override" />
-                  <div>Pending refresh</div>
+                  <div>Inline Override</div>
+                  <div className="imo-needs-refresh" />
+                </td>
+                <td>{mod.moduleName}</td>
+                <td>{toDomain(mod)}</td>
+                <td>{toFileName(mod)}</td>
+              </tr>
+            ))}
+            {pendingRefreshDefaultModules.map((mod) => (
+              <tr
+                role="button"
+                tabIndex={0}
+                onClick={() => this.setState({ dialogModule: mod })}
+                key={mod.moduleName}
+              >
+                <td style={{ position: "relative" }}>
+                  <div className="imo-status imo-next-default" />
+                  <div>Default</div>
+                  <div className="imo-needs-refresh" />
                 </td>
                 <td>{mod.moduleName}</td>
                 <td>{toDomain(mod)}</td>
@@ -350,7 +378,12 @@ export default class List extends Component {
     this.setState({ dialogModule: null });
   };
 
-  doUpdate = () => this.forceUpdate();
+  doUpdate = () => {
+    this.forceUpdate();
+    window.importMapOverrides.getNextPageMap().then((nextPageMap) => {
+      this.setState({ nextPageMap });
+    });
+  };
 
   addNewModule = (name, url) => {
     if (name && url) {

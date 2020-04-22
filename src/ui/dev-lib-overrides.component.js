@@ -11,7 +11,7 @@ export default class DevLibOverrides extends Component {
 
 const removeMin = (url) => url.replace(".min.js", ".js");
 
-const devLibs = {
+export const devLibs = {
   react: (url) => url.replace("production.min", "development"),
   "react-dom": (url) => url.replace("production.min", "development"),
   "single-spa": (url) => url.replace("single-spa.min.js", "single-spa.dev.js"),

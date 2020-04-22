@@ -175,6 +175,10 @@ imo-popup a {
   background-color: darkgoldenrod;
 }
 
+.imo-dev-lib-override {
+  background-color: lightpink;
+}
+
 .imo-overrides-table tbody tr:hover {
   cursor: pointer;
   background-color: #404040;

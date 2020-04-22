@@ -2,6 +2,7 @@ import { h, Component, render } from "preact";
 import { importMapType } from "../../api/js-api";
 import ModuleDialog from "./module-dialog.component";
 import ExternalImportMap from "./external-importmap-dialog.component";
+import { devLibs } from "../dev-lib-overrides.component";
 
 export default class List extends Component {
   state = {
@@ -69,7 +70,8 @@ export default class List extends Component {
       disabledOverrides = [],
       defaultModules = [],
       externalOverrideModules = [],
-      pendingRefreshDefaultModules = [];
+      pendingRefreshDefaultModules = [],
+      devLibModules = [];
 
     const overrideMap = window.importMapOverrides.getOverrideMap(true).imports;
 
@@ -91,7 +93,16 @@ export default class List extends Component {
           this.state.currentPageMap.imports[moduleName] ===
           overrideMap[moduleName]
         ) {
-          overriddenModules.push(mod);
+          if (
+            devLibs[moduleName] &&
+            devLibs[moduleName](
+              this.state.currentPageMap.imports[moduleName]
+            ) === overrideMap[moduleName]
+          ) {
+            devLibModules.push(mod);
+          } else {
+            overriddenModules.push(mod);
+          }
         } else {
           nextOverriddenModules.push(mod);
         }
@@ -269,6 +280,23 @@ export default class List extends Component {
                 <td>
                   <div className="imo-status imo-external-override" />
                   <div>External Override</div>
+                </td>
+                <td>{mod.moduleName}</td>
+                <td>{toDomain(mod)}</td>
+                <td>{toFileName(mod)}</td>
+              </tr>
+            ))}
+            {devLibModules.map((mod) => (
+              <tr
+                role="button"
+                tabIndex={0}
+                onClick={() => this.setState({ dialogModule: mod })}
+                key={mod.moduleName}
+                title="Automatically use dev version of certain npm libs"
+              >
+                <td>
+                  <div className="imo-status imo-dev-lib-override" />
+                  <div>Dev Lib Override</div>
                 </td>
                 <td>{mod.moduleName}</td>
                 <td>{toDomain(mod)}</td>

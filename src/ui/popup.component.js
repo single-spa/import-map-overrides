@@ -19,7 +19,7 @@ export default class Popup extends Component {
             <h1>Import Map Overrides</h1>
             <p>
               This developer tool allows you to view and override your import
-              maps.{" "}
+              maps. Start by clicking on a module that you'd like to override.{" "}
               <a
                 target="_blank"
                 href="https://github.com/joeldenning/import-map-overrides"

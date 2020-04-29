@@ -283,12 +283,14 @@ function fireChangedEvent() {
 const initialOverrideMap = imo.getOverrideMap();
 const initialExternalOverrideMaps = imo.getExternalOverrides();
 
+let referenceNode;
+
 if (!serverOnly) {
   const overridableImportMap = document.querySelector(
     'script[type="overridable-importmap"]'
   );
 
-  let referenceNode = overridableImportMap;
+  referenceNode = overridableImportMap;
 
   if (!referenceNode) {
     const importMaps = document.querySelectorAll(

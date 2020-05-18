@@ -10,7 +10,9 @@
     "build:dev": "yarn clean && cross-env NODE_ENV=development rollup -c",
     "clean": "rimraf dist",
     "watch": "cross-env NODE_ENV=development rollup -c --watch",
-    "test": "concurrently yarn:watch 'copyfiles 'test/**/*' dist -f' 'serve .'",
+    "copy-test-files": "copyfiles test/**/* dist -f",
+    "test-serve": "serve .",
+    "test": "concurrently yarn:watch yarn:copy-test-files yarn:test-serve",
     "prepublishOnly": "yarn build"
   },
   "husky": {

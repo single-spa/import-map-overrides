@@ -42,9 +42,9 @@ window.importMapOverrides = {
     const disabledOverrides = imo.getDisabledOverrides();
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key.startsWith(localStoragePrefix)) {
+      if (key.indexOf(localStoragePrefix) === 0) {
         const moduleName = key.slice(localStoragePrefix.length);
-        if (includeDisabled || !disabledOverrides.includes(moduleName)) {
+        if (includeDisabled || !disabledOverrides.indexOf(moduleName) >= 0) {
           overrides.imports[moduleName] = localStorage.getItem(key);
         }
       }
@@ -271,10 +271,21 @@ window.importMapOverrides = {
 
 const imo = window.importMapOverrides;
 
+let canFireCustomEvents = true;
+try {
+  if (CustomEvent) {
+    new CustomEvent("a");
+  } else {
+    canFireCustomEvents = false;
+  }
+} catch (err) {
+  canFireCustomEvents = false;
+}
+
 function fireChangedEvent() {
   // Set timeout so that event fires after the change has totally finished
   setTimeout(() => {
-    if (window.CustomEvent) {
+    if (canFireCustomEvents) {
       window.dispatchEvent(new CustomEvent("import-map-overrides:change"));
     }
   });

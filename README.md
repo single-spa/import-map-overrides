@@ -24,6 +24,8 @@ Here are some tutorial videos that explain this in more depth:
 
 ## Documentation
 
+The UI for import-map-overrides works in evergreen browsers (web components support required). The javascript API works in IE11+.
+
 - [Security](/docs/security.md)
 - [Installation](/docs/installation.md)
 - [Configuration](/docs/configuration.md)

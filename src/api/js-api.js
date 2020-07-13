@@ -44,7 +44,7 @@ window.importMapOverrides = {
       const key = localStorage.key(i);
       if (key.indexOf(localStoragePrefix) === 0) {
         const moduleName = key.slice(localStoragePrefix.length);
-        if (includeDisabled || !disabledOverrides.indexOf(moduleName) >= 0) {
+        if (includeDisabled || !(disabledOverrides.indexOf(moduleName) >= 0)) {
           overrides.imports[moduleName] = localStorage.getItem(key);
         }
       }

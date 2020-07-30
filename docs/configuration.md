@@ -141,7 +141,9 @@ In this mode, import-map-overrides library will no longer dynamically inject any
 
 If you wish to reuse the same HTML file on multiple domains (usually for dev/test/stage/prod environments), you can configure which domains import-map-overrides is enabled for. This feature was built so that it is easy to turn off import-map-overrides in production environments. Turning off import-map-overrides in production does not make your web application more secure ([explanation](./security.md)), but may be desireable for other reasons such as preventing users from finding a dev-only tool by setting local storage.
 
-You can configure domains through either an allow-list or a deny-list. Allow lists are generally a bit better, as they never result in unintended domains from being able to use import-map-overrides. However, they also require you to update the allow list every time you create a non-prod environment, which can be a bit of a nuisance. If you have a single production environment with many non-prod environments, a deny-list might be easier.
+An alternative way of accomplishing this is to serve a different HTML file for your production environment than other environments. That implementation is more performant since you avoid downloading the import-map-overrides library entirely when it will not be used. If that option is possible and practical for you, it is probably better than using `import-map-overrides-domains`.
+
+To configure domains, add a `<meta name="import-map-overrides-domains">` element to your HTML page. You can specify either an an allow-list or a deny-list in the `content` attribute. Allow lists never result in unintended domains being able to use import-map-overrides, but require you to update the allow list every time you create a non-prod environment, which can be a bit of a nuisance. If you have a single production environment with many non-prod environments, a deny-list might be easier.
 
 ```html
 <!-- Disable the entirety of import-map-overrides unless you're on the dev or stage environments -->

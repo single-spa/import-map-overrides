@@ -4,7 +4,7 @@ import-map-overrides has two primary configuration options:
 
 1. [Import Map Type](#import-map-type)
 2. [Override Mode](#override-mode)
-3. [Domain List](#domain-control)
+3. [Domain List](#domain-list)
 
 ## Import Map Type
 

@@ -3,8 +3,9 @@ import { render, h } from "preact";
 import FullUI from "./full-ui.component";
 import Popup from "./popup.component";
 import List from "./list/list.component";
+import { isDisabled } from "../api/js-api";
 
-if (window.customElements) {
+if (window.customElements && !isDisabled) {
   window.customElements.define(
     "import-map-overrides-full",
     preactCustomElement(FullUI, ["show-when-local-storage"])

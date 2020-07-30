@@ -4,6 +4,7 @@ import-map-overrides has two primary configuration options:
 
 1. [Import Map Type](#import-map-type)
 2. [Override Mode](#override-mode)
+3. [Domain List](#domain-control)
 
 ## Import Map Type
 
@@ -135,3 +136,22 @@ To enable server-side single map mode, add `server-cookie` and `server-only` att
 Once enabled, a cookie is sent to the server for each override. The format of the cookies is `import-map-overrides:module-name=http://localhost:8080/module-name.js`.
 
 In this mode, import-map-overrides library will no longer dynamically inject any override maps into the DOM. Instead, your web server is expected to read the `import-map-overrides:` cookies and update the URLs in its inlined import map accordingly.
+
+## Domain List
+
+If you wish to reuse the same HTML file on multiple domains (usually for dev/test/stage/prod environments), you can configure which domains import-map-overrides is enabled for. This feature was built so that it is easy to turn off import-map-overrides in production environments. Turning off import-map-overrides in production does not make your web application more secure ([explanation](./security.md)), but may be desireable for other reasons such as preventing users from finding a dev-only tool by [setting local storage](./ui.md).
+
+An alternative way of accomplishing this is to serve a different HTML file for your production environment than other environments. That implementation is more performant since you avoid downloading the import-map-overrides library entirely when it will not be used. If that option is possible and practical for you, it is probably better than using `import-map-overrides-domains`.
+
+To configure domains, add a `<meta name="import-map-overrides-domains">` element to your HTML page. You can specify either an an allow-list or a deny-list in the `content` attribute. Allow lists never result in unintended domains being able to use import-map-overrides, but require you to update the allow list every time you create a non-prod environment, which can be a bit of a nuisance. If you have a single production environment with many non-prod environments, a deny-list might be easier.
+
+```html
+<!-- Disable the entirety of import-map-overrides unless you're on the dev or stage environments -->
+<meta
+  name="import-map-overrides-domains"
+  content="allowlist:dev.example.com,stage.example.com"
+/>
+
+<!-- Disable the entirety of import-map-overrides when you're on the production environment -->
+<meta name="import-map-overrides-domains" content="denylist:prod.example.com" />
+```

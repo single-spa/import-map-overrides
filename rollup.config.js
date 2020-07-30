@@ -27,7 +27,6 @@ export default [
           compress: {
             passes: 2,
           },
-          sourcemap: true,
           output: {
             comments: terserComments,
           },
@@ -52,7 +51,6 @@ export default [
           compress: {
             passes: 2,
           },
-          sourcemap: true,
           output: {
             comments: terserComments,
           },

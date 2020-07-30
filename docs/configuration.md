@@ -139,7 +139,7 @@ In this mode, import-map-overrides library will no longer dynamically inject any
 
 ## Domain List
 
-If you wish to reuse the same HTML file on multiple domains (usually for dev/test/stage/prod environments), you can configure which domains import-map-overrides is enabled for. This feature was built so that it is easy to turn off import-map-overrides in production environments. Turning off import-map-overrides in production does not make your web application more secure ([explanation](./security.md)), but may be desireable for other reasons such as preventing users from finding a dev-only tool by setting local storage.
+If you wish to reuse the same HTML file on multiple domains (usually for dev/test/stage/prod environments), you can configure which domains import-map-overrides is enabled for. This feature was built so that it is easy to turn off import-map-overrides in production environments. Turning off import-map-overrides in production does not make your web application more secure ([explanation](./security.md)), but may be desireable for other reasons such as preventing users from finding a dev-only tool by [setting local storage](./ui.md).
 
 An alternative way of accomplishing this is to serve a different HTML file for your production environment than other environments. That implementation is more performant since you avoid downloading the import-map-overrides library entirely when it will not be used. If that option is possible and practical for you, it is probably better than using `import-map-overrides-domains`.
 

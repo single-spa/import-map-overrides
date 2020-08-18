@@ -27,12 +27,12 @@ if (domainsElement) {
   if (!content) {
     console.warn(`Invalid ${domainsMeta} meta element - content required.`);
   }
-  if (content.startsWith(allowListPrefix)) {
+  if (content.indexOf(allowListPrefix) === 0) {
     const allowedDomains = content.slice(allowListPrefix.length).split(",");
     isDisabled = !allowedDomains.some(
       (allowedDomain) => window.location.hostname === allowedDomain
     );
-  } else if (content.startsWith(denyListPrefix)) {
+  } else if (content.indexOf(denyListPrefix) === 0) {
     const deniedDomains = content.slice(denyListPrefix.length).split(",");
     isDisabled = deniedDomains.some(
       (deniedDomain) => deniedDomain === window.location.hostname

@@ -1,3 +1,5 @@
+import { escapeStringRegexp } from "./js-api-util";
+
 const localStoragePrefix = "import-map-override:";
 const disabledOverridesLocalStorageKey = "import-map-overrides-disabled";
 const externalOverridesLocalStorageKey = "import-map-overrides-external-maps";
@@ -27,16 +29,16 @@ if (domainsElement) {
   if (!content) {
     console.warn(`Invalid ${domainsMeta} meta element - content required.`);
   }
+
+  const matchHostname = (domain) =>
+    new RegExp(escapeStringRegexp(domain).replace("*", ".+")).test(domain);
+
   if (content.indexOf(allowListPrefix) === 0) {
     const allowedDomains = content.slice(allowListPrefix.length).split(",");
-    isDisabled = !allowedDomains.some(
-      (allowedDomain) => window.location.hostname === allowedDomain
-    );
+    isDisabled = !allowedDomains.some(matchHostname);
   } else if (content.indexOf(denyListPrefix) === 0) {
     const deniedDomains = content.slice(denyListPrefix.length).split(",");
-    isDisabled = deniedDomains.some(
-      (deniedDomain) => deniedDomain === window.location.hostname
-    );
+    isDisabled = deniedDomains.some(matchHostname);
   } else {
     console.log(
       `Invalid ${domainsMeta} meta content attribute - must start with ${allowListPrefix} or ${denyListPrefix}`

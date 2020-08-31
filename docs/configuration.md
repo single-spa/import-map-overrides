@@ -154,4 +154,10 @@ To configure domains, add a `<meta name="import-map-overrides-domains">` element
 
 <!-- Disable the entirety of import-map-overrides when you're on the production environment -->
 <meta name="import-map-overrides-domains" content="denylist:prod.example.com" />
+
+<!-- You can also use wildcards url -->
+<meta
+  name="import-map-overrides-domains"
+  content="allowlist:*.example.com,example-*.com"
+/>
 ```

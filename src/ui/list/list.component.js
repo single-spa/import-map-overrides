@@ -1,5 +1,5 @@
 import { h, Component, render } from "preact";
-import { importMapType } from "../../api/js-api";
+import { includes } from "../../util/includes.js";
 import ModuleDialog from "./module-dialog.component";
 import ExternalImportMap from "./external-importmap-dialog.component";
 import { devLibs } from "../dev-lib-overrides.component";
@@ -84,7 +84,7 @@ export default class List extends Component {
         moduleName,
         defaultUrl: this.state.notOverriddenMap.imports[moduleName],
         overrideUrl: overrideMap[moduleName],
-        disabled: disabledModules.includes(moduleName),
+        disabled: includes(disabledModules, moduleName),
       };
       if (mod.disabled) {
         disabledOverrides.push(mod);
@@ -124,12 +124,12 @@ export default class List extends Component {
     Object.keys(overrideMap)
       .filter(this.filterModuleNames)
       .forEach((moduleName) => {
-        if (!notOverriddenKeys.includes(moduleName)) {
+        if (!includes(notOverriddenKeys, moduleName)) {
           const mod = {
             moduleName,
             defaultUrl: null,
             overrideUrl: overrideMap[moduleName],
-            disabled: disabledModules.includes(moduleName),
+            disabled: includes(disabledModules, moduleName),
           };
 
           if (mod.disabled) {
@@ -422,7 +422,7 @@ export default class List extends Component {
 
   filterModuleNames = (moduleName) => {
     return this.state.searchVal.trim().length > 0
-      ? moduleName.includes(this.state.searchVal)
+      ? includes(moduleName, this.state.searchVal)
       : true;
   };
 }
@@ -467,10 +467,10 @@ function getExternalMaps() {
     workingNextPageMaps = [];
 
   for (let externalMap of allExternalMaps) {
-    if (window.importMapOverrides.invalidExternalMaps.includes(externalMap)) {
+    if (includes(window.importMapOverrides.invalidExternalMaps, externalMap)) {
       brokenMaps.push(externalMap);
     } else {
-      if (allCurrentPageMaps.includes(externalMap)) {
+      if (includes(allCurrentPageMaps, externalMap)) {
         workingCurrentPageMaps.push(externalMap);
       } else {
         workingNextPageMaps.push(externalMap);

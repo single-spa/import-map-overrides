@@ -1,4 +1,5 @@
 import { escapeStringRegexp } from "./js-api-util";
+import { includes } from "../util/includes.js";
 
 const localStoragePrefix = "import-map-override:";
 const disabledOverridesLocalStorageKey = "import-map-overrides-disabled";
@@ -40,6 +41,7 @@ if (domainsElement) {
     const deniedDomains = content.slice(denyListPrefix.length).split(",");
     isDisabled = deniedDomains.some(matchHostname);
   } else {
+    // eslint-disable-next-line no-console
     console.log(
       `Invalid ${domainsMeta} meta content attribute - must start with ${allowListPrefix} or ${denyListPrefix}`
     );
@@ -217,7 +219,7 @@ function init() {
     },
     disableOverride(moduleName) {
       const disabledOverrides = imo.getDisabledOverrides();
-      if (!disabledOverrides.includes(moduleName)) {
+      if (!includes(disabledOverrides, moduleName)) {
         localStorage.setItem(
           disabledOverridesLocalStorageKey,
           JSON.stringify(disabledOverrides.concat(moduleName))
@@ -250,7 +252,7 @@ function init() {
       return disabledOverrides ? JSON.parse(disabledOverrides) : [];
     },
     isDisabled(moduleName) {
-      return imo.getDisabledOverrides().includes(moduleName);
+      return includes(imo.getDisabledOverrides(), moduleName);
     },
     getExternalOverrides() {
       let localStorageValue = localStorage.getItem(
@@ -261,7 +263,7 @@ function init() {
     addExternalOverride(url) {
       url = new URL(url, document.baseURI).href;
       const overrides = imo.getExternalOverrides();
-      if (overrides.includes(url)) {
+      if (includes(overrides, url)) {
         return false;
       } else {
         localStorage.setItem(
@@ -274,7 +276,7 @@ function init() {
     },
     removeExternalOverride(url) {
       const overrides = imo.getExternalOverrides();
-      if (overrides.includes(url)) {
+      if (includes(overrides, url)) {
         localStorage.setItem(
           externalOverridesLocalStorageKey,
           JSON.stringify(overrides.filter((override) => override !== url))
@@ -305,7 +307,9 @@ function init() {
         (externalOverrideMapPromises[importMapUrl] = fetchExternalMap(
           importMapUrl
         ));
-      return promise.then(() => invalidExternalMaps.includes(importMapUrl));
+      return promise.then(() =>
+        includes(imo.invalidExternalMaps, importMapUrl)
+      );
     },
     invalidExternalMaps: [],
   };

@@ -13,11 +13,12 @@
     "copy-test-files": "copyfiles test/**/* dist -f",
     "test-serve": "serve .",
     "test": "concurrently yarn:watch yarn:copy-test-files yarn:test-serve",
+    "lint": "eslint src",
     "prepublishOnly": "yarn build"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "concurrently \"yarn lint\" \"pretty-quick --staged\""
     }
   },
   "browserslist": [
@@ -27,13 +28,17 @@
     "dist"
   ],
   "devDependencies": {
-    "@babel/core": "^7.11.0",
+    "@babel/core": "^7.11.4",
+    "@babel/eslint-parser": "^7.11.4",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-transform-react-jsx": "^7.10.4",
     "@babel/preset-env": "^7.11.0",
     "concurrently": "^5.2.0",
     "copyfiles": "^2.3.0",
     "cross-env": "^7.0.2",
+    "eslint": "^7.7.0",
+    "eslint-config-important-stuff": "^1.1.0",
+    "eslint-plugin-es5": "^1.5.0",
     "husky": "^4.2.5",
     "preact": "^10.4.6",
     "prettier": "^2.0.5",

@@ -1,4 +1,4 @@
-import { escapeStringRegexp } from "./js-api-util";
+import { escapeStringRegexp } from "../util/string-regex";
 import { includes } from "../util/includes.js";
 
 const localStoragePrefix = "import-map-override:";

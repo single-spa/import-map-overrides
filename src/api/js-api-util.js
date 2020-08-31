@@ -1,3 +1,4 @@
+// from https://github.com/sindresorhus/escape-string-regexp
 export const escapeStringRegexp = (string) => {
   if (typeof string !== "string") {
     throw new TypeError("Expected a string");

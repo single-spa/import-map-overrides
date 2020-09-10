@@ -50,6 +50,13 @@ if (domainsElement) {
   isDisabled = false;
 }
 
+if (!canAccessLocalStorage()) {
+  console.warn(
+    "Disabling import-map-overrides, since local storage is not readable"
+  );
+  isDisabled = true;
+}
+
 if (!isDisabled) {
   init();
 }
@@ -454,5 +461,14 @@ function init() {
         );
       });
     }
+  }
+}
+
+function canAccessLocalStorage() {
+  try {
+    localStorage.getItem("test");
+    return true;
+  } catch {
+    return false;
   }
 }

@@ -1,5 +1,7 @@
 # Installation
 
+## Browser
+
 The import-map-overrides library is used via a global variable `window.importMapOverrides`. The global variable exists because import-map-overrides needs
 to be usable regardless of build config and without dependence on ESM modules, since
 [once you use ESM modules you can no longer modify the import map](https://github.com/WICG/import-maps/blob/master/spec.md#acquiring-import-maps).
@@ -38,3 +40,29 @@ import "import-map-overrides"; // this only will work if you compile the `import
 ```
 
 Once installed, you may need to [configure import-map-overrides](/docs/configuration.md).
+
+## Node
+
+```sh
+npm install --save import-map-overrides
+
+# alternatively
+yarn add import-map-overrides
+```
+
+The import-map-overrides library is published as an ES module, not CommonJS. This means that for older versions of NodeJS, you'll need to add the `--experimental-modules` flag [Details](https://medium.com/@nodejs/announcing-a-new-experimental-modules-1be8d2d6c2ff).
+
+If your NodeJS project is CommonJS, you should load import-map-overrides via `import()`, not `require()`. [Explanation](https://nodejs.org/api/esm.html#esm_import_expressions)
+
+import-map-overrides also relies on the package.json [`type`](https://nodejs.org/api/esm.html#esm_package_json_type_field) and [`exports`](https://nodejs.org/api/esm.html#esm_package_entry_points) fields being interpreted correctly, which older versions of NodeJS do not do.
+
+```js
+// If your project is ESM
+import { applyOverrides, getOverridesFromCookies } from 'import-map-overrides';
+
+// If your project is CommonJS
+import('import-map-overrides').then(ns => {
+  ns.applyOverrides(...)
+  ns.getOverridesFromCookies(...)
+})
+```

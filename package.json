@@ -2,6 +2,7 @@
   "name": "import-map-overrides",
   "version": "1.17.1",
   "main": "dist/import-map-overrides.js",
+  "type": "module",
   "repository": "https://github.com/joeldenning/import-map-overrides.git",
   "author": "Joel Denning <joeldenning@gmail.com>",
   "license": "MIT",
@@ -16,14 +17,23 @@
     "lint": "eslint src",
     "prepublishOnly": "yarn build"
   },
+  "exports": {
+    "node": "./dist/import-map-overrides-server.js",
+    "default": "./dist/import-map-overrides.js"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "concurrently \"yarn lint\" \"pretty-quick --staged\""
     }
   },
-  "browserslist": [
-    "IE >= 11"
-  ],
+  "browserslist": {
+    "production": [
+      "IE >= 11"
+    ],
+    "server": [
+      "Node 10"
+    ]
+  },
   "files": [
     "dist"
   ],
@@ -51,5 +61,7 @@
     "rollup-plugin-terser": "^6.1.0",
     "serve": "^11.3.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "cookie": "^0.4.1"
+  }
 }

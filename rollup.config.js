@@ -57,6 +57,38 @@ export default [
         }),
     ],
   },
+  // Server ESM
+  {
+    input: "src/import-map-overrides-server.js",
+    output: {
+      banner: `/* import-map-overrides@${packageJson} (server) */`,
+      file: "dist/import-map-overrides-server.js",
+      format: "es",
+      sourcemap: true,
+    },
+    plugins: [
+      babel({
+        exclude: "node_modules/**",
+        presets: [
+          [
+            "@babel/preset-env",
+            {
+              browserslistEnv: "server",
+            },
+          ],
+        ],
+      }),
+      isProduction &&
+        terser({
+          compress: {
+            passes: 2,
+          },
+          output: {
+            comments: terserComments,
+          },
+        }),
+    ],
+  },
 ];
 
 function terserComments(node, comment) {

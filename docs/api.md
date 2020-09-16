@@ -321,7 +321,7 @@ const overriddenMap = applyOverrides(importMap, overrides);
 
 ### getOverridesFromCookies
 
-A function that accepts an [HTTP Incoming Message](https://nodejs.org/api/http.html#http_class_http_incomingmessage) (commonly referred to as `req`) and returns an object of import map overrides.
+A function that accepts an [HTTP Incoming Message](https://nodejs.org/api/http.html#http_class_http_incomingmessage) (commonly referred to as `req`) and returns an object of import map overrides. The cookies are generally set by the import-map-overrides browser library, and are of the format `import-map-override:module-name=https://localhost:8080/module-name.js`.
 
 **Arguments:**
 

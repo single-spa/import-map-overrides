@@ -24,5 +24,22 @@
     "es5/no-shorthand-properties": "off",
     "es5/no-rest-parameters": "off",
     "es5/no-template-literals": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/server/**/*"],
+      "rules": {
+        "es5/no-es6-methods": "off",
+        "es5/no-es6-static-methods": "off",
+        "es5/no-binary-and-octal-literals": "off",
+        "es5/no-classes": "off",
+        "es5/no-for-of": "off",
+        "es5/no-generators": "off",
+        "es5/no-object-super": "off",
+        "es5/no-typeof-symbol": "off",
+        "es5/no-unicode-code-point-escape": "off",
+        "es5/no-unicode-regex": "off"
+      }
+    }
+  ]
 }

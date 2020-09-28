@@ -322,10 +322,29 @@ function init() {
   };
 
   const imo = window.importMapOverrides;
+  const highPriorityMaps = [];
+
+  // https://github.com/joeldenning/import-map-overrides/issues/42
+  if (importMapType === "systemjs-importmap" && typeof System !== "undefined") {
+    const existingPrepareImport = System.constructor.prototype.prepareImport;
+    System.constructor.prototype.prepareImport = function () {
+      const maps = document.querySelectorAll(`script[type="${importMapType}"]`);
+      let referenceNode = maps.length > 0 ? maps[maps.length - 1] : null;
+      for (let i = 0; i < highPriorityMaps.length; i++) {
+        if (referenceNode) {
+          referenceNode.insertAdjacentElement("afterend", highPriorityMaps[i]);
+          referenceNode = highPriorityMaps[i];
+        } else {
+          document.head.appendChild(highPriorityMaps[i]);
+        }
+      }
+      return existingPrepareImport.apply(this, arguments);
+    };
+  }
 
   let canFireCustomEvents = true;
   try {
-    if (CustomEvent) {
+    if (typeof CustomEvent !== "undefined") {
       new CustomEvent("a");
     } else {
       canFireCustomEvents = false;
@@ -409,6 +428,7 @@ function init() {
     if (referenceNode) {
       referenceNode.insertAdjacentElement("afterend", overrideMapElement);
     } else {
+      highPriorityMaps.push(overrideMapElement);
       document.head.appendChild(overrideMapElement);
     }
 

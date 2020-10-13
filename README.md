@@ -2,7 +2,7 @@
 
 [![](https://data.jsdelivr.com/v1/package/npm/import-map-overrides/badge)](https://www.jsdelivr.com/package/npm/import-map-overrides)
 
-A browser javascript library for being able to override [import maps](https://github.com/WICG/import-maps). This works
+A browser and nodejs javascript library for being able to override [import maps](https://github.com/WICG/import-maps). This works
 with native browser import maps, [SystemJS](https://github.com/systemjs/systemjs) import maps, [es-module-shims](https://github.com/guybedford/es-module-shims) import maps, and more.
 
 ## Motivation

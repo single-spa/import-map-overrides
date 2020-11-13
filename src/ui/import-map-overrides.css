@@ -83,9 +83,13 @@ imo-popup a {
   position: fixed;
   z-index: 30000000;
   top: 30%;
-  max-width: 600px;
+  max-width: 370px;
   margin: 0 auto;
   border: 4px solid navajowhite;
+  background-color: white;
+  padding: 1em;
+  left: 0;
+  right: 0;
 }
 
 .imo-module-dialog input {

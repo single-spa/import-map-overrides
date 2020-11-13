@@ -83,7 +83,7 @@ imo-popup a {
   position: fixed;
   z-index: 30000000;
   top: 30%;
-  max-width: 370px;
+  max-width: 600px;
   margin: 0 auto;
   border: 4px solid navajowhite;
   background-color: white;

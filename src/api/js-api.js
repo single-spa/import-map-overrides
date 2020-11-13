@@ -32,7 +32,9 @@ if (domainsElement) {
   }
 
   const matchHostname = (domain) =>
-    new RegExp(escapeStringRegexp(domain).replace("*", ".+")).test(domain);
+    new RegExp(escapeStringRegexp(domain).replace("\\*", ".+")).test(
+      window.location.hostname
+    );
 
   if (content.indexOf(allowListPrefix) === 0) {
     const allowedDomains = content.slice(allowListPrefix.length).split(",");

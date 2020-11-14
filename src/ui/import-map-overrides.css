@@ -88,8 +88,9 @@ imo-popup a {
   border: 4px solid navajowhite;
   background-color: white;
   padding: 1em;
-  left: 0;
-  right: 0;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
 }
 
 .imo-module-dialog input {

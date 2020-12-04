@@ -1,22 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Import Map Overrides test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <meta name="importmap-type" content="systemjs-importmap" />
     <meta name="import-map-overrides-domains" content="denylist:localhost" />
+
     <script src="/import-map-overrides.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/systemjs/dist/system.js"></script>
   </head>
   <body>
     <import-map-overrides-full dev-libs></import-map-overrides-full>
-    <ul>
-      <li><a href="index.html">With embedded map</a></li>
-      <li><a href="no-map.html">Without embedded map</a></li>
-      <li><a href="server-map.html">Server map</a></li>
-      <li>With deny list (current)</li>
-    </ul>
   </body>
 </html>

@@ -1,5 +1,6 @@
 import { escapeStringRegexp } from "../util/string-regex";
 import { includes } from "../util/includes.js";
+import { getParameterByName } from "../util/url-parameter";
 
 const localStoragePrefix = "import-map-override:";
 const disabledOverridesLocalStorageKey = "import-map-overrides-disabled";
@@ -8,6 +9,7 @@ const overrideAttribute = "data-is-importmap-override";
 const domainsMeta = "import-map-overrides-domains";
 const allowListPrefix = "allowlist:";
 const denyListPrefix = "denylist:";
+export const queryParamOverridesName = "imo";
 
 const portRegex = /^\d+$/g;
 
@@ -89,18 +91,44 @@ function init() {
     getOverrideMap(includeDisabled = false) {
       const overrides = createEmptyImportMap();
       const disabledOverrides = imo.getDisabledOverrides();
+
+      const setOverride = (moduleName, path) => {
+        if (includeDisabled || !(disabledOverrides.indexOf(moduleName) >= 0)) {
+          overrides.imports[moduleName] = path;
+        }
+      };
+
+      // get from localstorage
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key.indexOf(localStoragePrefix) === 0) {
-          const moduleName = key.slice(localStoragePrefix.length);
-          if (
-            includeDisabled ||
-            !(disabledOverrides.indexOf(moduleName) >= 0)
-          ) {
-            overrides.imports[moduleName] = localStorage.getItem(key);
-          }
+          setOverride(
+            key.slice(localStoragePrefix.length),
+            localStorage.getItem(key)
+          );
         }
       }
+
+      // get from url if query param exist
+      const queryParam = getParameterByName(
+        queryParamOverridesName,
+        window.parent ? window.parent.location.href : window.location.href
+      );
+
+      if (queryParam) {
+        let queryParamImportMap;
+        try {
+          queryParamImportMap = JSON.parse(queryParam);
+        } catch (e) {
+          throw Error(
+            `Invalid importMap query param - text content must be json`
+          );
+        }
+        Object.keys(queryParamImportMap.imports).forEach((moduleName) => {
+          setOverride(moduleName, queryParamImportMap.imports[moduleName]);
+        });
+      }
+
       return overrides;
     },
     removeOverride(moduleName) {

@@ -260,6 +260,18 @@ window.importMapOverrides.isExternalMapValid(
 
 ### Events
 
+#### Init
+
+The import-map-overrides library fires an event called `import-map-overrides:init` on the window when the library has successfully initialized. Note that this event will not fire if import-map-overrides is disabled.
+
+```sh
+window.addEventListener("import-map-overrides:init", () => {
+  console.log('init');
+})
+```
+
+#### Change
+
 The import-map-overrides library fires an event called `import-map-overrides:change` on the window whenever the
 override import map changes. The event is a [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent)
 that has no [detail property](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail).

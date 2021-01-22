@@ -365,11 +365,17 @@ function init() {
   }
 
   function fireChangedEvent() {
+    fireEvent("change");
+  }
+
+  function fireEvent(type) {
     // Set timeout so that event fires after the change has totally finished
     setTimeout(() => {
-      if (canFireCustomEvents) {
-        window.dispatchEvent(new CustomEvent("import-map-overrides:change"));
-      }
+      const eventType = `import-map-overrides:${type}`;
+      const event = canFireCustomEvents
+        ? new CustomEvent(eventType)
+        : document.createEvent(eventType);
+      window.dispatchEvent(event);
     });
   }
 
@@ -424,6 +430,8 @@ function init() {
       }
     }
   }
+
+  fireEvent("init");
 
   function insertOverrideMap(map, id, referenceNode) {
     const overrideMapElement = document.createElement("script");

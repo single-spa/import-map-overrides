@@ -16,6 +16,11 @@
         }
       }
     </script>
+    <script>
+      window.addEventListener("import-map-overrides:init", () => {
+        console.log("IMO init fired");
+      });
+    </script>
     <script src="/import-map-overrides.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/systemjs/dist/system.js"></script>
   </head>

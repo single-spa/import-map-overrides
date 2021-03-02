@@ -38,4 +38,5 @@ The UI for import-map-overrides works in evergreen browsers (web components supp
 ### NodeJS
 
 - [Installation](/docs/installation.md#node)
-- [API](/docs/node.md#node)
+- [API](/docs/api.md#node)
+

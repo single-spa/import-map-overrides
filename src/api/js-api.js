@@ -11,8 +11,6 @@ const allowListPrefix = "allowlist:";
 const denyListPrefix = "denylist:";
 export const queryParamOverridesName = "imo";
 
-const portRegex = /^\d+$/g;
-
 const importMapMetaElement = document.querySelector(
   'meta[name="importmap-type"]'
 );
@@ -77,6 +75,7 @@ function init() {
 
   window.importMapOverrides = {
     addOverride(moduleName, url) {
+      const portRegex = /^\d+$/g;
       if (portRegex.test(url)) {
         url = imo.getUrlFromPort(moduleName, url);
       }

@@ -211,7 +211,7 @@ export default class List extends Component {
                 onClick={() => this.setState({ dialogModule: mod })}
                 key={mod.moduleName}
               >
-                <td>
+                <td onClick={this.reload} role="button" tabIndex={0}>
                   <div className="imo-status imo-next-override" />
                   <div>Inline Override</div>
                   <div className="imo-needs-refresh" />
@@ -384,6 +384,11 @@ export default class List extends Component {
       </div>
     );
   }
+
+  reload = (evt) => {
+    evt.stopPropagation();
+    window.location.reload();
+  };
 
   cancel = () => {
     this.setState({ dialogModule: null, dialogExternalMap: null });

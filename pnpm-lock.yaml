@@ -15,7 +15,7 @@ specifiers:
   eslint: ^7.31.0
   eslint-config-important-stuff: ^1.1.0
   eslint-plugin-es5: ^1.5.0
-  husky: "7"
+  husky: ^7.0.0
   postcss: ^8.3.5
   preact: ^10.5.14
   prettier: ^2.3.2

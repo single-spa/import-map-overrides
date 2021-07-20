@@ -15,16 +15,12 @@
     "test-serve": "serve .",
     "test": "concurrently pnpm:watch pnpm:copy-test-files pnpm:test-serve",
     "lint": "eslint src",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "prepare": "husky install"
   },
   "exports": {
     "node": "./dist/import-map-overrides-server.js",
     "default": "./dist/import-map-overrides.js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "concurrently pnpm:lint \"pretty-quick --staged\""
-    }
   },
   "browserslist": {
     "production": [
@@ -38,28 +34,29 @@
     "dist"
   ],
   "devDependencies": {
-    "@babel/core": "^7.11.4",
-    "@babel/eslint-parser": "^7.11.4",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/plugin-transform-react-jsx": "^7.10.4",
-    "@babel/preset-env": "^7.11.0",
-    "concurrently": "^5.2.0",
+    "@babel/core": "^7.14.8",
+    "@babel/eslint-parser": "^7.14.7",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-transform-react-jsx": "^7.14.5",
+    "@babel/preset-env": "^7.14.8",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-node-resolve": "^13.0.2",
+    "concurrently": "^6.2.0",
     "copyfiles": "^2.3.0",
     "cross-env": "^7.0.2",
-    "eslint": "^7.7.0",
+    "eslint": "^7.31.0",
     "eslint-config-important-stuff": "^1.1.0",
     "eslint-plugin-es5": "^1.5.0",
-    "husky": "^4.2.5",
-    "preact": "^10.4.6",
-    "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1",
+    "husky": "^7.0.0",
+    "postcss": "^8.3.5",
+    "preact": "^10.5.14",
+    "prettier": "^2.3.2",
+    "pretty-quick": "^3.1.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.23.0",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-postcss": "^3.1.3",
-    "rollup-plugin-terser": "^6.1.0",
-    "serve": "^11.3.2"
+    "rollup": "^2.53.2",
+    "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "serve": "^12.0.0"
   },
   "dependencies": {
     "cookie": "^0.4.1"

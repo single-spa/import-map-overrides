@@ -1,6 +1,6 @@
 {
   "name": "import-map-overrides",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "main": "dist/import-map-overrides-server.js",
   "type": "module",
   "repository": "https://github.com/joeldenning/import-map-overrides.git",

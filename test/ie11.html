@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Import Map Overrides test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta name="importmap-type" content="systemjs-importmap" />
+
+    <script>
+      window.addEventListener("import-map-overrides:init", function (evt) {
+        console.log("Init event fired", evt);
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bluebird@3.7.2/js/browser/bluebird.min.js"></script>
+    <script src="/import-map-overrides.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs/dist/system.js"></script>
+  </head>
+  <body>
+    <import-map-overrides-full dev-libs></import-map-overrides-full>
+  </body>
+</html>

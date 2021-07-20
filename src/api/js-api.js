@@ -373,7 +373,10 @@ function init() {
       const eventType = `import-map-overrides:${type}`;
       const event = canFireCustomEvents
         ? new CustomEvent(eventType)
-        : document.createEvent(eventType);
+        : document.createEvent("CustomEvent");
+      if (!canFireCustomEvents) {
+        event.initCustomEvent(eventType, true, true, null);
+      }
       window.dispatchEvent(event);
     });
   }

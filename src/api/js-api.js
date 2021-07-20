@@ -374,6 +374,9 @@ function init() {
       const event = canFireCustomEvents
         ? new CustomEvent(eventType)
         : document.createEvent(eventType);
+      if (!canFireCustomEvents) {
+        event.initCustomEvent(eventType, true, true);
+      }
       window.dispatchEvent(event);
     });
   }

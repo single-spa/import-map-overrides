@@ -111,7 +111,9 @@ function init() {
       // get from url if query param exist
       const queryParam = getParameterByName(
         queryParamOverridesName,
-        window.parent ? window.parent.location.href : window.location.href
+        window.location != window.parent.location
+          ? document.referrer
+          : window.location.href
       );
 
       if (queryParam) {

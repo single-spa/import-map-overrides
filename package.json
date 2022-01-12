@@ -13,7 +13,8 @@
     "watch": "cross-env NODE_ENV=development rollup -c --watch",
     "copy-test-files": "copyfiles test/**/* dist -f",
     "test-serve": "serve .",
-    "test": "concurrently pnpm:watch pnpm:copy-test-files pnpm:test-serve",
+    "test-embed-serve": "serve . -l 3333",
+    "test": "concurrently pnpm:watch pnpm:copy-test-files pnpm:test-serve pnpm:test-embed-serve",
     "lint": "eslint src",
     "prepublishOnly": "pnpm run build",
     "prepare": "husky install"

@@ -199,6 +199,10 @@
   margin-left: 16px;
 }
 
+.imo-add-new button {
+  color: black;
+}
+
 .imo-clear-input {
   position: absolute;
   top: 0;
@@ -235,4 +239,5 @@
   line-height: 22px;
   border: none;
   padding: 5px;
+  color: black;
 }

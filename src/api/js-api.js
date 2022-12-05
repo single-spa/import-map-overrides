@@ -19,6 +19,14 @@ const domainsElement = document.querySelector(`meta[name="${domainsMeta}"]`);
 
 const externalOverrideMapPromises = {};
 
+const setCookieForImport = (key, url) => {
+  document.cookie = `${key}=${url}; path=/`;
+};
+
+const removeCookieForImport = (key) => {
+  document.cookie = `${key}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+};
+
 export const importMapType = importMapMetaElement
   ? importMapMetaElement.getAttribute("content")
   : "importmap";
@@ -82,7 +90,7 @@ function init() {
       const key = localStoragePrefix + moduleName;
       localStorage.setItem(key, url);
       if (serverOverrides) {
-        document.cookie = `${key}=${url}`;
+        setCookieForImport(key, url);
       }
       fireChangedEvent();
       return imo.getOverrideMap();
@@ -137,7 +145,7 @@ function init() {
       const hasItem = localStorage.getItem(key) !== null;
       localStorage.removeItem(key);
       if (serverOverrides) {
-        document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+        removeCookieForImport(key);
       }
       imo.enableOverride(moduleName);
       fireChangedEvent();
@@ -210,11 +218,9 @@ function init() {
                 nextPromise = Promise.resolve(JSON.parse(scriptEl.textContent));
               }
 
-              return Promise.all([
-                promise,
-                nextPromise,
-              ]).then(([originalMap, newMap]) =>
-                imo.mergeImportMap(originalMap, newMap)
+              return Promise.all([promise, nextPromise]).then(
+                ([originalMap, newMap]) =>
+                  imo.mergeImportMap(originalMap, newMap)
               );
             }
           },
@@ -262,6 +268,9 @@ function init() {
           disabledOverridesLocalStorageKey,
           JSON.stringify(disabledOverrides.concat(moduleName))
         );
+        if (serverOverrides) {
+          removeCookieForImport(localStoragePrefix + moduleName);
+        }
         fireChangedEvent();
         return true;
       } else {
@@ -329,9 +338,8 @@ function init() {
       return externalOverrides.reduce((result, externalOverride) => {
         const fetchPromise =
           externalOverrideMapPromises[externalOverride] ||
-          (externalOverrideMapPromises[externalOverride] = fetchExternalMap(
-            externalOverride
-          ));
+          (externalOverrideMapPromises[externalOverride] =
+            fetchExternalMap(externalOverride));
         return Promise.all([result, fetchPromise]).then(
           ([firstMap, secondMap]) => {
             return imo.mergeImportMap(firstMap, secondMap);
@@ -342,9 +350,8 @@ function init() {
     isExternalMapValid(importMapUrl) {
       const promise =
         externalOverrideMapPromises[importMapUrl] ||
-        (externalOverrideMapPromises[importMapUrl] = fetchExternalMap(
-          importMapUrl
-        ));
+        (externalOverrideMapPromises[importMapUrl] =
+          fetchExternalMap(importMapUrl));
       return promise.then(() =>
         includes(imo.invalidExternalMaps, importMapUrl)
       );

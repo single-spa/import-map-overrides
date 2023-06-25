@@ -210,11 +210,9 @@ function init() {
                 nextPromise = Promise.resolve(JSON.parse(scriptEl.textContent));
               }
 
-              return Promise.all([
-                promise,
-                nextPromise,
-              ]).then(([originalMap, newMap]) =>
-                imo.mergeImportMap(originalMap, newMap)
+              return Promise.all([promise, nextPromise]).then(
+                ([originalMap, newMap]) =>
+                  imo.mergeImportMap(originalMap, newMap)
               );
             }
           },
@@ -329,9 +327,8 @@ function init() {
       return externalOverrides.reduce((result, externalOverride) => {
         const fetchPromise =
           externalOverrideMapPromises[externalOverride] ||
-          (externalOverrideMapPromises[externalOverride] = fetchExternalMap(
-            externalOverride
-          ));
+          (externalOverrideMapPromises[externalOverride] =
+            fetchExternalMap(externalOverride));
         return Promise.all([result, fetchPromise]).then(
           ([firstMap, secondMap]) => {
             return imo.mergeImportMap(firstMap, secondMap);
@@ -342,9 +339,8 @@ function init() {
     isExternalMapValid(importMapUrl) {
       const promise =
         externalOverrideMapPromises[importMapUrl] ||
-        (externalOverrideMapPromises[importMapUrl] = fetchExternalMap(
-          importMapUrl
-        ));
+        (externalOverrideMapPromises[importMapUrl] =
+          fetchExternalMap(importMapUrl));
       return promise.then(() =>
         includes(imo.invalidExternalMaps, importMapUrl)
       );

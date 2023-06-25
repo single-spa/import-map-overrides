@@ -8,7 +8,7 @@ import { isDisabled } from "../api/js-api";
 if (window.customElements && !isDisabled) {
   window.customElements.define(
     "import-map-overrides-full",
-    preactCustomElement(FullUI, ["show-when-local-storage"])
+    preactCustomElement(FullUI, ["show-when-local-storage", "trigger-position"])
   );
   window.customElements.define(
     "import-map-overrides-popup",

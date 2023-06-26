@@ -1,14 +1,14 @@
-import styles from "./import-map-overrides.css";
 import { render, h } from "preact";
-import FullUI from "./full-ui.component";
-import Popup from "./popup.component";
-import List from "./list/list.component";
 import { isDisabled } from "../api/js-api";
+import Root from "./root.component";
+import Popup from "./components/popup.component";
+import List from "./components/list.component";
+import styles from "./import-map-overrides.css";
 
 if (window.customElements && !isDisabled) {
   window.customElements.define(
     "import-map-overrides-full",
-    preactCustomElement(FullUI, ["show-when-local-storage", "trigger-position"])
+    preactCustomElement(Root, ["show-when-local-storage", "trigger-position"])
   );
   window.customElements.define(
     "import-map-overrides-popup",
@@ -25,16 +25,20 @@ function preactCustomElement(Comp, observedAttributes = []) {
     connectedCallback() {
       this.renderWithPreact();
     }
+
     disconnectedCallback() {
       render(null, this);
       this.renderedEl = null;
     }
+
     static get observedAttributes() {
       return observedAttributes;
     }
+
     attributeChangedCallback() {
       this.renderWithPreact();
     }
+
     renderWithPreact() {
       if (!this.shadowRoot) {
         this.shadow = this.attachShadow({ mode: "open" });

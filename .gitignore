@@ -63,3 +63,6 @@ dist
 
 # jetbrain IDE files
 /.idea
+
+# VSCode IDE files
+/.vscode

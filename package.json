@@ -1,6 +1,6 @@
 {
   "name": "@travelperksl/import-map-overrides",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "main": "dist/import-map-overrides-server.js",
   "type": "module",
   "repository": "https://github.com/joeldenning/import-map-overrides.git",

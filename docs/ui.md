@@ -31,6 +31,18 @@ You have three options for the UI, depending on how much you want to customize t
   dev-libs
 ></import-map-overrides-full>
 
+<!--
+  Optionally, you can control the position of the button opening the popup, by
+  setting the trigger-position attribute.
+  You can set it to one of the following values: "bottom-right", "bottom-left",
+  "top-right" or "top-left". 
+  If you omit the trigger-position attribute, the button will be positioned, by
+  default, at the bottom right of the window. 
+-->
+<import-map-overrides-full
+  trigger-position="bottom-left"
+></import-map-overrides-full>
+
 <!-- Alternatively, just the black popup itself -->
 <import-map-overrides-popup></import-map-overrides-popup>
 

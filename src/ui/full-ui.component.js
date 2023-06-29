@@ -4,6 +4,18 @@ import DevLibOverrides, {
   overridesBesidesDevLibs,
 } from "./dev-lib-overrides.component";
 
+function validateTriggerPosition(position) {
+  const validPositions = [
+    "top-left",
+    "top-right",
+    "bottom-left",
+    "bottom-right",
+  ];
+
+  return validPositions.indexOf(position) >= 0 ? position : "bottom-right";
+}
+
+const validPositions = ["top-left", "top-right", "bottom-left", "bottom-right"];
 export default class FullUI extends Component {
   state = {
     showingPopup: false,
@@ -22,6 +34,10 @@ export default class FullUI extends Component {
         props.customElement.getAttribute("show-when-local-storage")
       ) === "true";
 
+    const triggerPosition = validateTriggerPosition(
+      props.customElement.getAttribute("trigger-position")
+    );
+
     if (!shouldShow) {
       return null;
     }
@@ -30,7 +46,7 @@ export default class FullUI extends Component {
       <div>
         <button
           onClick={this.toggleTrigger}
-          className={`imo-unstyled imo-trigger ${
+          className={`imo-unstyled imo-trigger imo-trigger-${triggerPosition} ${
             this.atLeastOneOverride() ? "imo-current-override" : ""
           }`}
         >

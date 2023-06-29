@@ -61,5 +61,6 @@
   },
   "dependencies": {
     "cookie": "^0.4.1"
-  }
+  },
+  "packageManager": "pnpm@8.4.0"
 }

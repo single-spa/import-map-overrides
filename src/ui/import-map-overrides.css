@@ -20,8 +20,6 @@
 
 .imo-trigger {
   position: fixed;
-  bottom: 0;
-  right: 0;
   margin: 10px;
   border-radius: 5px;
   background-color: navajowhite;
@@ -33,6 +31,26 @@
   font-size: 18px;
   font-family: sans-serif;
   z-index: 10500;
+}
+
+.imo-trigger-bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.imo-trigger-bottom-left {
+  bottom: 0;
+  left: 0;
+}
+
+.imo-trigger-top-right {
+  top: 0;
+  right: 0;
+}
+
+.imo-trigger-top-left {
+  top: 0;
+  left: 0;
 }
 
 .imo-popup {

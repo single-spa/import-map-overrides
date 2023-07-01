@@ -9,14 +9,14 @@
   "scripts": {
     "build": "pnpm run clean && cross-env NODE_ENV=production rollup -c",
     "build:dev": "pnpm run clean && cross-env NODE_ENV=development rollup -c",
+    "check-format": "prettier --check src",
     "clean": "rimraf dist",
     "check-format": "prettier --check src",
     "watch": "cross-env NODE_ENV=development rollup -c --watch",
     "copy-test-files": "copyfiles test/**/* dist -f",
-    "test-jest": "jest",
-    "test-serve": "serve .",
-    "test-embed-serve": "serve . -l 3333",
-    "test": "concurrently pnpm:watch pnpm:copy-test-files pnpm:test-serve pnpm:test-embed-serve",
+    "serve": "serve .",
+    "embed-serve": "serve . -l 3333",
+    "test": "jest",
     "lint": "eslint src",
     "prepublishOnly": "pnpm run build",
     "prepare": "husky install"

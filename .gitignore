@@ -65,4 +65,4 @@ dist
 /.idea
 
 # VSCode IDE files
-.vscode
+/.vscode

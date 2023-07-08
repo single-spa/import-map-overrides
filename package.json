@@ -54,6 +54,7 @@
     "jest": "^29.5.0",
     "jest-cli": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
+    "jest-fetch-mock": "^3.0.3",
     "postcss": "^8.3.5",
     "preact": "^10.5.14",
     "prettier": "^2.3.2",

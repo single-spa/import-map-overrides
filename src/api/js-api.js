@@ -347,8 +347,8 @@ function init() {
         externalOverrideMapPromises[importMapUrl] ||
         (externalOverrideMapPromises[importMapUrl] =
           fetchExternalMap(importMapUrl));
-      return promise.then(() =>
-        includes(imo.invalidExternalMaps, importMapUrl)
+      return promise.then(
+        () => !includes(imo.invalidExternalMaps, importMapUrl)
       );
     },
     invalidExternalMaps: [],

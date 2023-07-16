@@ -1,42 +1,17 @@
-import "regenerator-runtime/runtime";
-
-// Mocks for the localStorage
-const localStorageMock = (function () {
-  let store = {};
-
-  return {
-    get length() {
-      return Object.keys(store).length;
-    },
-    key(index) {
-      return Object.keys(store)[index] || null;
-    },
-    getItem(key) {
-      return store[key] || null;
-    },
-    setItem(key, value) {
-      store[key] = value.toString();
-    },
-    removeItem(key) {
-      delete store[key];
-    },
-    clear() {
-      store = {};
-    },
-  };
-})();
+import { localStorageMock } from "./localStorageMock";
 
 describe("window.importMapOverrides", () => {
   let localStorageBackup;
 
-  const defaultMap = `<script type="importmap">
-  {
-    "imports": {
-      "package1": "https://cdn.skypack.dev/package1",
-      "package2": "https://cdn.skypack.dev/package2",
-      "package3": "https://cdn.skypack.dev/package3"
-    }
-  }
+  const defaultMap = {
+    imports: {
+      package1: "https://cdn.skypack.dev/package1",
+      package2: "https://cdn.skypack.dev/package2",
+      package3: "https://cdn.skypack.dev/package3",
+    },
+  };
+  const defaultMapScript = `<script type="importmap">
+    ${JSON.stringify(defaultMap)}
   </script>`;
 
   beforeEach(() => {
@@ -53,7 +28,7 @@ describe("window.importMapOverrides", () => {
     });
   });
 
-  const setDocumentAndLoadScript = (maps = [defaultMap]) => {
+  const setDocumentAndLoadScript = (maps = [defaultMapScript]) => {
     document.head.innerHTML = `${maps.map((map) => map || "").join("\n")}`;
     return import("./js-api");
   };
@@ -64,14 +39,7 @@ describe("window.importMapOverrides", () => {
       await setDocumentAndLoadScript();
       const map = await window.importMapOverrides.getDefaultMap();
 
-      expect(map).toEqual({
-        imports: {
-          package1: "https://cdn.skypack.dev/package1",
-          package2: "https://cdn.skypack.dev/package2",
-          package3: "https://cdn.skypack.dev/package3",
-        },
-        scopes: {},
-      });
+      expect(map).toEqual({ ...defaultMap, scopes: {} });
     });
 
     // Test getDefaultMap
@@ -113,7 +81,7 @@ describe("window.importMapOverrides", () => {
     // Test the case where there are multiple inline maps
     it("should return the union of all maps when there are multiple inline maps", async () => {
       await setDocumentAndLoadScript([
-        defaultMap,
+        defaultMapScript,
         `<script type="importmap">
       {
         "imports": {
@@ -143,7 +111,7 @@ describe("window.importMapOverrides", () => {
     // data-is-importmap-override
     it("should return the union of all maps except the ones having the attribute data-is-importmap-override", async () => {
       await setDocumentAndLoadScript([
-        defaultMap,
+        defaultMapScript,
         `<script type="importmap" data-is-importmap-override>
       {
         "imports": {
@@ -178,7 +146,7 @@ describe("window.importMapOverrides", () => {
     // Test the case where there are multiple maps and one is external
     it("should return the union of all maps including the external ones", async () => {
       await setDocumentAndLoadScript([
-        defaultMap,
+        defaultMapScript,
         `<script type="importmap" src="https://example.com/importmap.json"></script>`,
       ]);
 

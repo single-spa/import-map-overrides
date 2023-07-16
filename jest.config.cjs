@@ -4,6 +4,7 @@ const config = {
   restoreMocks: true,
   setupFiles: ["./jest.setup.js"],
   testEnvironment: "jsdom",
+  collectCoverageFrom: ["src/**/*.js", "!src/api/localStorageMock.js"],
 };
 
 module.exports = config;

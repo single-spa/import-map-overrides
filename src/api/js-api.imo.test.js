@@ -54,15 +54,7 @@ describe("window.importMapOverrides", () => {
   });
 
   const setDocumentAndLoadScript = (maps = [defaultMap]) => {
-    document.body.innerHTML = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        ${maps.map((map) => map || "").join("\n")}
-      </head>
-      <body></body>
-    </html>
-    `;
+    document.head.innerHTML = `${maps.map((map) => map || "").join("\n")}`;
     return import("./js-api");
   };
 

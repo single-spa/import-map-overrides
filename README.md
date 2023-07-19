@@ -40,3 +40,8 @@ The UI for import-map-overrides works in evergreen browsers (web components supp
 - [Installation](/docs/installation.md#node)
 - [API](/docs/api.md#node)
 
+## Contributing
+
+Make sure you commit a changeset with `pnpm changeset` before you open a PR.
+This will allow to automatically bump the version and maintain the CHANGELOG
+once released.

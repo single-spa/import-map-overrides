@@ -19,7 +19,9 @@
     "test": "jest",
     "lint": "eslint src",
     "prepublishOnly": "pnpm run build",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "changeset": "changeset",
+    "release": "changeset publish"
   },
   "exports": {
     "node": "./dist/import-map-overrides-server.js",
@@ -42,6 +44,7 @@
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/plugin-transform-react-jsx": "^7.14.5",
     "@babel/preset-env": "^7.14.8",
+    "@changesets/cli": "^2.26.2",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-node-resolve": "^13.0.2",
     "concurrently": "^6.2.0",
@@ -69,5 +72,5 @@
   "dependencies": {
     "cookie": "^0.4.1"
   },
-  "packageManager": "pnpm@8.4.0"
+  "packageManager": "pnpm@8.6.9"
 }

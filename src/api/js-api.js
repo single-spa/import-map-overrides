@@ -207,7 +207,13 @@ function init() {
               if (scriptEl.src) {
                 nextPromise = fetchExternalMap(scriptEl.src);
               } else {
-                nextPromise = Promise.resolve(JSON.parse(scriptEl.textContent));
+                let parsedContent;
+                try {
+                  parsedContent = JSON.parse(scriptEl.textContent);
+                } catch (e) {
+                  parsedContent = createEmptyImportMap();
+                }
+                nextPromise = Promise.resolve(parsedContent);
               }
 
               return Promise.all([promise, nextPromise]).then(
@@ -341,8 +347,8 @@ function init() {
         externalOverrideMapPromises[importMapUrl] ||
         (externalOverrideMapPromises[importMapUrl] =
           fetchExternalMap(importMapUrl));
-      return promise.then(() =>
-        includes(imo.invalidExternalMaps, importMapUrl)
+      return promise.then(
+        () => !includes(imo.invalidExternalMaps, importMapUrl)
       );
     },
     invalidExternalMaps: [],
@@ -367,6 +373,7 @@ function init() {
 
   function fireEvent(type) {
     // Set timeout so that event fires after the change has totally finished
+
     setTimeout(() => {
       const eventType = `import-map-overrides:${type}`;
       const event = canFireCustomEvents

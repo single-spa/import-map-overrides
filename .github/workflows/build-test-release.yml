@@ -72,13 +72,13 @@ jobs:
         run: pnpm run build
 
       - name: Publish to NPM if there is no changeset
+        shell: bash {0}
         run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
           pnpm run changeset status
           if [ $? -eq 1 ]; then
             echo "No changeset found, publishing to NPM"
             pnpm run release
-            git push --follow-tags origin travelperk
           else
             echo "Changeset found, skipping NPM publish"
           fi

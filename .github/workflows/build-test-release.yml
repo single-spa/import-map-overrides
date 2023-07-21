@@ -45,13 +45,14 @@ jobs:
     name: Release
     needs: build_lint_test
     permissions:
-      contents: write # to create release (changesets/action)
-      pull-requests: write # to create pull request (changesets/action)
+      contents: write # to push release tags
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/travelperk' }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Install Pnpm
         uses: pnpm/action-setup@v2.0.1
@@ -70,13 +71,16 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Create Release Pull Request or Publish to NPM
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          commit: "Release commit"
-          title: "Next release"
-          publish: pnpm run release
+      - name: Publish to NPM if there is no changeset
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          pnpm run changeset status
+          if [ $? -eq 1 ]; then
+            echo "No changeset found, publishing to NPM"
+            pnpm run release
+            git push --follow-tags origin travelperk
+          else
+            echo "Changeset found, skipping NPM publish"
+          fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

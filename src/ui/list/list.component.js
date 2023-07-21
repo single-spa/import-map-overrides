@@ -117,7 +117,10 @@ export default class List extends Component {
       ) {
         pendingRefreshDefaultModules.push(mod);
       } else {
-        externalOverrideModules.push(mod);
+        externalOverrideModules.push({
+          ...mod,
+          overrideUrl: this.state.currentPageMap.imports[moduleName],
+        });
       }
     });
 

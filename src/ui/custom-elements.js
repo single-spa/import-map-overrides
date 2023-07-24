@@ -36,15 +36,19 @@ function preactCustomElement(Comp, observedAttributes = []) {
       this.renderWithPreact();
     }
     renderWithPreact() {
-      this.shadow = this.attachShadow({ mode: "open" });
+      if (!this.shadowRoot) {
+        this.shadow = this.attachShadow({ mode: "open" });
+        const style = document.createElement("style");
+        style.textContent = styles.toString();
+        this.shadow.appendChild(style);
+      } else {
+        this.shadow = this.shadowRoot;
+      }
       this.renderedEl = render(
         h(Comp, { customElement: this }),
         this.shadow,
         this.renderedEl
       );
-      const style = document.createElement("style");
-      style.textContent = styles.toString();
-      this.shadow.appendChild(style);
     }
   };
 }

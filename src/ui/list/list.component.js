@@ -117,7 +117,10 @@ export default class List extends Component {
       ) {
         pendingRefreshDefaultModules.push(mod);
       } else {
-        externalOverrideModules.push(mod);
+        externalOverrideModules.push({
+          ...mod,
+          overrideUrl: this.state.currentPageMap.imports[moduleName],
+        });
       }
     });
 
@@ -149,11 +152,8 @@ export default class List extends Component {
     defaultModules.sort(sorter);
     nextOverriddenModules.sort(sorter);
 
-    const {
-      brokenMaps,
-      workingCurrentPageMaps,
-      workingNextPageMaps,
-    } = getExternalMaps();
+    const { brokenMaps, workingCurrentPageMaps, workingNextPageMaps } =
+      getExternalMaps();
 
     return (
       <div className="imo-list-container">
@@ -466,7 +466,8 @@ function toURL(urlStr) {
 
 function getExternalMaps() {
   const allExternalMaps = window.importMapOverrides.getExternalOverrides();
-  const allCurrentPageMaps = window.importMapOverrides.getCurrentPageExternalOverrides();
+  const allCurrentPageMaps =
+    window.importMapOverrides.getCurrentPageExternalOverrides();
   const brokenMaps = [],
     workingCurrentPageMaps = [],
     workingNextPageMaps = [];

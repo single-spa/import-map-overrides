@@ -210,11 +210,9 @@ function init() {
                 nextPromise = Promise.resolve(JSON.parse(scriptEl.textContent));
               }
 
-              return Promise.all([
-                promise,
-                nextPromise,
-              ]).then(([originalMap, newMap]) =>
-                imo.mergeImportMap(originalMap, newMap)
+              return Promise.all([promise, nextPromise]).then(
+                ([originalMap, newMap]) =>
+                  imo.mergeImportMap(originalMap, newMap)
               );
             }
           },
@@ -329,9 +327,8 @@ function init() {
       return externalOverrides.reduce((result, externalOverride) => {
         const fetchPromise =
           externalOverrideMapPromises[externalOverride] ||
-          (externalOverrideMapPromises[externalOverride] = fetchExternalMap(
-            externalOverride
-          ));
+          (externalOverrideMapPromises[externalOverride] =
+            fetchExternalMap(externalOverride));
         return Promise.all([result, fetchPromise]).then(
           ([firstMap, secondMap]) => {
             return imo.mergeImportMap(firstMap, secondMap);
@@ -342,9 +339,8 @@ function init() {
     isExternalMapValid(importMapUrl) {
       const promise =
         externalOverrideMapPromises[importMapUrl] ||
-        (externalOverrideMapPromises[importMapUrl] = fetchExternalMap(
-          importMapUrl
-        ));
+        (externalOverrideMapPromises[importMapUrl] =
+          fetchExternalMap(importMapUrl));
       return promise.then(() =>
         includes(imo.invalidExternalMaps, importMapUrl)
       );
@@ -458,36 +454,38 @@ function init() {
   }
 
   function fetchExternalMap(url) {
-    return fetch(url).then(
-      (r) => {
-        if (r.ok) {
-          return r.json().catch((err) => {
+    return fetch(url)
+      .then(
+        (r) => {
+          if (r.ok) {
+            return r.json().catch((err) => {
+              console.warn(
+                Error(
+                  `External override import map contained invalid json, at url ${r.url}. ${err}`
+                )
+              );
+              imo.invalidExternalMaps.push(r.url);
+              return createEmptyImportMap();
+            });
+          } else {
             console.warn(
               Error(
-                `External override import map contained invalid json, at url ${r.url}. ${err}`
+                `Unable to download external override import map from url ${r.url}. Server responded with status ${r.status}`
               )
             );
             imo.invalidExternalMaps.push(r.url);
             return createEmptyImportMap();
-          });
-        } else {
+          }
+        },
+        () => {
           console.warn(
-            Error(
-              `Unable to download external override import map from url ${r.url}. Server responded with status ${r.status}`
-            )
+            Error(`Unable to download external import map at url '${url}'`)
           );
-          imo.invalidExternalMaps.push(r.url);
+          imo.invalidExternalMaps.push(new URL(url, document.baseURI).href);
           return createEmptyImportMap();
         }
-      },
-      () => {
-        console.warn(
-          Error(`Unable to download external import map at url '${url}'`)
-        );
-        imo.invalidExternalMaps.push(new URL(url, document.baseURI).href);
-        return createEmptyImportMap();
-      }
-    );
+      )
+      .then((importMap) => expandRelativeUrlsInImportMap(importMap, url));
   }
 
   function createEmptyImportMap() {
@@ -504,6 +502,35 @@ function init() {
       });
     }
   }
+}
+
+function expandRelativeUrl(url, baseUrl) {
+  try {
+    const outUrl = new URL(url, baseUrl);
+    return outUrl.href;
+  } catch (err) {
+    return url;
+  }
+}
+
+function expandRelativeUrlImports(imports, baseUrl) {
+  return Object.entries(imports).reduce((result, [key, value]) => {
+    result[key] = expandRelativeUrl(value, baseUrl);
+    return result;
+  }, {});
+}
+
+function expandRelativeUrlsInImportMap(importMap, baseUrl) {
+  return {
+    imports: expandRelativeUrlImports(importMap.imports || {}, baseUrl),
+    scopes: Object.keys(importMap.scopes || {}).reduce((result, scopeKey) => {
+      result[scopeKey] = expandRelativeUrlImports(
+        importMap.scopes[scopeKey],
+        baseUrl
+      );
+      return result;
+    }, {}),
+  };
 }
 
 function canAccessLocalStorage() {

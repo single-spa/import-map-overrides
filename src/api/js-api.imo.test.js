@@ -1,4 +1,5 @@
-import { localStorageMock } from "./localStorageMock";
+import { jest } from "@jest/globals";
+import { localStorageMock } from "./local-storage-mock";
 
 describe("window.importMapOverrides", () => {
   let localStorageBackup;

@@ -1,3 +1,5 @@
+import { jest } from "@jest/globals";
+
 describe("domainsElement", () => {
   const getDocument = (domainsElementContent) => `
     <!DOCTYPE html>

@@ -1,6 +1,6 @@
 {
   "name": "import-map-overrides",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "main": "dist/import-map-overrides-server.js",
   "type": "module",
   "repository": "https://github.com/joeldenning/import-map-overrides.git",
@@ -11,10 +11,9 @@
     "build:dev": "pnpm run clean && cross-env NODE_ENV=development rollup -c",
     "check-format": "prettier --check src",
     "clean": "rimraf dist",
-    "check-format": "prettier --check src",
     "watch": "cross-env NODE_ENV=development rollup -c --watch",
     "copy-test-files": "copyfiles test/**/* dist -f",
-    "serve": "serve .",
+    "serve": "serve . -l 5050",
     "embed-serve": "serve . -l 3333",
     "test": "jest",
     "lint": "eslint src",
@@ -44,9 +43,12 @@
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/plugin-transform-react-jsx": "^7.14.5",
     "@babel/preset-env": "^7.14.8",
+    "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.2",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-node-resolve": "^13.0.2",
+    "@testing-library/jest-dom": "^6.0.0",
+    "babel-jest": "^29.6.2",
     "concurrently": "^6.2.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
@@ -67,10 +69,10 @@
     "rollup": "^2.53.2",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-terser": "^7.0.2",
-    "serve": "^12.0.0"
+    "serve": "^14.2.1"
   },
   "dependencies": {
-    "cookie": "^0.4.1"
+    "cookie": "^0.5.0"
   },
   "packageManager": "pnpm@8.6.9"
 }

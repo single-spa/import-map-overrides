@@ -1,10 +1,8 @@
 /** @type {import('jest').Config} */
-const config = {
+module.exports = {
+  collectCoverageFrom: ["src/**/*.js", "!src/api/local-storage-mock.js"],
   resetMocks: true,
   restoreMocks: true,
   setupFiles: ["./jest.setup.js"],
   testEnvironment: "jsdom",
-  collectCoverageFrom: ["src/**/*.js", "!src/api/localStorageMock.js"],
 };
-
-module.exports = config;

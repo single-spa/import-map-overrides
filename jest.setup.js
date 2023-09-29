@@ -1,1 +1,3 @@
-require("jest-fetch-mock").enableMocks();
+import jestFetchMock from "jest-fetch-mock";
+
+jestFetchMock.enableMocks();

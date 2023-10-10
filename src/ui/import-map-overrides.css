@@ -1,3 +1,4 @@
+/* Global styles */
 .imo-unstyled {
   border: none;
   padding: 0;
@@ -10,6 +11,7 @@
   cursor: pointer;
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
+  appearance: none;
   -webkit-appearance: none;
 }
 
@@ -18,18 +20,37 @@
   padding: 0;
 }
 
+.imo-icon {
+  margin-right: 4px;
+  height: 16px;
+  width: 16px;
+  flex-grow: 0;
+}
+
+.imo-icon svg {
+  fill: #ffffff;
+}
+
+@media (prefers-color-scheme: light) {
+  .imo-icon svg {
+    fill: #040404;
+  }
+}
+
+/* FullUI - TriggerButton */
 .imo-trigger {
   position: fixed;
   margin: 10px;
   border-radius: 5px;
-  background-color: navajowhite;
+  background-color: #dedede;
+  color: #505050;
   height: 50px;
   width: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 18px;
-  font-family: sans-serif;
+  font-family: Helvetica, sans-serif;
   z-index: 10500;
 }
 
@@ -53,189 +74,401 @@
   left: 0;
 }
 
-.imo-popup {
-  box-sizing: border-box;
+.imo-trigger-pending-refresh {
+  background-color: #ffedce;
+  color: #ff9900;
+}
+
+.imo-trigger-applied-overrides {
+  background-color: #b8eec9;
+  color: #087928;
+}
+
+/* Popup - CloseButton */
+
+.imo-close-button {
+  cursor: pointer;
+  line-height: normal;
+}
+
+.imo-close-button:hover svg {
+  fill: #d0d0d0;
+}
+
+@media (prefers-color-scheme: light) {
+  .imo-close-button:hover svg {
+    fill: #444444;
+  }
+}
+
+/* Popup - Popup */
+.imo-popup-container {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 50%;
   z-index: 10000;
-  background-color: black;
-  color: white;
-  font-family: sans-serif;
-  padding: 24px;
-  overflow-y: auto;
+  font-family: Helvetica, sans-serif;
+  background-color: #0f0f0f;
+  color: #dcdcdc;
+  fill: #dcdcdc;
 }
 
-.imo-popup a:visited,
-.imo-popup a {
-  color: white;
-}
-
-.imo-popup .imo-module-dialog {
-  left: calc(50% - 200px);
-}
-
-.imo-header {
+.imo-popup-nav {
+  box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  border-width: 1px 0 1px 0;
+  border-style: solid;
+  height: 40px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background: #3c3c3c;
+  border-color: #555555;
+  fill: white;
+}
+
+.imo-popup-content {
+  box-sizing: border-box;
+  padding: 16px;
+  overflow-y: scroll;
+  height: calc(100% - 40px);
+}
+
+.imo-popup-content a:visited,
+.imo-popup-content a {
+  color: white;
+}
+
+.imo-popup-content button {
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+  margin-right: 8px;
+  padding: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.14px;
+  cursor: pointer;
+  border: 1px solid #555555;
+  background: #3c3c3c;
+  color: white;
+  fill: white;
+}
+
+.imo-popup-content button .imo-icon svg {
+  fill: white;
+}
+
+.imo-popup-content button:hover {
+  background: #555555;
+}
+
+.imo-popup-content button.secondary {
+  border: none;
+  background: transparent;
+}
+
+.imo-popup-content button.secondary:hover {
+  background: #3c3c3c;
+}
+
+.imo-popup-header h1 {
+  line-height: 23px;
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.imo-popup-header p {
+  line-height: 18.4px;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+@media (prefers-color-scheme: light) {
+  .imo-popup-container {
+    background-color: #fefefe;
+    color: #5c5c5c;
+    fill: #5c5c5c;
+  }
+
+  .imo-popup-nav {
+    background-color: #f6f6f6;
+    border-color: #dadada;
+    fill: #040404;
+  }
+
+  .imo-popup-content a:visited,
+  .imo-popup-content a {
+    color: #003db5;
+  }
+
+  .imo-popup-content button {
+    border-color: #dadada;
+    background: #f6f6f6;
+    color: #003db5;
+    fill: #003db5;
+  }
+
+  .imo-popup-content button .imo-icon svg {
+    fill: #003db5;
+  }
+
+  .imo-popup-content button:hover {
+    background: #dadada;
+    color: #0048d7;
+    fill: #0048d7;
+  }
+
+  .imo-popup-content button:hover .imo-icon svg {
+    fill: #0048d7;
+  }
+
+  .imo-popup-content button.secondary {
+    border: none;
+    background: transparent;
+  }
+
+  .imo-popup-content button.secondary:hover {
+    background: #f6f6f6;
+    color: #0048d7;
+    fill: #0048d7;
+  }
+
+  .imo-popup-header h1 {
+    color: #040404;
+  }
+}
+
+/* List - ListSearchIcon */
+.imo-list-search-icon {
+  margin-top: -2px;
+}
+
+/* List - SearchBox */
+.imo-list-search-container {
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+  border: 1px solid #555555;
+  padding: 6px;
+}
+
+.imo-list-search-container:focus-within {
+  border-color: #fafafa;
+}
+
+.imo-list-search-container input {
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+  height: 20px;
+  width: 264px;
+  line-height: normal;
+  letter-spacing: 0.14px;
+  border: none;
+  vertical-align: bottom;
+  background-color: #0f0f0f;
+}
+
+.imo-list-search-container input:focus {
+  outline: 0 !important;
+}
+
+@media (prefers-color-scheme: light) {
+  .imo-list-search-container {
+    border: 1px solid #dadada;
+    background-color: #fefefe;
+  }
+
+  .imo-list-search-container:focus-within {
+    border-color: #7cb0fe;
+  }
+
+  .imo-list-search-container input {
+    background-color: #fefefe;
+    color: #5c5c5c;
+  }
+}
+
+/* List - List */
+.imo-list-container {
+  display: flex;
+  flex-direction: column;
   align-items: flex-start;
 }
 
-.imo-list {
-  margin-left: 16px;
-}
-
-.imo-list > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.imo-list-container *,
-.imo-modal-container * {
-  font-family: sans-serif;
+.imo-list-container * {
   box-sizing: border-box;
 }
 
-.imo-module-dialog {
-  position: fixed;
-  z-index: 30000000;
-  top: 30%;
-  max-width: 600px;
-  margin: 0 auto;
-  border: 4px solid navajowhite;
-  background-color: white;
-  padding: 1em;
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-}
-
-.imo-module-dialog input {
+.imo-table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  font-size: 16px;
-  box-sizing: border-box;
-  padding-right: 20px;
+  margin-bottom: 24px;
 }
 
-.imo-module-dialog table {
-  margin-bottom: 16px;
-}
-
-.imo-module-dialog table td:first-child {
-  text-align: right;
-  padding-right: 16px;
-  word-break: keep-all;
-}
-
-.imo-module-dialog table td {
-  word-break: break-all;
-}
-
-.imo-module-dialog.imo-overridden {
-  border: 4px solid salmon;
-}
-
-.imo-table-header-actions {
+.imo-table-actions {
+  margin-top: 24px;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  width: 100%;
 }
 
+/* OverridesTable */
 .imo-overrides-table {
+  margin-top: 24px;
   border-collapse: collapse;
-  margin-top: 32px;
-}
-
-.imo-overrides-table tr td:first-child {
-  display: flex;
-  align-items: center;
-  padding-right: 32px;
-  position: relative;
-}
-
-.imo-needs-refresh {
-  position: absolute;
-  right: 8px;
-  width: 20px;
-  height: 20px;
-  /* base64 encoded 27F2 svg */
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='261' height='216' xmlns='http://www.w3.org/2000/svg' stroke='%23ffffff' stroke-linecap='square' stroke-miterlimit='10' shape-rendering='auto' stroke-opacity='1' fill='%23ffffff' stroke-dasharray='none' stroke-width='1' stroke-linejoin='miter' stroke-dashoffset='0'%3E%3Cg%3E%3Cpath fill='%23ffffff' d='m152.5625,214.0625q-27.5625,0 -49.6406,-11.8125q-22.0781,-11.8125 -34.7344,-28.4062l12.6563,-11.5313q10.6874,15.1875 31.0781,25.0313q20.3906,9.8437 40.6406,9.8437q21.375,0 44.1563,-11.5313q22.7812,-11.5312 34.3124,-34.3124q11.5313,-22.7813 11.5313,-44.1563q0,-21.375 -11.5313,-44.1563q-11.5312,-22.7812 -34.3124,-34.3124q-22.7813,-11.5313 -44.1563,-11.5313q-19.9687,0 -39.6563,9.1406q-19.6874,9.1407 -30.9374,24.1875q-11.25,15.0469 -16.7344,35.7188l42.3281,-34.7344l-54,91.6875l-54,-91.6875l47.25,38.8125q3.9375,-24.4687 17.4375,-44.5781q13.5,-20.1094 36.9844,-32.7656q23.4844,-12.6563 51.3281,-12.6563q29.25,0 54,14.0625q24.75,14.0625 38.8125,38.8125q14.0625,24.75 14.0625,54q0,29.25 -14.0625,54q-14.0625,24.75 -38.8125,38.8125q-24.75,14.0625 -54,14.0625z' /%3E%3C/g%3E%3C/svg%3E");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.imo-status {
-  height: 16px;
-  width: 16px;
-  border-radius: 8px;
-  border: 1px solid white;
-  margin-right: 8px;
-}
-
-.imo-disabled-override {
-  background-color: lightblue;
-}
-
-.imo-next-override {
-  background-color: darkred;
-}
-
-.imo-current-override {
-  background-color: salmon;
-}
-
-.imo-default-module {
-  background-color: lightgoldenrodyellow;
-}
-
-.imo-external-override {
-  background-color: orange;
-}
-
-.imo-next-default {
-  background-color: darkgoldenrod;
-}
-
-.imo-dev-lib-override {
-  background-color: lightpink;
-}
-
-.imo-overrides-table tbody tr:hover {
-  cursor: pointer;
-  background-color: #404040;
+  width: 100%;
 }
 
 .imo-overrides-table td,
 .imo-overrides-table th {
-  line-height: 18px;
-  padding: 16px;
-  border: 1px solid white;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #555555;
+  padding: 8px 16px;
+  text-align: left;
+  font-size: 12px;
 }
 
-.imo-add-new {
-  margin-left: 16px;
+.imo-overrides-table td:last-child,
+.imo-overrides-table th:last-child {
+  text-align: right;
 }
 
-.imo-add-new button {
-  color: black;
+.imo-overrides-table th {
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-.imo-clear-input {
-  position: absolute;
-  top: 0;
-  right: 4px;
+.imo-overrides-table tbody td {
+  font-size: 16px;
+}
+
+.imo-overrides-table tbody tr:hover {
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  height: 100%;
+  background-color: #3c3c3c;
 }
 
-.imo-modal-container {
-  font-family: sans-serif;
+.imo-status {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  border-radius: 6px;
+  border: none;
+  margin-right: 8px;
 }
 
-.imo-modal {
+.imo-table-action {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+@media (prefers-color-scheme: light) {
+  .imo-overrides-table td,
+  .imo-overrides-table th {
+    border-color: #dadada;
+  }
+
+  .imo-overrides-table tbody tr:hover {
+    background-color: #f6f6f6;
+  }
+
+  .imo-table-action {
+    font-weight: 700;
+    color: #003db5;
+  }
+
+  .imo-table-action:hover {
+    color: #0048d7;
+  }
+}
+
+/* OverridesTable - To refresh */
+.imo-refresh-override {
+  background-color: #ffa800;
+}
+
+.imo-table-row-refresh-override {
+  background-color: #322100;
+}
+
+@media (prefers-color-scheme: light) {
+  .imo-table-row-refresh-override {
+    background-color: #fffbf4;
+  }
+}
+
+/* OverridesTable - Disabled override */
+.imo-disabled-override {
+  background-color: #5f5f5f;
+}
+
+.imo-table-row-disabled-override {
+  background-color: #1a1a1a;
+}
+
+@media (prefers-color-scheme: light) {
+  .imo-table-row-disabled-override {
+    background-color: #dadada;
+  }
+}
+
+/* OverridesTable - Current override */
+.imo-current-override {
+  background-color: #0eeb4c;
+}
+
+.imo-table-row-current-override {
+  background-color: #002109;
+}
+
+@media (prefers-color-scheme: light) {
+  .imo-current-override {
+    background-color: #087928;
+  }
+
+  .imo-table-row-current-override {
+    background-color: #f6fff9;
+  }
+}
+
+/* OverridesTable - External override */
+.imo-external-override {
+  border: 3px solid #ffa800;
+  background-color: none;
+}
+
+/* OverridesTable - DevLib override */
+.imo-dev-lib-override {
+  border: 3px solid #ffa800;
+  background-color: none;
+}
+
+/* OverridesTable - Default module */
+.imo-default-module {
+  border: 3px solid #d9d9d9;
+  background-color: none;
+}
+
+/* Dialogs */
+.imo-modal-container * {
+  box-sizing: border-box;
+}
+
+.imo-modal-overlay {
   background-color: rgba(61, 70, 77, 0.6);
   position: fixed;
   width: 100vw;
@@ -245,17 +478,128 @@
   z-index: 20000000;
 }
 
-.imo-list-search,
-.imo-list-container button,
-.imo-modal-container button {
-  font-size: 14px;
-  height: 27px;
-  line-height: 27px;
+/* ModuleDialog */
+.imo-module-dialog {
+  color: white;
+  position: fixed;
+  z-index: 30000000;
+  min-width: 600px;
+  max-width: 800px;
+  margin: auto 20px;
+  top: calc(50%);
+  left: calc(50%);
+  transform: translateX(-50%) translateY(-50%);
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 1px 2px 0px rgba(1, 1, 1, 0.08);
+  background-color: #0f0f0f;
+  padding: 0;
+  max-height: 600px;
 }
 
-.imo-list-search {
-  line-height: 22px;
+.imo-module-dialog-header {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.imo-module-dialog h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.imo-module-dialog-content {
+  padding: 16px;
+}
+
+.imo-module-dialog-content label {
+  display: block;
+  color: #dcdcdc;
+  margin-top: 24px;
+  font-size: 16px;
+}
+
+.imo-module-dialog-content .imo-module-dialog-value {
+  font-size: 16px;
+  margin-top: 8px;
+}
+
+.imo-custom-input-container {
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+  border: 1px solid #555555;
+  padding: 6px;
+  margin-top: 8px;
+}
+
+.imo-custom-input-container:focus-within {
+  border-color: #fafafa;
+}
+
+.imo-custom-input-container input {
+  color: white;
+  flex-grow: 1;
+  font-size: 14px;
+  font-weight: 400;
+  height: 20px;
+  line-height: normal;
+  letter-spacing: 0.14px;
   border: none;
-  padding: 5px;
-  color: black;
+  vertical-align: bottom;
+  background-color: #0f0f0f;
+}
+
+.imo-custom-input-container input:focus {
+  outline: 0 !important;
+}
+
+.imo-custom-input-container .reset-button:hover {
+  cursor: pointer;
+}
+
+.imo-custom-input-container .reset-button:hover .imo-icon svg {
+  fill: #d0d0d0;
+}
+
+@media (prefers-color-scheme: light) {
+  .imo-module-dialog {
+    color: #040404;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.08);
+    background-color: #fefefe;
+  }
+
+  .imo-module-dialog-content label {
+    color: #5c5c5c;
+  }
+
+  .imo-custom-input-container {
+    border: 1px solid #dadada;
+    background-color: #fefefe;
+  }
+
+  .imo-custom-input-container:focus-within {
+    border-color: #7cb0fe;
+  }
+
+  .imo-custom-input-container input {
+    color: #040404;
+    background-color: #fefefe;
+  }
+
+  .imo-custom-input-container .reset-button:hover .imo-icon svg {
+    fill: #444444;
+  }
+}
+
+.imo-module-dialog-actions {
+  padding: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.imo-module-dialog-actions button {
+  margin-left: 8px;
+  margin-right: 0;
 }

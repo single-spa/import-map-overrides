@@ -1,4 +1,4 @@
-import { localStorageMock } from "./localStorageMock";
+import { localStorageMock } from "./local-storage-mock";
 
 describe("window.importMapOverrides", () => {
   let localStorageBackup;

@@ -1,4 +1,4 @@
-import cookie from "cookie";
+const cookie = require("cookie");
 
 const cookiePrefix = "import-map-override:";
 const portRegex = /^\d+$/g;

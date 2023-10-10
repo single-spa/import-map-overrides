@@ -1,5 +1,11 @@
 # @travelperksl/import-map-overrides
 
+## 5.0.0
+
+### Major Changes
+
+- 488d475: Rewrite UI and add Jest tests
+
 ## 4.1.6
 
 ### Patch Changes

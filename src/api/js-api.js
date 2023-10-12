@@ -367,7 +367,6 @@ function init() {
 
   function fireEvent(type) {
     // Set timeout so that event fires after the change has totally finished
-
     setTimeout(() => {
       const eventType = `import-map-overrides:${type}`;
       const event = canFireCustomEvents

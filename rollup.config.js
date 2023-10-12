@@ -81,7 +81,6 @@ export default [
           ],
         ],
       }),
-      nodeResolve(),
       isProduction &&
         terser({
           compress: {

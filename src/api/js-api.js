@@ -207,13 +207,7 @@ function init() {
               if (scriptEl.src) {
                 nextPromise = fetchExternalMap(scriptEl.src);
               } else {
-                let parsedContent;
-                try {
-                  parsedContent = JSON.parse(scriptEl.textContent);
-                } catch (e) {
-                  parsedContent = createEmptyImportMap();
-                }
-                nextPromise = Promise.resolve(parsedContent);
+                nextPromise = Promise.resolve(JSON.parse(scriptEl.textContent));
               }
 
               return Promise.all([promise, nextPromise]).then(

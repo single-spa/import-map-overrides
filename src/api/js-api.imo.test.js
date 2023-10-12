@@ -1,4 +1,4 @@
-import { localStorageMock } from "./localStorageMock";
+import { localStorageMock } from "./local-storage-mock";
 
 describe("window.importMapOverrides", () => {
   let localStorageBackup;
@@ -55,27 +55,28 @@ describe("window.importMapOverrides", () => {
     });
 
     // Test the case where the map is empty
-    it("should return an empty map when the default map is empty", async () => {
+    it("should throw an error when the default map is empty", async () => {
       await setDocumentAndLoadScript(["<script type='importmap'></script>"]);
-      const map = await window.importMapOverrides.getDefaultMap();
 
-      expect(map).toEqual({
-        imports: {},
-        scopes: {},
-      });
+      expect.assertions(1);
+      try {
+        await window.importMapOverrides.getDefaultMap();
+      } catch (e) {
+        expect(e.message).toEqual("Unexpected end of JSON input");
+      }
     });
 
     // Test the case where the map is malformed
-    it("should return an empty map when the default map is malformed", async () => {
+    it("should throw an error when the default map is malformed", async () => {
       await setDocumentAndLoadScript([
         "<script type='importmap'>Malformed</script>",
       ]);
-      const map = await window.importMapOverrides.getDefaultMap();
-
-      expect(map).toEqual({
-        imports: {},
-        scopes: {},
-      });
+      expect.assertions(1);
+      try {
+        const map = await window.importMapOverrides.getDefaultMap();
+      } catch (e) {
+        expect(e.message).toEqual("Unexpected token M in JSON at position 0");
+      }
     });
 
     // Test the case where there are multiple inline maps

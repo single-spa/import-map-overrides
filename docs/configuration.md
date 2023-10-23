@@ -71,7 +71,7 @@ In client-side multiple maps mode, import-map-overrides will synchronously injec
   }
 </script>
 <!-- The import map dynamically injected by import-map-overrides -->
-<script type="systemjs-importmap">
+<script type="systemjs-importmap" id="import-map-overrides" data-is-importmap-override="">
   {
     "imports": {
       "foo: "./overridden-url.js"

@@ -206,6 +206,56 @@ describe("window.importMapOverrides", () => {
         scopes: {},
       });
     });
+
+    describe("with overrides via query string", () => {
+      const metaElement = document.createElement("meta");
+      const url = new URL(window.location.href);
+
+      beforeEach(() => {
+        url.searchParams.set(
+          "imo",
+          JSON.stringify({
+            imports: { package3: "https://cdn.skypack.dev/package33" },
+          })
+        );
+        window.history.replaceState({}, "", url);
+        document.body.appendChild(metaElement);
+      });
+
+      afterEach(() => {
+        url.searchParams.delete("imo");
+        window.history.replaceState({}, "", url);
+        document.body.removeChild(metaElement);
+      });
+
+      it("should return an override map", async () => {
+        metaElement.setAttribute("name", "importmap-type");
+        metaElement.setAttribute("content", "importmap");
+        metaElement.setAttribute("allow-query-param-override", "");
+
+        await setDocumentAndLoadScript();
+
+        const map = await window.importMapOverrides.getOverrideMap();
+
+        expect(map).toEqual({
+          imports: { package3: "https://cdn.skypack.dev/package33" },
+          scopes: {},
+        });
+      });
+
+      it("disabled by default", async () => {
+        metaElement.removeAttribute("allow-query-param-override");
+
+        await setDocumentAndLoadScript();
+
+        const map = await window.importMapOverrides.getOverrideMap();
+
+        expect(map).toEqual({
+          imports: {},
+          scopes: {},
+        });
+      });
+    });
   });
 
   describe("Add/Remove/Enable/Disable overrides", () => {

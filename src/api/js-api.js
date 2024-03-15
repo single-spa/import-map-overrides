@@ -70,6 +70,9 @@ function init() {
   const serverOnly = importMapMetaElement
     ? importMapMetaElement.hasAttribute("server-only")
     : false;
+  const allowQueryParamOverride = importMapMetaElement
+    ? importMapMetaElement.hasAttribute("allow-query-param-override")
+    : false;
 
   let defaultMapPromise;
 
@@ -109,25 +112,27 @@ function init() {
       }
 
       // get from url if query param exist
-      const queryParam = getParameterByName(
-        queryParamOverridesName,
-        window.location != window.parent.location
-          ? document.referrer
-          : window.location.href
-      );
+      if (allowQueryParamOverride) {
+        const queryParam = getParameterByName(
+          queryParamOverridesName,
+          window.location != window.parent.location
+            ? document.referrer
+            : window.location.href
+        );
 
-      if (queryParam) {
-        let queryParamImportMap;
-        try {
-          queryParamImportMap = JSON.parse(queryParam);
-        } catch (e) {
-          throw Error(
-            `Invalid importMap query param - text content must be json`
-          );
+        if (queryParam) {
+          let queryParamImportMap;
+          try {
+            queryParamImportMap = JSON.parse(queryParam);
+          } catch (e) {
+            throw Error(
+              `Invalid importMap query param - text content must be json`
+            );
+          }
+          Object.keys(queryParamImportMap.imports).forEach((moduleName) => {
+            setOverride(moduleName, queryParamImportMap.imports[moduleName]);
+          });
         }
-        Object.keys(queryParamImportMap.imports).forEach((moduleName) => {
-          setOverride(moduleName, queryParamImportMap.imports[moduleName]);
-        });
       }
 
       return overrides;

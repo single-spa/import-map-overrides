@@ -75,7 +75,9 @@ describe("window.importMapOverrides", () => {
       try {
         const map = await window.importMapOverrides.getDefaultMap();
       } catch (e) {
-        expect(e.message).toEqual("Unexpected token M in JSON at position 0");
+        expect(e.message).toEqual(
+          "Unexpected token 'M', \"Malformed\" is not valid JSON"
+        );
       }
     });
 
@@ -181,29 +183,71 @@ describe("window.importMapOverrides", () => {
       const map = await window.importMapOverrides.getOverrideMap();
 
       expect(map).toEqual({
-        imports: {},
-        scopes: {},
+        importmap: {
+          imports: {},
+          scopes: {},
+        },
+        "importmap-shim": {
+          imports: {},
+          scopes: {},
+        },
+        "systemjs-importmap": {
+          imports: {},
+          scopes: {},
+        },
       });
     });
 
     it("should return return an override map when overrides are stored in the local storage", async () => {
       await setDocumentAndLoadScript();
       window.localStorage.setItem(
-        "import-map-override:package3",
+        "import-map-override:importmap:package3",
         "https://cdn.skypack.dev/package33"
       );
       window.localStorage.setItem(
-        "import-map-override:package4",
-        "https://cdn.skypack.dev/package4"
+        "import-map-override:importmap:package4",
+        "https://cdn.skypack.dev/package44"
+      );
+      window.localStorage.setItem(
+        "import-map-override:importmap-shim:package5",
+        "https://cdn.skypack.dev/package55"
+      );
+      window.localStorage.setItem(
+        "import-map-override:importmap-shim:package6",
+        "https://cdn.skypack.dev/package66"
+      );
+      window.localStorage.setItem(
+        "import-map-override:systemjs-importmap:package7",
+        "https://cdn.skypack.dev/package77"
+      );
+      window.localStorage.setItem(
+        "import-map-override:systemjs-importmap:package8",
+        "https://cdn.skypack.dev/package88"
       );
       const map = await window.importMapOverrides.getOverrideMap();
 
       expect(map).toEqual({
-        imports: {
-          package3: "https://cdn.skypack.dev/package33",
-          package4: "https://cdn.skypack.dev/package4",
+        importmap: {
+          imports: {
+            package3: "https://cdn.skypack.dev/package33",
+            package4: "https://cdn.skypack.dev/package44",
+          },
+          scopes: {},
         },
-        scopes: {},
+        "importmap-shim": {
+          imports: {
+            package5: "https://cdn.skypack.dev/package55",
+            package6: "https://cdn.skypack.dev/package66",
+          },
+          scopes: {},
+        },
+        "systemjs-importmap": {
+          imports: {
+            package7: "https://cdn.skypack.dev/package77",
+            package8: "https://cdn.skypack.dev/package88",
+          },
+          scopes: {},
+        },
       });
     });
   });
@@ -241,196 +285,247 @@ describe("window.importMapOverrides", () => {
         expect(window.importMapOverrides.getDisabledOverrides()).toEqual([]);
       });
 
-      it("should return an array of disabled overrides", async () => {
-        await setDocumentAndLoadScript();
-        window.localStorage.setItem(
-          "import-map-overrides-disabled",
-          JSON.stringify(["package3", "package4"])
-        );
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "should return an array of disabled overrides %s",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          window.localStorage.setItem(
+            `import-map-overrides-disabled:${type}`,
+            JSON.stringify(["package3", "package4"])
+          );
 
-        expect(window.importMapOverrides.getDisabledOverrides()).toEqual([
-          "package3",
-          "package4",
-        ]);
-      });
+          expect(window.importMapOverrides.getDisabledOverrides(type)).toEqual([
+            "package3",
+            "package4",
+          ]);
+        }
+      );
     });
 
     describe("isDisabled", () => {
-      it("should return true if the override is disabled", async () => {
-        await setDocumentAndLoadScript();
-        window.localStorage.setItem(
-          "import-map-overrides-disabled",
-          JSON.stringify(["package3"])
-        );
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "should return true if the override is disabled %s",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          window.localStorage.setItem(
+            `import-map-overrides-disabled:${type}`,
+            JSON.stringify([`package3${type}`])
+          );
 
-        expect(window.importMapOverrides.isDisabled("package3")).toEqual(true);
-      });
+          expect(
+            window.importMapOverrides.isDisabled(`package3${type}`, type)
+          ).toEqual(true);
+        }
+      );
 
-      it("should return false if the override is not disabled", async () => {
-        await setDocumentAndLoadScript();
-        window.localStorage.setItem(
-          "import-map-overrides-disabled",
-          JSON.stringify(["package3"])
-        );
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "should return false if the override is not disabled %s",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          window.localStorage.setItem(
+            `import-map-overrides-disabled:${type}`,
+            JSON.stringify([`package3${type}`])
+          );
 
-        expect(window.importMapOverrides.isDisabled("package4")).toEqual(false);
-      });
+          expect(
+            window.importMapOverrides.isDisabled(`package4${type}`, type)
+          ).toEqual(false);
+        }
+      );
     });
 
     describe("disableOverride", () => {
-      it("should disable an override and return true if it wasn't disabled before", async () => {
-        await setDocumentAndLoadScript();
-        const result = await window.importMapOverrides.disableOverride(
-          "package3"
-        );
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "should disable an override and return true if it wasn't disabled before %s",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          const result = await window.importMapOverrides.disableOverride(
+            "package3",
+            type
+          );
 
-        expect(window.importMapOverrides.getDisabledOverrides()).toEqual([
-          "package3",
-        ]);
-        expect(result).toEqual(true);
-        await assertChangeEventListenerIsCalled();
-      });
+          expect(window.importMapOverrides.getDisabledOverrides(type)).toEqual([
+            "package3",
+          ]);
+          expect(result).toEqual(true);
+          await assertChangeEventListenerIsCalled();
+        }
+      );
 
-      it("should maintain override disabled and return false if it was already disabled before", async () => {
-        await setDocumentAndLoadScript();
-        window.localStorage.setItem(
-          "import-map-overrides-disabled",
-          JSON.stringify(["package3"])
-        );
-        const result = await window.importMapOverrides.disableOverride(
-          "package3"
-        );
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "should maintain override disabled and return false if it was already disabled before %s",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          window.localStorage.setItem(
+            `import-map-overrides-disabled:${type}`,
+            JSON.stringify(["package3"])
+          );
+          const result = await window.importMapOverrides.disableOverride(
+            "package3",
+            type
+          );
 
-        expect(window.importMapOverrides.getDisabledOverrides()).toEqual([
-          "package3",
-        ]);
-        expect(result).toEqual(false);
-      });
+          expect(window.importMapOverrides.getDisabledOverrides(type)).toEqual([
+            "package3",
+          ]);
+          expect(result).toEqual(false);
+        }
+      );
     });
 
     describe("enableOverride", () => {
-      it("should re-enable a disabled override and return true", async () => {
-        await setDocumentAndLoadScript();
-        window.localStorage.setItem(
-          "import-map-overrides-disabled",
-          JSON.stringify(["package3"])
-        );
-        const result = await window.importMapOverrides.enableOverride(
-          "package3"
-        );
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "should re-enable a disabled override and return true %s",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          window.localStorage.setItem(
+            `import-map-overrides-disabled:${type}`,
+            JSON.stringify(["package3"])
+          );
+          const result = await window.importMapOverrides.enableOverride(
+            "package3",
+            type
+          );
 
-        expect(window.importMapOverrides.getDisabledOverrides()).toEqual([]);
-        expect(result).toEqual(true);
-        await assertChangeEventListenerIsCalled();
-      });
+          expect(window.importMapOverrides.getDisabledOverrides(type)).toEqual(
+            []
+          );
+          expect(result).toEqual(true);
+          await assertChangeEventListenerIsCalled();
+        }
+      );
 
-      it("should return false if override was not disabled before", async () => {
-        await setDocumentAndLoadScript();
-        const result = await window.importMapOverrides.enableOverride(
-          "package3"
-        );
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "should return false if override was not disabled before %s",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          const result = await window.importMapOverrides.enableOverride(
+            "package3",
+            type
+          );
 
-        expect(window.importMapOverrides.getDisabledOverrides()).toEqual([]);
-        expect(result).toEqual(false);
-      });
+          expect(window.importMapOverrides.getDisabledOverrides(type)).toEqual(
+            []
+          );
+          expect(result).toEqual(false);
+        }
+      );
     });
 
     describe("addOverride", () => {
-      it("should add an override", async () => {
-        await setDocumentAndLoadScript();
-        const map = await window.importMapOverrides.addOverride(
-          "package3",
-          "https://cdn.skypack.dev/package33.js"
-        );
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "%s - should add an override",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          const map = await window.importMapOverrides.addOverride(
+            "package3",
+            "https://cdn.skypack.dev/package33.js",
+            type
+          );
 
-        expect(localStorage.getItem("import-map-override:package3")).toEqual(
-          "https://cdn.skypack.dev/package33.js"
-        );
-        expect(map).toEqual({
-          imports: {
-            package3: "https://cdn.skypack.dev/package33.js",
-          },
-          scopes: {},
-        });
-        await assertChangeEventListenerIsCalled();
-      });
+          expect(
+            localStorage.getItem(`import-map-override:${type}:package3`)
+          ).toEqual("https://cdn.skypack.dev/package33.js");
+          expect(map[type]).toEqual({
+            imports: {
+              package3: "https://cdn.skypack.dev/package33.js",
+            },
+            scopes: {},
+          });
+          await assertChangeEventListenerIsCalled();
+        }
+      );
 
-      it("should add an override by specifying only the port number", async () => {
-        await setDocumentAndLoadScript();
-        const map = await window.importMapOverrides.addOverride(
-          "@demo/package33",
-          "8080"
-        );
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "%s - should add an override by specifying only the port number",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          const map = await window.importMapOverrides.addOverride(
+            "@demo/package33",
+            "8080",
+            type
+          );
 
-        expect(
-          localStorage.getItem("import-map-override:@demo/package33")
-        ).toEqual("//localhost:8080/demo-package33.js");
-        expect(map).toEqual({
-          imports: {
-            "@demo/package33": "//localhost:8080/demo-package33.js",
-          },
-          scopes: {},
-        });
-        await assertChangeEventListenerIsCalled();
-      });
+          expect(
+            localStorage.getItem(`import-map-override:${type}:@demo/package33`)
+          ).toEqual("//localhost:8080/demo-package33.js");
+          expect(map[type]).toEqual({
+            imports: {
+              "@demo/package33": "//localhost:8080/demo-package33.js",
+            },
+            scopes: {},
+          });
+          await assertChangeEventListenerIsCalled();
+        }
+      );
     });
 
     describe("removeOverride", () => {
-      it("should remove an existing override", async () => {
-        await setDocumentAndLoadScript();
-        window.localStorage.setItem(
-          "import-map-override:package3",
-          "https://cdn.skypack.dev/package33"
-        );
-        const result = await window.importMapOverrides.removeOverride(
-          "package3"
-        );
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "%s - should remove an existing override",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          window.localStorage.setItem(
+            `import-map-override:${type}:package3`,
+            "https://cdn.skypack.dev/package33"
+          );
+          const result = await window.importMapOverrides.removeOverride(
+            "package3",
+            type
+          );
 
-        expect(localStorage.getItem("import-map-override:package3")).toEqual(
-          null
-        );
-        expect(result).toBe(true);
-        await assertChangeEventListenerIsCalled();
-      });
+          expect(
+            localStorage.getItem(`import-map-override:${type}:package3`)
+          ).toEqual(null);
+          expect(result).toBe(true);
+          await assertChangeEventListenerIsCalled();
+        }
+      );
     });
 
     describe("resetOverrides", () => {
-      it("should remove all overrides", async () => {
-        await setDocumentAndLoadScript();
-        window.localStorage.setItem(
-          "import-map-override:package3",
-          "https://cdn.skypack.dev/package33"
-        );
-        window.localStorage.setItem(
-          "import-map-override:package4",
-          "https://cdn.skypack.dev/package4"
-        );
-        const map = await window.importMapOverrides.resetOverrides();
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "%s - should remove all overrides",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          window.localStorage.setItem(
+            `import-map-override:${type}:package3`,
+            "https://cdn.skypack.dev/package33"
+          );
+          window.localStorage.setItem(
+            `import-map-override:${type}:package4`,
+            "https://cdn.skypack.dev/package4"
+          );
+          const map = await window.importMapOverrides.resetOverrides();
 
-        expect(localStorage.getItem("import-map-override:package3")).toEqual(
-          null
-        );
-        expect(localStorage.getItem("import-map-override:package4")).toEqual(
-          null
-        );
-        expect(map).toEqual({
-          imports: {},
-          scopes: {},
-        });
-        await assertChangeEventListenerIsCalled();
-      });
+          expect(
+            localStorage.getItem(`import-map-override:${type}:package3`)
+          ).toEqual(null);
+          expect(
+            localStorage.getItem(`import-map-override:${type}:package4`)
+          ).toEqual(null);
+          expect(map[type]).toEqual({
+            imports: {},
+            scopes: {},
+          });
+          await assertChangeEventListenerIsCalled();
+        }
+      );
     });
 
     describe("hasOverrides", () => {
-      it("should return true if there are overrides", async () => {
-        await setDocumentAndLoadScript();
-        window.localStorage.setItem(
-          "import-map-override:package3",
-          "https://cdn.skypack.dev/package33"
-        );
+      test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+        "%s - should return true if there are overrides",
+        async (type) => {
+          await setDocumentAndLoadScript();
+          window.localStorage.setItem(
+            `import-map-override:${type}:package3`,
+            "https://cdn.skypack.dev/package33"
+          );
 
-        expect(window.importMapOverrides.hasOverrides()).toEqual(true);
-      });
+          expect(window.importMapOverrides.hasOverrides()).toEqual(true);
+        }
+      );
 
       it("should return false if there are no overrides", async () => {
         await setDocumentAndLoadScript();
@@ -457,12 +552,48 @@ describe("window.importMapOverrides", () => {
   });
 
   describe("mergeImportMap", () => {
-    it("should merge an import map", async () => {
-      await setDocumentAndLoadScript();
-      const map = await window.importMapOverrides.mergeImportMap(
-        {
+    test.each(["importmap", "systemjs-importmap", "importmap-shim"])(
+      "%s - should merge an import map",
+      async () => {
+        await setDocumentAndLoadScript();
+        const map = await window.importMapOverrides.mergeImportMap(
+          {
+            imports: {
+              package1: "https://cdn.skypack.dev/package10.js",
+              package3: "https://cdn.skypack.dev/package33.js",
+            },
+            scopes: {
+              scope1: {
+                package5: "https://cdn.skypack.dev/package55.js",
+                package6: "https://cdn.skypack.dev/package66.js",
+              },
+              scope3: {
+                package8: "https://cdn.skypack.dev/package89.js",
+                package3: "https://cdn.skypack.dev/package31.js",
+              },
+            },
+          },
+          {
+            imports: {
+              package1: "https://cdn.skypack.dev/package11.js",
+              package2: "https://cdn.skypack.dev/package20.js",
+            },
+            scopes: {
+              scope2: {
+                package7: "https://cdn.skypack.dev/package77.js",
+              },
+              scope3: {
+                package3: "https://cdn.skypack.dev/package32.js",
+                package9: "https://cdn.skypack.dev/package99.js",
+              },
+            },
+          }
+        );
+
+        expect(map).toEqual({
           imports: {
-            package1: "https://cdn.skypack.dev/package10.js",
+            package1: "https://cdn.skypack.dev/package11.js",
+            package2: "https://cdn.skypack.dev/package20.js",
             package3: "https://cdn.skypack.dev/package33.js",
           },
           scopes: {
@@ -470,18 +601,6 @@ describe("window.importMapOverrides", () => {
               package5: "https://cdn.skypack.dev/package55.js",
               package6: "https://cdn.skypack.dev/package66.js",
             },
-            scope3: {
-              package8: "https://cdn.skypack.dev/package89.js",
-              package3: "https://cdn.skypack.dev/package31.js",
-            },
-          },
-        },
-        {
-          imports: {
-            package1: "https://cdn.skypack.dev/package11.js",
-            package2: "https://cdn.skypack.dev/package20.js",
-          },
-          scopes: {
             scope2: {
               package7: "https://cdn.skypack.dev/package77.js",
             },
@@ -490,29 +609,8 @@ describe("window.importMapOverrides", () => {
               package9: "https://cdn.skypack.dev/package99.js",
             },
           },
-        }
-      );
-
-      expect(map).toEqual({
-        imports: {
-          package1: "https://cdn.skypack.dev/package11.js",
-          package2: "https://cdn.skypack.dev/package20.js",
-          package3: "https://cdn.skypack.dev/package33.js",
-        },
-        scopes: {
-          scope1: {
-            package5: "https://cdn.skypack.dev/package55.js",
-            package6: "https://cdn.skypack.dev/package66.js",
-          },
-          scope2: {
-            package7: "https://cdn.skypack.dev/package77.js",
-          },
-          scope3: {
-            package3: "https://cdn.skypack.dev/package32.js",
-            package9: "https://cdn.skypack.dev/package99.js",
-          },
-        },
-      });
-    });
+        });
+      }
+    );
   });
 });

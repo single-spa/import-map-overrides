@@ -25,6 +25,26 @@ export const importMapType = importMapMetaElement
 
 export let isDisabled;
 
+const allowedMapTypes = ["importmap", "systemjs-importmap", "importmap-shim"];
+
+const validateType = (type) => {
+  if (allowedMapTypes.indexOf(type) === -1) {
+    throw Error(
+      `Invalid import map type '${type}'. Must be one of ${allowedMapTypes.join(
+        ", "
+      )}`
+    );
+  }
+};
+
+const getLocalStorageModuleKey = (type, moduleName) => {
+  return `${localStoragePrefix}${type}:${moduleName}`;
+};
+
+const getExternalOverridesKey = (type) => {
+  return `${externalOverridesLocalStorageKey}:${type}`;
+};
+
 if (domainsElement) {
   const content = domainsElement.getAttribute("content");
   if (!content) {
@@ -67,6 +87,7 @@ function init() {
   const serverOverrides = importMapMetaElement
     ? importMapMetaElement.hasAttribute("server-cookie")
     : false;
+  // server only not supported
   const serverOnly = importMapMetaElement
     ? importMapMetaElement.hasAttribute("server-only")
     : false;
@@ -74,38 +95,48 @@ function init() {
   let defaultMapPromise;
 
   window.importMapOverrides = {
-    addOverride(moduleName, url) {
+    addOverride(moduleName, url, type = "importmap") {
+      validateType(type);
       const portRegex = /^\d+$/g;
       if (portRegex.test(url)) {
         url = imo.getUrlFromPort(moduleName, url);
       }
-      const key = localStoragePrefix + moduleName;
+      const key = getLocalStorageModuleKey(type, moduleName);
       localStorage.setItem(key, url);
       if (serverOverrides) {
         document.cookie = `${key}=${url}`;
       }
       fireChangedEvent();
-      return imo.getOverrideMap();
+      return imo.getOverrideMap(type);
     },
     getOverrideMap(includeDisabled = false) {
-      const overrides = createEmptyImportMap();
-      const disabledOverrides = imo.getDisabledOverrides();
+      const overrides = allowedMapTypes.reduce((acc, type) => {
+        acc[type] = createEmptyImportMap();
+        return acc;
+      }, {});
+      const disabledOverrides = allowedMapTypes.reduce((acc, type) => {
+        acc[type] = imo.getDisabledOverrides(type);
+        return acc;
+      }, {});
 
-      const setOverride = (moduleName, path) => {
-        if (includeDisabled || !(disabledOverrides.indexOf(moduleName) >= 0)) {
-          overrides.imports[moduleName] = path;
+      const setOverride = (moduleName, path, type) => {
+        if (
+          includeDisabled ||
+          !(disabledOverrides[type].indexOf(moduleName) >= 0)
+        ) {
+          overrides[type].imports[moduleName] = path;
         }
       };
 
       // get from localstorage
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key.indexOf(localStoragePrefix) === 0) {
-          setOverride(
-            key.slice(localStoragePrefix.length),
-            localStorage.getItem(key)
-          );
-        }
+        allowedMapTypes.forEach((type) => {
+          const keyType = `${localStoragePrefix}${type}`;
+          if (key.indexOf(`${keyType}:`) === 0) {
+            setOverride(key.split(":")[2], localStorage.getItem(key), type);
+          }
+        });
       }
 
       // get from url if query param exist
@@ -116,6 +147,7 @@ function init() {
           : window.location.href
       );
 
+      // todo - will not work
       if (queryParam) {
         let queryParamImportMap;
         try {
@@ -132,8 +164,8 @@ function init() {
 
       return overrides;
     },
-    removeOverride(moduleName) {
-      const key = localStoragePrefix + moduleName;
+    removeOverride(moduleName, type) {
+      const key = getLocalStorageModuleKey(type, moduleName);
       const hasItem = localStorage.getItem(key) !== null;
       localStorage.removeItem(key);
       if (serverOverrides) {
@@ -144,16 +176,22 @@ function init() {
       return hasItem;
     },
     resetOverrides() {
-      Object.keys(imo.getOverrideMap(true).imports).forEach((moduleName) => {
-        imo.removeOverride(moduleName);
+      allowedMapTypes.forEach((type) => {
+        Object.keys(imo.getOverrideMap(true)[type].imports).forEach(
+          (moduleName) => {
+            imo.removeOverride(moduleName, type);
+          }
+        );
+        localStorage.removeItem(`${disabledOverridesLocalStorageKey}:${type}`);
+        localStorage.removeItem(getExternalOverridesKey(type));
       });
-      localStorage.removeItem(disabledOverridesLocalStorageKey);
-      localStorage.removeItem(externalOverridesLocalStorageKey);
       fireChangedEvent();
       return imo.getOverrideMap();
     },
     hasOverrides() {
-      return Object.keys(imo.getOverrideMap().imports).length > 0;
+      return allowedMapTypes.some(
+        (type) => Object.keys(imo.getOverrideMap(true)[type].imports).length > 0
+      );
     },
     getUrlFromPort(moduleName, port) {
       const fileName = moduleName.replace(/@/g, "").replace(/\//g, "-");
@@ -220,6 +258,7 @@ function init() {
         ))
       );
     },
+    // will not work
     getCurrentPageMap() {
       return Promise.all([
         imo.getDefaultMap(),
@@ -242,6 +281,7 @@ function init() {
         });
       return currentPageExternalOverrides;
     },
+    // will not work
     getNextPageMap() {
       return Promise.all([
         imo.getDefaultMap(),
@@ -253,11 +293,11 @@ function init() {
         );
       });
     },
-    disableOverride(moduleName) {
-      const disabledOverrides = imo.getDisabledOverrides();
+    disableOverride(moduleName, type) {
+      const disabledOverrides = imo.getDisabledOverrides(type);
       if (!includes(disabledOverrides, moduleName)) {
         localStorage.setItem(
-          disabledOverridesLocalStorageKey,
+          `${disabledOverridesLocalStorageKey}:${type}`,
           JSON.stringify(disabledOverrides.concat(moduleName))
         );
         fireChangedEvent();
@@ -266,13 +306,13 @@ function init() {
         return false;
       }
     },
-    enableOverride(moduleName) {
-      const disabledOverrides = imo.getDisabledOverrides();
+    enableOverride(moduleName, type) {
+      const disabledOverrides = imo.getDisabledOverrides(type);
       const index = disabledOverrides.indexOf(moduleName);
       if (index >= 0) {
         disabledOverrides.splice(index, 1);
         localStorage.setItem(
-          disabledOverridesLocalStorageKey,
+          `${disabledOverridesLocalStorageKey}:${type}`,
           JSON.stringify(disabledOverrides)
         );
         fireChangedEvent();
@@ -281,40 +321,40 @@ function init() {
         return false;
       }
     },
-    getDisabledOverrides() {
+    getDisabledOverrides(type) {
       const disabledOverrides = localStorage.getItem(
-        disabledOverridesLocalStorageKey
+        `${disabledOverridesLocalStorageKey}:${type}`
       );
       return disabledOverrides ? JSON.parse(disabledOverrides) : [];
     },
-    isDisabled(moduleName) {
-      return includes(imo.getDisabledOverrides(), moduleName);
+    isDisabled(moduleName, type) {
+      return includes(imo.getDisabledOverrides(type), moduleName);
     },
-    getExternalOverrides() {
+    getExternalOverrides(type) {
       let localStorageValue = localStorage.getItem(
-        externalOverridesLocalStorageKey
+        getExternalOverridesKey(type)
       );
       return localStorageValue ? JSON.parse(localStorageValue).sort() : [];
     },
-    addExternalOverride(url) {
+    addExternalOverride(url, type) {
       url = new URL(url, document.baseURI).href;
-      const overrides = imo.getExternalOverrides();
+      const overrides = imo.getExternalOverrides(type);
       if (includes(overrides, url)) {
         return false;
       } else {
         localStorage.setItem(
-          externalOverridesLocalStorageKey,
+          getExternalOverridesKey(type),
           JSON.stringify(overrides.concat(url))
         );
         fireChangedEvent();
         return true;
       }
     },
-    removeExternalOverride(url) {
-      const overrides = imo.getExternalOverrides();
+    removeExternalOverride(url, type) {
+      const overrides = imo.getExternalOverrides(type);
       if (includes(overrides, url)) {
         localStorage.setItem(
-          externalOverridesLocalStorageKey,
+          getExternalOverridesKey(type),
           JSON.stringify(overrides.filter((override) => override !== url))
         );
         fireChangedEvent();
@@ -323,6 +363,7 @@ function init() {
         return false;
       }
     },
+    // will not work
     getExternalOverrideMap(externalOverrides = imo.getExternalOverrides()) {
       return externalOverrides.reduce((result, externalOverride) => {
         const fetchPromise =
@@ -379,8 +420,8 @@ function init() {
     });
   }
 
-  const initialOverrideMap = imo.getOverrideMap();
-  const initialExternalOverrideMaps = imo.getExternalOverrides();
+  const initialOverrideMap = imo.getOverrideMap(true);
+  // const initialExternalOverrideMaps = imo.getExternalOverrides();
 
   let referenceNode;
 
@@ -392,9 +433,13 @@ function init() {
     referenceNode = overridableImportMap;
 
     if (!referenceNode) {
-      const importMaps = document.querySelectorAll(
-        `script[type="${importMapType}"]`
-      );
+      let importMaps = [];
+      allowedMapTypes.forEach((type) => {
+        importMaps = [
+          ...importMaps,
+          ...document.querySelectorAll(`script[type="${type}"]`),
+        ];
+      });
       referenceNode = importMaps ? importMaps[importMaps.length - 1] : null;
     }
 
@@ -414,28 +459,31 @@ function init() {
       }
 
       referenceNode = insertOverrideMap(
-        imo.mergeImportMap(originalMap, initialOverrideMap),
+        imo.mergeImportMap(originalMap, initialOverrideMap["importmap"]),
         `import-map-overrides`,
-        referenceNode
+        referenceNode,
+        "importmap"
       );
-      insertAllExternalOverrideMaps();
-    } else {
-      insertAllExternalOverrideMaps();
-      if (Object.keys(initialOverrideMap.imports).length > 0) {
-        referenceNode = insertOverrideMap(
-          initialOverrideMap,
+    }
+    insertAllExternalOverrideMaps();
+    ["systemjs-importmap", "importmap-shim"].forEach((type) => {
+      if (Object.keys(initialOverrideMap[type].imports).length > 0) {
+        referenceNode = document.querySelector(`script[type="${type}"]`);
+        insertOverrideMap(
+          initialOverrideMap[type],
           `import-map-overrides`,
-          referenceNode
+          referenceNode,
+          type
         );
       }
-    }
+    });
   }
 
   fireEvent("init");
 
-  function insertOverrideMap(map, id, referenceNode) {
+  function insertOverrideMap(map, id, referenceNode, type) {
     const overrideMapElement = document.createElement("script");
-    overrideMapElement.type = importMapType;
+    overrideMapElement.type = type;
     overrideMapElement.id = id; // for debugging and for UI to identify this import map as special
     overrideMapElement.setAttribute(overrideAttribute, "");
     if (typeof map === "string") {
@@ -492,15 +540,16 @@ function init() {
     return { imports: {}, scopes: {} };
   }
 
+  // will not work
   function insertAllExternalOverrideMaps() {
-    if (initialExternalOverrideMaps.length > 0) {
-      initialExternalOverrideMaps.forEach((mapUrl, index) => {
-        referenceNode = insertOverrideMap(
-          mapUrl,
-          `import-map-overrides-external-${index}`
-        );
-      });
-    }
+    // if (initialExternalOverrideMaps.length > 0) {
+    //   initialExternalOverrideMaps.forEach((mapUrl, index) => {
+    //     referenceNode = insertOverrideMap(
+    //       mapUrl,
+    //       `import-map-overrides-external-${index}`
+    //     );
+    //   });
+    // }
   }
 }
 

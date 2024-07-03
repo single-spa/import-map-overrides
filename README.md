@@ -1,3 +1,27 @@
+## This is a fork to [Singele Spa / import-map-overrides](https://github.com/single-spa/import-map-overrides) lib
+
+#### The fork now supports **_multiple_ importmap types overrides** on the same page.
+
+The modifications are all done on `jf-mods` branch
+
+**tldr** - need to add a 3rd parameter with the importmap type when adding an override (default is `importmap`)
+
+```javascript
+importMapOverrides.addOverride(
+  "@jfrog/ui-platform-microfrontend-artifactory",
+  "http://127.0.0.1:8088/js/app.umd.js",
+  "systemjs-importmap"
+);
+```
+
+Breaking changes - the following features **might not work anymore**:
+
+- external overrides
+- server cookie
+- ui
+
+#
+
 # import-map-overrides
 
 [![](https://data.jsdelivr.com/v1/package/npm/import-map-overrides/badge)](https://www.jsdelivr.com/package/npm/import-map-overrides)

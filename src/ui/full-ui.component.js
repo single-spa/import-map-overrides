@@ -31,11 +31,11 @@ export default class FullUI extends Component {
     const shouldShow =
       !props.customElement.hasAttribute("show-when-local-storage") ||
       localStorage.getItem(
-        props.customElement.getAttribute("show-when-local-storage")
+        props.customElement.getAttribute("show-when-local-storage"),
       ) === "true";
 
     const triggerPosition = validateTriggerPosition(
-      props.customElement.getAttribute("trigger-position")
+      props.customElement.getAttribute("trigger-position"),
     );
 
     if (!shouldShow) {
@@ -72,7 +72,7 @@ export default class FullUI extends Component {
   };
   useDevLibs = () => {
     const localStorageValue = localStorage.getItem(
-      "import-map-overrides-dev-libs"
+      "import-map-overrides-dev-libs",
     );
     return localStorageValue
       ? localStorageValue === "true"

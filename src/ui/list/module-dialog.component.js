@@ -9,7 +9,7 @@ export default class ModuleDialog extends Component {
       this.props.module.overrideUrl ===
         window.importMapOverrides.getUrlFromPort(
           this.props.module.moduleName,
-          match[1]
+          match[1],
         )
     ) {
       return match[1];
@@ -35,7 +35,7 @@ export default class ModuleDialog extends Component {
         { overrideUrl: this.props.module.overrideUrl || "" },
         () => {
           this.focusFirstInput();
-        }
+        },
       );
     }
   }
@@ -139,11 +139,11 @@ export default class ModuleDialog extends Component {
                   onClick={() => {
                     if (this.props.module.disabled) {
                       window.importMapOverrides.enableOverride(
-                        this.props.module.moduleName
+                        this.props.module.moduleName,
                       );
                     } else {
                       window.importMapOverrides.disableOverride(
-                        this.props.module.moduleName
+                        this.props.module.moduleName,
                       );
                     }
                     this.props.cancel();
@@ -204,7 +204,7 @@ export default class ModuleDialog extends Component {
     return portRegex.test(this.state.overrideUrl)
       ? window.importMapOverrides.getUrlFromPort(
           moduleName,
-          this.state.overrideUrl
+          this.state.overrideUrl,
         )
       : this.state.overrideUrl;
   };

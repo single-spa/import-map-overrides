@@ -1,6 +1,3 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 pnpm exec concurrently pnpm:lint "pretty-quick --staged"
 pnpm run test --coverage --watchAll=false
 

@@ -12,7 +12,7 @@ const denyListPrefix = "denylist:";
 export const queryParamOverridesName = "imo";
 
 const importMapMetaElement = document.querySelector(
-  'meta[name="importmap-type"]'
+  'meta[name="importmap-type"]',
 );
 
 const domainsElement = document.querySelector(`meta[name="${domainsMeta}"]`);
@@ -33,7 +33,7 @@ if (domainsElement) {
 
   const matchHostname = (domain) =>
     new RegExp(escapeStringRegexp(domain).replace("\\*", ".+")).test(
-      window.location.hostname
+      window.location.hostname,
     );
 
   if (content.indexOf(allowListPrefix) === 0) {
@@ -45,7 +45,7 @@ if (domainsElement) {
   } else {
     // eslint-disable-next-line no-console
     console.log(
-      `Invalid ${domainsMeta} meta content attribute - must start with ${allowListPrefix} or ${denyListPrefix}`
+      `Invalid ${domainsMeta} meta content attribute - must start with ${allowListPrefix} or ${denyListPrefix}`,
     );
   }
 } else {
@@ -54,7 +54,7 @@ if (domainsElement) {
 
 if (!canAccessLocalStorage()) {
   console.warn(
-    "Disabling import-map-overrides, since local storage is not readable"
+    "Disabling import-map-overrides, since local storage is not readable",
   );
   isDisabled = true;
 }
@@ -106,7 +106,7 @@ function init() {
         if (key.indexOf(localStoragePrefix) === 0) {
           setOverride(
             key.slice(localStoragePrefix.length),
-            localStorage.getItem(key)
+            localStorage.getItem(key),
           );
         }
       }
@@ -117,7 +117,7 @@ function init() {
           queryParamOverridesName,
           window.location != window.parent.location
             ? document.referrer
-            : window.location.href
+            : window.location.href,
         );
 
         if (queryParam) {
@@ -126,7 +126,7 @@ function init() {
             queryParamImportMap = JSON.parse(queryParam);
           } catch (e) {
             throw Error(
-              `Invalid importMap query param - text content must be json`
+              `Invalid importMap query param - text content must be json`,
             );
           }
           Object.keys(queryParamImportMap.imports).forEach((moduleName) => {
@@ -202,7 +202,7 @@ function init() {
         defaultMapPromise ||
         (defaultMapPromise = Array.prototype.reduce.call(
           document.querySelectorAll(
-            `script[type="${importMapType}"], script[type="overridable-importmap"]`
+            `script[type="${importMapType}"], script[type="overridable-importmap"]`,
           ),
           (promise, scriptEl) => {
             if (scriptEl.hasAttribute(overrideAttribute)) {
@@ -217,11 +217,11 @@ function init() {
 
               return Promise.all([promise, nextPromise]).then(
                 ([originalMap, newMap]) =>
-                  imo.mergeImportMap(originalMap, newMap)
+                  imo.mergeImportMap(originalMap, newMap),
               );
             }
           },
-          Promise.resolve(createEmptyImportMap())
+          Promise.resolve(createEmptyImportMap()),
         ))
       );
     },
@@ -232,7 +232,7 @@ function init() {
       ]).then(([defaultMap, externalOverridesMap]) => {
         return imo.mergeImportMap(
           imo.mergeImportMap(defaultMap, externalOverridesMap),
-          initialOverrideMap
+          initialOverrideMap,
         );
       });
     },
@@ -240,7 +240,7 @@ function init() {
       const currentPageExternalOverrides = [];
       document
         .querySelectorAll(
-          `[${overrideAttribute}]:not([id="import-map-overrides"])`
+          `[${overrideAttribute}]:not([id="import-map-overrides"])`,
         )
         .forEach((externalOverrideEl) => {
           currentPageExternalOverrides.push(externalOverrideEl.src);
@@ -254,7 +254,7 @@ function init() {
       ]).then(([defaultMap, externalOverridesMap]) => {
         return imo.mergeImportMap(
           imo.mergeImportMap(defaultMap, externalOverridesMap),
-          imo.getOverrideMap()
+          imo.getOverrideMap(),
         );
       });
     },
@@ -263,7 +263,7 @@ function init() {
       if (!includes(disabledOverrides, moduleName)) {
         localStorage.setItem(
           disabledOverridesLocalStorageKey,
-          JSON.stringify(disabledOverrides.concat(moduleName))
+          JSON.stringify(disabledOverrides.concat(moduleName)),
         );
         fireChangedEvent();
         return true;
@@ -278,7 +278,7 @@ function init() {
         disabledOverrides.splice(index, 1);
         localStorage.setItem(
           disabledOverridesLocalStorageKey,
-          JSON.stringify(disabledOverrides)
+          JSON.stringify(disabledOverrides),
         );
         fireChangedEvent();
         return true;
@@ -288,7 +288,7 @@ function init() {
     },
     getDisabledOverrides() {
       const disabledOverrides = localStorage.getItem(
-        disabledOverridesLocalStorageKey
+        disabledOverridesLocalStorageKey,
       );
       return disabledOverrides ? JSON.parse(disabledOverrides) : [];
     },
@@ -297,7 +297,7 @@ function init() {
     },
     getExternalOverrides() {
       let localStorageValue = localStorage.getItem(
-        externalOverridesLocalStorageKey
+        externalOverridesLocalStorageKey,
       );
       return localStorageValue ? JSON.parse(localStorageValue).sort() : [];
     },
@@ -309,7 +309,7 @@ function init() {
       } else {
         localStorage.setItem(
           externalOverridesLocalStorageKey,
-          JSON.stringify(overrides.concat(url))
+          JSON.stringify(overrides.concat(url)),
         );
         fireChangedEvent();
         return true;
@@ -320,7 +320,7 @@ function init() {
       if (includes(overrides, url)) {
         localStorage.setItem(
           externalOverridesLocalStorageKey,
-          JSON.stringify(overrides.filter((override) => override !== url))
+          JSON.stringify(overrides.filter((override) => override !== url)),
         );
         fireChangedEvent();
         return true;
@@ -337,7 +337,7 @@ function init() {
         return Promise.all([result, fetchPromise]).then(
           ([firstMap, secondMap]) => {
             return imo.mergeImportMap(firstMap, secondMap);
-          }
+          },
         );
       }, Promise.resolve(createEmptyImportMap()));
     },
@@ -347,7 +347,7 @@ function init() {
         (externalOverrideMapPromises[importMapUrl] =
           fetchExternalMap(importMapUrl));
       return promise.then(
-        () => !includes(imo.invalidExternalMaps, importMapUrl)
+        () => !includes(imo.invalidExternalMaps, importMapUrl),
       );
     },
     invalidExternalMaps: [],
@@ -391,14 +391,14 @@ function init() {
 
   if (!serverOnly) {
     const overridableImportMap = document.querySelector(
-      'script[type="overridable-importmap"]'
+      'script[type="overridable-importmap"]',
     );
 
     referenceNode = overridableImportMap;
 
     if (!referenceNode) {
       const importMaps = document.querySelectorAll(
-        `script[type="${importMapType}"]`
+        `script[type="${importMapType}"]`,
       );
       referenceNode = importMaps ? importMaps[importMaps.length - 1] : null;
     }
@@ -406,7 +406,7 @@ function init() {
     if (overridableImportMap) {
       if (overridableImportMap.src) {
         throw Error(
-          `import-map-overrides: external import maps with type="overridable-importmap" are not supported`
+          `import-map-overrides: external import maps with type="overridable-importmap" are not supported`,
         );
       }
       let originalMap;
@@ -414,14 +414,14 @@ function init() {
         originalMap = JSON.parse(overridableImportMap.textContent);
       } catch (e) {
         throw Error(
-          `Invalid <script type="overridable-importmap"> - text content must be json`
+          `Invalid <script type="overridable-importmap"> - text content must be json`,
         );
       }
 
       referenceNode = insertOverrideMap(
         imo.mergeImportMap(originalMap, initialOverrideMap),
         `import-map-overrides`,
-        referenceNode
+        referenceNode,
       );
       insertAllExternalOverrideMaps();
     } else {
@@ -430,7 +430,7 @@ function init() {
         referenceNode = insertOverrideMap(
           initialOverrideMap,
           `import-map-overrides`,
-          referenceNode
+          referenceNode,
         );
       }
     }
@@ -466,8 +466,8 @@ function init() {
             return r.json().catch((err) => {
               console.warn(
                 Error(
-                  `External override import map contained invalid json, at url ${r.url}. ${err}`
-                )
+                  `External override import map contained invalid json, at url ${r.url}. ${err}`,
+                ),
               );
               imo.invalidExternalMaps.push(r.url);
               return createEmptyImportMap();
@@ -475,8 +475,8 @@ function init() {
           } else {
             console.warn(
               Error(
-                `Unable to download external override import map from url ${r.url}. Server responded with status ${r.status}`
-              )
+                `Unable to download external override import map from url ${r.url}. Server responded with status ${r.status}`,
+              ),
             );
             imo.invalidExternalMaps.push(r.url);
             return createEmptyImportMap();
@@ -484,11 +484,11 @@ function init() {
         },
         () => {
           console.warn(
-            Error(`Unable to download external import map at url '${url}'`)
+            Error(`Unable to download external import map at url '${url}'`),
           );
           imo.invalidExternalMaps.push(new URL(url, document.baseURI).href);
           return createEmptyImportMap();
-        }
+        },
       )
       .then((importMap) => expandRelativeUrlsInImportMap(importMap, url));
   }
@@ -502,7 +502,7 @@ function init() {
       initialExternalOverrideMaps.forEach((mapUrl, index) => {
         referenceNode = insertOverrideMap(
           mapUrl,
-          `import-map-overrides-external-${index}`
+          `import-map-overrides-external-${index}`,
         );
       });
     }
@@ -531,7 +531,7 @@ function expandRelativeUrlsInImportMap(importMap, baseUrl) {
     scopes: Object.keys(importMap.scopes || {}).reduce((result, scopeKey) => {
       result[scopeKey] = expandRelativeUrlImports(
         importMap.scopes[scopeKey],
-        baseUrl
+        baseUrl,
       );
       return result;
     }, {}),

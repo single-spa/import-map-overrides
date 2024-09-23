@@ -31,7 +31,7 @@ describe("window.importMapOverrides", () => {
     });
     window.removeEventListener(
       "import-map-overrides:change",
-      changeEventListener
+      changeEventListener,
     );
   });
 
@@ -45,7 +45,7 @@ describe("window.importMapOverrides", () => {
     await new Promise((resolve) =>
       changeEventListener.mockImplementation(() => {
         resolve();
-      })
+      }),
     );
   }
 
@@ -62,12 +62,12 @@ describe("window.importMapOverrides", () => {
       ];
       localStorageMock.setItem(
         "import-map-overrides-external-maps",
-        JSON.stringify(overrides)
+        JSON.stringify(overrides),
       );
       await setDocumentAndLoadScript();
 
       expect(window.importMapOverrides.getExternalOverrides()).toEqual(
-        overrides
+        overrides,
       );
     });
   });
@@ -80,17 +80,17 @@ describe("window.importMapOverrides", () => {
       ];
       localStorageMock.setItem(
         "import-map-overrides-external-maps",
-        JSON.stringify(overrides)
+        JSON.stringify(overrides),
       );
       await setDocumentAndLoadScript();
 
       expect(
         window.importMapOverrides.addExternalOverride(
-          "https://cdn.skypack.dev/importmap3.json"
-        )
+          "https://cdn.skypack.dev/importmap3.json",
+        ),
       ).toEqual(true);
       expect(window.importMapOverrides.getExternalOverrides()).toEqual(
-        overrides.concat("https://cdn.skypack.dev/importmap3.json")
+        overrides.concat("https://cdn.skypack.dev/importmap3.json"),
       );
       await assertChangeEventListenerIsCalled();
     });
@@ -102,17 +102,17 @@ describe("window.importMapOverrides", () => {
       ];
       localStorageMock.setItem(
         "import-map-overrides-external-maps",
-        JSON.stringify(overrides)
+        JSON.stringify(overrides),
       );
       await setDocumentAndLoadScript();
 
       expect(
         window.importMapOverrides.addExternalOverride(
-          "https://cdn.skypack.dev/importmap2.json"
-        )
+          "https://cdn.skypack.dev/importmap2.json",
+        ),
       ).toEqual(false);
       expect(window.importMapOverrides.getExternalOverrides()).toEqual(
-        overrides
+        overrides,
       );
     });
   });
@@ -125,14 +125,14 @@ describe("window.importMapOverrides", () => {
       ];
       localStorageMock.setItem(
         "import-map-overrides-external-maps",
-        JSON.stringify(overrides)
+        JSON.stringify(overrides),
       );
       await setDocumentAndLoadScript();
 
       expect(
         window.importMapOverrides.removeExternalOverride(
-          "https://cdn.skypack.dev/importmap2.json"
-        )
+          "https://cdn.skypack.dev/importmap2.json",
+        ),
       ).toEqual(true);
       expect(window.importMapOverrides.getExternalOverrides()).toEqual([
         "https://cdn.skypack.dev/importmap1.json",
@@ -147,17 +147,17 @@ describe("window.importMapOverrides", () => {
       ];
       localStorageMock.setItem(
         "import-map-overrides-external-maps",
-        JSON.stringify(overrides)
+        JSON.stringify(overrides),
       );
       await setDocumentAndLoadScript();
 
       expect(
         window.importMapOverrides.removeExternalOverride(
-          "https://cdn.skypack.dev/importmap3.json"
-        )
+          "https://cdn.skypack.dev/importmap3.json",
+        ),
       ).toEqual(false);
       expect(window.importMapOverrides.getExternalOverrides()).toEqual(
-        overrides
+        overrides,
       );
     });
   });
@@ -166,7 +166,7 @@ describe("window.importMapOverrides", () => {
     it("should return an empty override map if no external overrides are set", async () => {
       await setDocumentAndLoadScript();
       expect(
-        window.importMapOverrides.getExternalOverrideMap()
+        window.importMapOverrides.getExternalOverrideMap(),
       ).resolves.toEqual({ imports: {}, scopes: {} });
     });
 
@@ -240,7 +240,7 @@ describe("window.importMapOverrides", () => {
       });
 
       const result = await window.importMapOverrides.isExternalMapValid(
-        "https://cdn.skypack.dev/importmap1.json"
+        "https://cdn.skypack.dev/importmap1.json",
       );
 
       expect(result).toEqual(true);
@@ -263,7 +263,7 @@ describe("window.importMapOverrides", () => {
       });
 
       const result = await window.importMapOverrides.isExternalMapValid(
-        "https://cdn.skypack.dev/importmap1.json"
+        "https://cdn.skypack.dev/importmap1.json",
       );
 
       expect(result).toEqual(false);
@@ -285,7 +285,7 @@ describe("window.importMapOverrides", () => {
       });
 
       const result = await window.importMapOverrides.isExternalMapValid(
-        "https://cdn.skypack.dev/importmap1.json"
+        "https://cdn.skypack.dev/importmap1.json",
       );
 
       expect(result).toEqual(false);
@@ -300,7 +300,7 @@ describe("window.importMapOverrides", () => {
       fetch.mockRejectedValue(new Error("Failed to fetch"));
 
       const result = await window.importMapOverrides.isExternalMapValid(
-        "https://cdn.skypack.dev/importmap1.json"
+        "https://cdn.skypack.dev/importmap1.json",
       );
 
       expect(result).toEqual(false);

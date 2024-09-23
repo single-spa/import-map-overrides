@@ -8,6 +8,7 @@ However, there are things you can do to protect your users from self XSS. Consid
 
 1. (**Most Important and Highly Recommended**) Configure your server to set a [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) HTTP header for your HTML file. In it, consider safelisting the domains that you trust. Doing so is important to protect your users from XSS and other attacks.
 1. Consider removing import-map-overrides from your production application's HTML file, or [configuring a domain list](/docs/configuration.md#domain-list) that disables import map overrides in production. If you properly set a Content-Security-Policy header, this provides no extra security. However, if you have not configured CSP, this will at least make it a bit harder for the user to self XSS. My recommendation is to do CSP instead of this whenever possible.
+1. Consider disabling query parameter overrides by removing the `allow-query-param-override` attribute on the `<meta>` element for import-map-overrides. See [query parameter overrides documentation](/docs/configuration.md#query-parameter-overrides).
 
 ## Node
 

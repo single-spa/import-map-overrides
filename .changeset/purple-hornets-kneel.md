@@ -1,5 +1,5 @@
 ---
-"import-map-overrides": patch
+"import-map-overrides": major
 ---
 
-Option to toggle overrides via query string. Disable this behavior by default.
+Disable query string overrides, by default. Add support for `allow-query-param-override` attribute to `<meta>` element.

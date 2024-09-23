@@ -161,3 +161,17 @@ To configure domains, add a `<meta name="import-map-overrides-domains">` element
   content="allowlist:*.example.com,example-*.com"
 />
 ```
+
+## Query Parameter Overrides
+
+import-map-overrides has an opt-in feature that allows users to set overrides via the `imo` query parameter on the current page. When enabled, the `imo` query parameter value should be a URL-encoded import map. For example, an override map of `{"imports": {"module1": "/module1.js"}}` would be encoded via https://example.com?imo=%7B%22imports%22%3A%7B%22module1%22%3A%22%2Fmodule1.js%22%7D%7D
+
+To enable query parameter overrides, add the `allow-query-param-override` attribute to the `<meta name="importmap-type">` element:
+
+```html
+<meta
+  name="importmap-type"
+  content="systemjs-importmap"
+  allow-query-param-override
+/>
+```

@@ -29,7 +29,7 @@ function addDevLibOverrides(notOverriddenMap) {
     .forEach((libName) => {
       window.importMapOverrides.addOverride(
         libName,
-        devLibs[libName](notOverriddenMap.imports[libName])
+        devLibs[libName](notOverriddenMap.imports[libName]),
       );
     });
 }
@@ -37,7 +37,7 @@ function addDevLibOverrides(notOverriddenMap) {
 export function overridesBesidesDevLibs() {
   return (
     Object.keys(window.importMapOverrides.getOverrideMap().imports).filter(
-      (k) => !devLibs[k]
+      (k) => !devLibs[k],
     ).length > 0
   );
 }

@@ -8,15 +8,18 @@ import { isDisabled } from "../api/js-api";
 if (window.customElements && !isDisabled) {
   window.customElements.define(
     "import-map-overrides-full",
-    preactCustomElement(FullUI, ["show-when-local-storage", "trigger-position"])
+    preactCustomElement(FullUI, [
+      "show-when-local-storage",
+      "trigger-position",
+    ]),
   );
   window.customElements.define(
     "import-map-overrides-popup",
-    preactCustomElement(Popup)
+    preactCustomElement(Popup),
   );
   window.customElements.define(
     "import-map-overrides-list",
-    preactCustomElement(List)
+    preactCustomElement(List),
   );
 }
 
@@ -47,7 +50,7 @@ function preactCustomElement(Comp, observedAttributes = []) {
       this.renderedEl = render(
         h(Comp, { customElement: this }),
         this.shadow,
-        this.renderedEl
+        this.renderedEl,
       );
     }
   };

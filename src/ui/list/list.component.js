@@ -40,7 +40,7 @@ export default class List extends Component {
           updateModuleUrl={this.updateModuleUrl}
           addNewModule={this.addNewModule}
         />,
-        this.dialogContainer
+        this.dialogContainer,
       );
     } else if (prevState.dialogModule && !this.state.dialogModule) {
       render(null, this.dialogContainer);
@@ -56,7 +56,7 @@ export default class List extends Component {
           dialogExternalMap={this.state.dialogExternalMap}
           cancel={this.cancel}
         />,
-        this.dialogContainer
+        this.dialogContainer,
       );
     } else if (prevState.dialogExternalMap && !this.state.dialogExternalMap) {
       render(null, this.dialogContainer);
@@ -96,7 +96,7 @@ export default class List extends Component {
           if (
             devLibs[moduleName] &&
             devLibs[moduleName](
-              this.state.currentPageMap.imports[moduleName]
+              this.state.currentPageMap.imports[moduleName],
             ) === overrideMap[moduleName]
           ) {
             devLibModules.push(mod);
@@ -399,12 +399,12 @@ export default class List extends Component {
 
     if (newUrl === null) {
       window.importMapOverrides.removeOverride(
-        this.state.dialogModule.moduleName
+        this.state.dialogModule.moduleName,
       );
     } else {
       window.importMapOverrides.addOverride(
         this.state.dialogModule.moduleName,
-        newUrl
+        newUrl,
       );
     }
 

@@ -2,7 +2,7 @@ import { babel } from "@rollup/plugin-babel";
 import { terser } from "rollup-plugin-terser";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
-import packageJson from "./package.json";
+import packageJson from "./package.json" with { type: "json" };
 
 const isProduction = process.env.NODE_ENV === "production";
 

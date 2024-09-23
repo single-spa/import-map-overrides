@@ -75,7 +75,9 @@ describe("window.importMapOverrides", () => {
       try {
         const map = await window.importMapOverrides.getDefaultMap();
       } catch (e) {
-        expect(e.message).toEqual("Unexpected token M in JSON at position 0");
+        expect(e.message).toEqual(
+          "Unexpected token 'M', \"Malformed\" is not valid JSON",
+        );
       }
     });
 
@@ -157,7 +159,7 @@ describe("window.importMapOverrides", () => {
             package4: "https://cdn.skypack.dev/package4",
             package5: "https://cdn.skypack.dev/package5",
           },
-        })
+        }),
       );
 
       const map = await window.importMapOverrides.getDefaultMap();
@@ -190,11 +192,11 @@ describe("window.importMapOverrides", () => {
       await setDocumentAndLoadScript();
       window.localStorage.setItem(
         "import-map-override:package3",
-        "https://cdn.skypack.dev/package33"
+        "https://cdn.skypack.dev/package33",
       );
       window.localStorage.setItem(
         "import-map-override:package4",
-        "https://cdn.skypack.dev/package4"
+        "https://cdn.skypack.dev/package4",
       );
       const map = await window.importMapOverrides.getOverrideMap();
 
@@ -216,7 +218,7 @@ describe("window.importMapOverrides", () => {
           "imo",
           JSON.stringify({
             imports: { package3: "https://cdn.skypack.dev/package33" },
-          })
+          }),
         );
         window.history.replaceState({}, "", url);
         document.body.appendChild(metaElement);
@@ -264,14 +266,14 @@ describe("window.importMapOverrides", () => {
     beforeEach(() => {
       window.addEventListener(
         "import-map-overrides:change",
-        changeEventListener
+        changeEventListener,
       );
     });
 
     afterEach(() => {
       window.removeEventListener(
         "import-map-overrides:change",
-        changeEventListener
+        changeEventListener,
       );
     });
 
@@ -280,7 +282,7 @@ describe("window.importMapOverrides", () => {
       await new Promise((resolve) =>
         changeEventListener.mockImplementation(() => {
           resolve();
-        })
+        }),
       );
     }
 
@@ -295,7 +297,7 @@ describe("window.importMapOverrides", () => {
         await setDocumentAndLoadScript();
         window.localStorage.setItem(
           "import-map-overrides-disabled",
-          JSON.stringify(["package3", "package4"])
+          JSON.stringify(["package3", "package4"]),
         );
 
         expect(window.importMapOverrides.getDisabledOverrides()).toEqual([
@@ -310,7 +312,7 @@ describe("window.importMapOverrides", () => {
         await setDocumentAndLoadScript();
         window.localStorage.setItem(
           "import-map-overrides-disabled",
-          JSON.stringify(["package3"])
+          JSON.stringify(["package3"]),
         );
 
         expect(window.importMapOverrides.isDisabled("package3")).toEqual(true);
@@ -320,7 +322,7 @@ describe("window.importMapOverrides", () => {
         await setDocumentAndLoadScript();
         window.localStorage.setItem(
           "import-map-overrides-disabled",
-          JSON.stringify(["package3"])
+          JSON.stringify(["package3"]),
         );
 
         expect(window.importMapOverrides.isDisabled("package4")).toEqual(false);
@@ -330,9 +332,8 @@ describe("window.importMapOverrides", () => {
     describe("disableOverride", () => {
       it("should disable an override and return true if it wasn't disabled before", async () => {
         await setDocumentAndLoadScript();
-        const result = await window.importMapOverrides.disableOverride(
-          "package3"
-        );
+        const result =
+          await window.importMapOverrides.disableOverride("package3");
 
         expect(window.importMapOverrides.getDisabledOverrides()).toEqual([
           "package3",
@@ -345,11 +346,10 @@ describe("window.importMapOverrides", () => {
         await setDocumentAndLoadScript();
         window.localStorage.setItem(
           "import-map-overrides-disabled",
-          JSON.stringify(["package3"])
+          JSON.stringify(["package3"]),
         );
-        const result = await window.importMapOverrides.disableOverride(
-          "package3"
-        );
+        const result =
+          await window.importMapOverrides.disableOverride("package3");
 
         expect(window.importMapOverrides.getDisabledOverrides()).toEqual([
           "package3",
@@ -363,11 +363,10 @@ describe("window.importMapOverrides", () => {
         await setDocumentAndLoadScript();
         window.localStorage.setItem(
           "import-map-overrides-disabled",
-          JSON.stringify(["package3"])
+          JSON.stringify(["package3"]),
         );
-        const result = await window.importMapOverrides.enableOverride(
-          "package3"
-        );
+        const result =
+          await window.importMapOverrides.enableOverride("package3");
 
         expect(window.importMapOverrides.getDisabledOverrides()).toEqual([]);
         expect(result).toEqual(true);
@@ -376,9 +375,8 @@ describe("window.importMapOverrides", () => {
 
       it("should return false if override was not disabled before", async () => {
         await setDocumentAndLoadScript();
-        const result = await window.importMapOverrides.enableOverride(
-          "package3"
-        );
+        const result =
+          await window.importMapOverrides.enableOverride("package3");
 
         expect(window.importMapOverrides.getDisabledOverrides()).toEqual([]);
         expect(result).toEqual(false);
@@ -390,11 +388,11 @@ describe("window.importMapOverrides", () => {
         await setDocumentAndLoadScript();
         const map = await window.importMapOverrides.addOverride(
           "package3",
-          "https://cdn.skypack.dev/package33.js"
+          "https://cdn.skypack.dev/package33.js",
         );
 
         expect(localStorage.getItem("import-map-override:package3")).toEqual(
-          "https://cdn.skypack.dev/package33.js"
+          "https://cdn.skypack.dev/package33.js",
         );
         expect(map).toEqual({
           imports: {
@@ -409,11 +407,11 @@ describe("window.importMapOverrides", () => {
         await setDocumentAndLoadScript();
         const map = await window.importMapOverrides.addOverride(
           "@demo/package33",
-          "8080"
+          "8080",
         );
 
         expect(
-          localStorage.getItem("import-map-override:@demo/package33")
+          localStorage.getItem("import-map-override:@demo/package33"),
         ).toEqual("//localhost:8080/demo-package33.js");
         expect(map).toEqual({
           imports: {
@@ -430,14 +428,13 @@ describe("window.importMapOverrides", () => {
         await setDocumentAndLoadScript();
         window.localStorage.setItem(
           "import-map-override:package3",
-          "https://cdn.skypack.dev/package33"
+          "https://cdn.skypack.dev/package33",
         );
-        const result = await window.importMapOverrides.removeOverride(
-          "package3"
-        );
+        const result =
+          await window.importMapOverrides.removeOverride("package3");
 
         expect(localStorage.getItem("import-map-override:package3")).toEqual(
-          null
+          null,
         );
         expect(result).toBe(true);
         await assertChangeEventListenerIsCalled();
@@ -449,19 +446,19 @@ describe("window.importMapOverrides", () => {
         await setDocumentAndLoadScript();
         window.localStorage.setItem(
           "import-map-override:package3",
-          "https://cdn.skypack.dev/package33"
+          "https://cdn.skypack.dev/package33",
         );
         window.localStorage.setItem(
           "import-map-override:package4",
-          "https://cdn.skypack.dev/package4"
+          "https://cdn.skypack.dev/package4",
         );
         const map = await window.importMapOverrides.resetOverrides();
 
         expect(localStorage.getItem("import-map-override:package3")).toEqual(
-          null
+          null,
         );
         expect(localStorage.getItem("import-map-override:package4")).toEqual(
-          null
+          null,
         );
         expect(map).toEqual({
           imports: {},
@@ -476,7 +473,7 @@ describe("window.importMapOverrides", () => {
         await setDocumentAndLoadScript();
         window.localStorage.setItem(
           "import-map-override:package3",
-          "https://cdn.skypack.dev/package33"
+          "https://cdn.skypack.dev/package33",
         );
 
         expect(window.importMapOverrides.hasOverrides()).toEqual(true);
@@ -540,7 +537,7 @@ describe("window.importMapOverrides", () => {
               package9: "https://cdn.skypack.dev/package99.js",
             },
           },
-        }
+        },
       );
 
       expect(map).toEqual({

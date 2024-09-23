@@ -77,7 +77,7 @@ export default class ExternalImportMap extends Component {
 
     if (!this.props.dialogExternalMap.isNew) {
       window.importMapOverrides.removeExternalOverride(
-        this.props.dialogExternalMap.url
+        this.props.dialogExternalMap.url,
       );
     }
 

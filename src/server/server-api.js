@@ -32,7 +32,7 @@ export function applyOverrides(importMap, overrides) {
  */
 export function getOverridesFromCookies(
   req,
-  getUrlFromPort = defaultGetUrlFromPort
+  getUrlFromPort = defaultGetUrlFromPort,
 ) {
   const parsedCookies = cookie.parse(req.headers["cookie"] || "");
 

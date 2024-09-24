@@ -212,9 +212,11 @@ export default class List extends Component {
                 key={mod.moduleName}
               >
                 <td onClick={this.reload} role="button" tabIndex={0}>
-                  <div className="imo-status imo-next-override" />
-                  <div>Inline Override</div>
-                  <div className="imo-needs-refresh" />
+                  <div className="imo-status-wrapper">
+                    <div className="imo-status imo-next-override" />
+                    <div>Inline Override</div>
+                    <div className="imo-needs-refresh" />
+                </div>
                 </td>
                 <td>{mod.moduleName}</td>
                 <td>{toDomain(mod)}</td>
@@ -229,9 +231,11 @@ export default class List extends Component {
                 key={mod.moduleName}
               >
                 <td style={{ position: "relative" }}>
-                  <div className="imo-status imo-next-default" />
-                  <div>Default</div>
-                  <div className="imo-needs-refresh" />
+                  <div className="imo-status-wrapper">
+                    <div className="imo-status imo-next-default" />
+                    <div>Default</div>
+                    <div className="imo-needs-refresh" />
+                  </div>
                 </td>
                 <td>{mod.moduleName}</td>
                 <td>{toDomain(mod)}</td>
@@ -246,8 +250,10 @@ export default class List extends Component {
                 key={mod.moduleName}
               >
                 <td>
-                  <div className="imo-status imo-disabled-override" />
-                  <div>Override disabled</div>
+                  <div className="imo-status-wrapper">
+                    <div className="imo-status imo-disabled-override" />
+                    <div>Override disabled</div>
+                  </div>
                 </td>
                 <td>{mod.moduleName}</td>
                 <td>{toDomain(mod)}</td>
@@ -262,8 +268,10 @@ export default class List extends Component {
                 key={mod.moduleName}
               >
                 <td>
-                  <div className="imo-status imo-current-override" />
-                  <div>Inline Override</div>
+                  <div className="imo-status-wrapper">
+                    <div className="imo-status imo-current-override" />
+                    <div>Inline Override</div>
+                  </div>
                 </td>
                 <td>{mod.moduleName}</td>
                 <td>{toDomain(mod)}</td>
@@ -295,8 +303,10 @@ export default class List extends Component {
                 title="Automatically use dev version of certain npm libs"
               >
                 <td>
-                  <div className="imo-status imo-dev-lib-override" />
-                  <div>Dev Lib Override</div>
+                  <div className="imo-status-wrapper">
+                    <div className="imo-status imo-dev-lib-override" />
+                    <div>Dev Lib Override</div>
+                  </div>
                 </td>
                 <td>{mod.moduleName}</td>
                 <td>{toDomain(mod)}</td>
@@ -311,8 +321,10 @@ export default class List extends Component {
                 key={mod.moduleName}
               >
                 <td>
-                  <div className="imo-status imo-default-module" />
-                  <div>Default</div>
+                    <div className="imo-status-wrapper">
+                      <div className="imo-status imo-default-module" />
+                      <div>Default</div>
+                    </div>
                 </td>
                 <td>{mod.moduleName}</td>
                 <td>{toDomain(mod)}</td>
@@ -340,8 +352,10 @@ export default class List extends Component {
                   key={url}
                 >
                   <td>
-                    <div className="imo-status imo-disabled-override" />
-                    <div>Invalid</div>
+                    <div className="imo-status-wrapper">
+                      <div className="imo-status imo-disabled-override" />
+                      <div>Invalid</div>
+                    </div>
                   </td>
                   <td>{url}</td>
                 </tr>
@@ -356,8 +370,10 @@ export default class List extends Component {
                   key={url}
                 >
                   <td>
-                    <div className="imo-status imo-next-override" />
-                    <div>Pending refresh</div>
+                    <div className="imo-status-wrapper">
+                      <div className="imo-status imo-next-override" />
+                      <div>Pending refresh</div>
+                    </div>
                   </td>
                   <td>{url}</td>
                 </tr>
@@ -372,8 +388,10 @@ export default class List extends Component {
                   key={url}
                 >
                   <td>
-                    <div className="imo-status imo-current-override" />
-                    <div>Override</div>
+                    <div className="imo-status-wrapper">
+                      <div className="imo-status imo-current-override" />
+                      <div>Override</div>
+                    </div>
                   </td>
                   <td>{url}</td>
                 </tr>

@@ -146,13 +146,6 @@
   margin-top: 32px;
 }
 
-.imo-overrides-table tr td:first-child {
-  display: flex;
-  align-items: center;
-  padding-right: 32px;
-  position: relative;
-}
-
 .imo-needs-refresh {
   position: absolute;
   right: 8px;
@@ -163,6 +156,13 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.imo-status-wrapper {
+  display: flex;
+  align-items: center;
+  padding-right: 32px;
+  position: relative;
 }
 
 .imo-status {

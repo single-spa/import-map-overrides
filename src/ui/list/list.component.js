@@ -213,8 +213,7 @@ export default class List extends Component {
               >
                 <td onClick={this.reload} role="button" tabIndex={0}>
                   <div className="imo-status imo-next-override" />
-                  <div>Inline Override</div>
-                  <div className="imo-needs-refresh" />
+                  <div>Inline Override {"\u21BB"}</div>
                 </td>
                 <td>{mod.moduleName}</td>
                 <td>{toDomain(mod)}</td>

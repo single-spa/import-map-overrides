@@ -1,5 +1,11 @@
 # import-map-overrides
 
+## 4.0.1
+
+### Patch Changes
+
+- [#114](https://github.com/single-spa/import-map-overrides/pull/114) [`4b180f6`](https://github.com/single-spa/import-map-overrides/commit/4b180f6f34d9a7b6153838819e3b68861158bf39) Thanks [@joeldenning](https://github.com/joeldenning)! - Update inline override icon to avoid CSP issues
+
 ## 4.0.0
 
 ### Major Changes

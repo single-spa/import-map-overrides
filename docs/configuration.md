@@ -30,10 +30,6 @@ element to your html file **before the import-map-overrides library is loaded**.
 | [SystemJS](https://github.com/systemjs/systemjs)                 | `systemjs-importmap`  |
 | [es-module-shims](https://github.com/guybedford/es-module-shims) | `importmap-shim`      |
 
-**Notes:**
-
-1. Native import maps are only supported in Chrome@>=76 under the _Experimental Web Platform Features_ flag. Only one import map (including the import-map-overrides map) can be on a web page at a time when using native import maps. ([Details](https://github.com/WICG/import-maps/issues/199)).
-
 ### use-injector
 
 The `use-injector` attribute instructs import-map-overrides to skip inserting an import-map into the DOM, instead expecting the [import-map-injector](https://github.com/single-spa/import-map-injector) project to do so. This is necessary since browsers do not support multiple import maps on the same page.

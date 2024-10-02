@@ -16,6 +16,12 @@ element to your html file **before the import-map-overrides library is loaded**.
 ```html
 <!-- example configuration for a SystemJS import map -->
 <meta name="importmap-type" content="systemjs-importmap" />
+
+<!-- example configuration for a native import map -->
+<meta name="importmap-type" content="importmap" />
+
+<!-- example configuration for a native import map using import-map-injector -->
+<meta name="importmap-type" content="importmap" />
 ```
 
 | Import Map type                                                  | `importmap-type`      |
@@ -28,12 +34,19 @@ element to your html file **before the import-map-overrides library is loaded**.
 
 1. Native import maps are only supported in Chrome@>=76 under the _Experimental Web Platform Features_ flag. Only one import map (including the import-map-overrides map) can be on a web page at a time when using native import maps. ([Details](https://github.com/WICG/import-maps/issues/199)).
 
+### use-injector
+
+The `use-injector` attribute instructs import-map-overrides to skip inserting an import-map into the DOM, instead expecting the [import-map-injector](https://github.com/single-spa/import-map-injector) project to do so. This is necessary since browsers do not support multiple import maps on the same page.
+
+For more details, see [injector override mode](#client-side-injector) [import-map-injector docs](https://github.com/single-spa/import-map-injector#compatibility)
+
 ## Override Mode
 
 To support a variety of use cases, import map overrides has four "override modes" that control how and whether import-map-overrides inserts import maps into the DOM:
 
 1. [Client-side multiple maps](#client-side-multiple-maps) (default)
 1. [Client-side single map](#client-side-single-map)
+1. [Client-side import-map-injector](#client-side-injector)
 1. [Server-side multiple maps](#server-side-multiple-maps)
 1. [Server-side single map](#server-side-single-map)
 
@@ -105,6 +118,24 @@ To use single import map mode, change the `type` attribute of your import map to
 The `overridable-importmap` will be ignored by the browser, but import-map-overrides will insert an import map with the correct script `type` attribute and overrides applied, which will be used by the browser.
 
 Note that `overridable-importmap` scripts must be inline import maps, not external maps (those with `src=""`). This is because import-map-overrides executes synchronously to inject the single map, but downloading an external map is inherently asynchronous.
+
+### Client-side injector
+
+If using [import-map-injector](https://github.com/single-spa/import-map-injector), import-map-overrides is not responsible for inserting the importmap script element into the DOM. To use the two projects together, do the following:
+
+1. Load import-map-overrides.js **before** import-map-injector.js
+
+```html
+<!-- overrides before injector -->
+<script src="import-map-overrides.js"></script>
+<script src="import-map-injector.js"></script>
+```
+
+2. Add the `use-injector` attribute to the `<meta name="importmap-type">` element that configures import-map-overrides. See [import-map-overrides docs](https://github.com/single-spa/import-map-overrides/blob/main/docs/configuration.md#import-map-type) for more details
+
+```html
+<meta name="importmap-type" use-injector />
+```
 
 ### Server-side multiple maps
 

@@ -1,5 +1,13 @@
 # import-map-overrides
 
+## 4.1.0
+
+### Minor Changes
+
+- [#117](https://github.com/single-spa/import-map-overrides/pull/117) [`a7c7970`](https://github.com/single-spa/import-map-overrides/commit/a7c79702f9a6bc17fdf47fe6f2d4806330bbcf6c) Thanks [@joeldenning](https://github.com/joeldenning)! - New `use-injector` attribute on `<meta type="importmap-type">` element
+
+  New `resetDefaultMap` js api
+
 ## 4.0.1
 
 ### Patch Changes

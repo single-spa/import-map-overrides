@@ -19,9 +19,8 @@ const domainsElement = document.querySelector(`meta[name="${domainsMeta}"]`);
 
 const externalOverrideMapPromises = {};
 
-export const importMapType = importMapMetaElement
-  ? importMapMetaElement.getAttribute("content")
-  : "importmap";
+export const importMapType =
+  importMapMetaElement?.getAttribute("content") ?? "importmap";
 
 export let isDisabled;
 
@@ -196,6 +195,9 @@ function init() {
         outMap.scopes[i] = newMap.scopes[i];
       }
       return outMap;
+    },
+    resetDefaultMap() {
+      defaultMapPromise = null;
     },
     getDefaultMap() {
       return (
@@ -439,6 +441,12 @@ function init() {
   fireEvent("init");
 
   function insertOverrideMap(map, id, referenceNode) {
+    if (importMapMetaElement?.hasAttribute("use-injector")) {
+      // import-map-injector will take care of calling into import-map-overrides
+      // and then inject the final import map
+      return;
+    }
+
     const overrideMapElement = document.createElement("script");
     overrideMapElement.type = importMapType;
     overrideMapElement.id = id; // for debugging and for UI to identify this import map as special

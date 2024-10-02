@@ -24,9 +24,8 @@ const overrideMap = window.importMapOverrides.getOverrideMap();
 }
 */
 
-const overrideMapWithDisabledOverrides = window.importMapOverrides.getOverrideMap(
-  true
-);
+const overrideMapWithDisabledOverrides =
+  window.importMapOverrides.getOverrideMap(true);
 /*
 {
   "imports": {
@@ -79,7 +78,7 @@ port number:
 ```js
 const defaultOverrideUrl = window.importMapOverrides.getUrlFromPort(
   "module1",
-  "8085"
+  "8085",
 );
 console.log(defaultOverrideUrl); // "//localhost:8085/module1.js"
 ```
@@ -124,6 +123,10 @@ window.importMapOverrides.getDefaultMap().then((importMap) => {
   console.log(importMap);
 });
 ```
+
+### resetDefaultMap
+
+The [`getDefaultMap`](#getDefaultMap) function only derives the default map once upfront and then caches it. Calling the `resetDefaultMap()` function clears that cache, so that a subsequent call to `getDefaultMap()` derives the default map again.
 
 ### getCurrentPageMap
 
@@ -196,7 +199,7 @@ A function that accepts one argument, `urlToImportMap`, that sets up an override
 
 ```js
 window.importMapOverrides.addExternalOverride(
-  "https://localhost:8080/my-override-import-map.json"
+  "https://localhost:8080/my-override-import-map.json",
 );
 ```
 
@@ -207,7 +210,7 @@ A function that accepts one argument, `urlToImportMap`, that removes an external
 ```js
 // A return value of true means the override existed in the first place
 window.importMapOverrides.removeExternalOverride(
-  "https://localhost:8080/my-override-import-map.json"
+  "https://localhost:8080/my-override-import-map.json",
 );
 ```
 
@@ -254,7 +257,7 @@ Takes one argument, `urlToImport`, and returns a promise that resolves with a bo
 ```js
 // true | false. True means the external map was successfully downloaded and parsed as json
 window.importMapOverrides.isExternalMapValid(
-  "https://localhost:8080/my-custom-override-import-mapm.json"
+  "https://localhost:8080/my-custom-override-import-mapm.json",
 );
 ```
 
@@ -266,8 +269,8 @@ The import-map-overrides library fires an event called `import-map-overrides:ini
 
 ```js
 window.addEventListener("import-map-overrides:init", () => {
-  console.log('init');
-})
+  console.log("init");
+});
 ```
 
 #### Change

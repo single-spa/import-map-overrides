@@ -21,7 +21,7 @@ element to your html file **before the import-map-overrides library is loaded**.
 <meta name="importmap-type" content="importmap" />
 
 <!-- example configuration for a native import map using import-map-injector -->
-<meta name="importmap-type" content="importmap" />
+<meta name="importmap-type" content="importmap" use-injector />
 ```
 
 | Import Map type                                                  | `importmap-type`      |

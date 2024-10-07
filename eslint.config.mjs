@@ -25,7 +25,6 @@ export default [
     },
 
     rules: {
-      "es5/no-es6-methods": "error",
       "es5/no-es6-static-methods": "error",
       "es5/no-binary-and-octal-literals": "error",
       "es5/no-classes": "off",

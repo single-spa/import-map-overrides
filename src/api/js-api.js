@@ -147,6 +147,34 @@ function init() {
       fireChangedEvent();
       return hasItem;
     },
+    async getOverrideScopes() {
+      const scopes = {};
+      const defaultMap = await imo.getDefaultMap();
+      const overrideMap = imo.getOverrideMap();
+      for (let moduleName in overrideMap.imports) {
+        const defaultUrl = defaultMap.imports[moduleName];
+        if (defaultUrl) {
+          const defaultResolution = new URL(defaultUrl, window.location.href)
+            .href;
+          const overrideUrl = new URL(
+            overrideMap.imports[moduleName],
+            window.location.href,
+          ).href;
+          const overrideBase =
+            overrideUrl.slice(0, overrideUrl.lastIndexOf("/")) + "/";
+          for (let scope in defaultMap.scopes || {}) {
+            if (defaultResolution.startsWith(scope)) {
+              scopes[overrideBase] = {
+                ...(scopes[overrideBase] || {}),
+                ...defaultMap.scopes[scope],
+              };
+            }
+          }
+        }
+      }
+
+      return { scopes };
+    },
     resetOverrides() {
       Object.keys(imo.getOverrideMap(true).imports).forEach((moduleName) => {
         imo.removeOverride(moduleName);

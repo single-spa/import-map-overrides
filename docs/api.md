@@ -37,6 +37,46 @@ const overrideMapWithDisabledOverrides =
 */
 ```
 
+### getOverrideScopes
+
+Returns a Promise that resolves with an import map containing scopes for overridden modules. The scopes are inherited from the default map.
+
+```html
+<!--
+  When overriding the `a` module, it's possible to inherit the scopes for the not-overridden `a` module by calling the
+  `getOverrideScopes()` api and injecting an import map with those scopes
+-->
+<script type="importmap">
+  {
+    "imports": {
+      "a": "https://cdn.example.com/a/index.js",
+      "rxjs": "https://cdn.example.com/deps/rxjs@7.8.1/index.js"
+    },
+    "scopes": {
+      "https://cdn.example.com/a/": {
+        "rxjs": "https://cdn.example.com/deps/rxjs@7.6.0/index.js"
+      }
+    }
+  }
+</script>
+<script src="/import-map-overrides.js"></script>
+<script>
+  window.importMapOverrides.addOverride("a", "http:localhost:8080/a.js");
+  window.importMapOverrides.getOverrideScopes().then((map) => {
+    console.log(map);
+    /*
+      {
+        "scopes": {
+          "http://localhost:8080/": {
+            "rxjs": "https://cdn.example.com/deps/rxjs@7.6.0/index.js"
+          }
+        }
+      }
+    */
+  });
+</script>
+```
+
 ### addOverride
 
 A function that accepts a string `moduleName` and a string `url` as arguments. This will set up an override **which takes effect

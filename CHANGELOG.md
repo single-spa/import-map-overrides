@@ -1,5 +1,11 @@
 # import-map-overrides
 
+## 4.2.0
+
+### Minor Changes
+
+- [#121](https://github.com/single-spa/import-map-overrides/pull/121) [`1381dc0`](https://github.com/single-spa/import-map-overrides/commit/1381dc01baba839c1366ec64afb5f8b70850fcc2) Thanks [@joeldenning](https://github.com/joeldenning)! - Add new getOverrideScopes API for inheriting scoped dependencies for overridden modules
+
 ## 4.1.0
 
 ### Minor Changes

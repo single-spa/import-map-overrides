@@ -1,5 +1,5 @@
 {
-  "name": "import-map-overrides-jf",
+  "name": "@jfrog/import-map-overrides-jf",
   "version": "3.1.2",
   "main": "dist/import-map-overrides-server.js",
   "type": "module",

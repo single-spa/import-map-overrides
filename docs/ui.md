@@ -43,6 +43,14 @@ You have three options for the UI, depending on how much you want to customize t
   trigger-position="bottom-left"
 ></import-map-overrides-full>
 
+<!--
+   Optionally supply a nonce that will be added to the style tag used to style the import-map-overrides UI. 
+   This is useful if you are using a Content Security Policy(CSP)
+-->
+<import-map-overrides-full
+  style-nonce="NWFjZDlhNTctYTMzZC00MmZjLWJhYzAtZWJmOWYwNTQ0MTdh"
+></import-map-overrides-full>
+
 <!-- Alternatively, just the black popup itself -->
 <import-map-overrides-popup></import-map-overrides-popup>
 

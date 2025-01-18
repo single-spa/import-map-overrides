@@ -1,5 +1,15 @@
 # import-map-overrides
 
+## 5.0.0
+
+### Major Changes
+
+- [#126](https://github.com/single-spa/import-map-overrides/pull/126) [`2241fed`](https://github.com/single-spa/import-map-overrides/commit/2241feddf19cac3c387b364ebec9ffc21fe10b6f) Thanks [@agevry](https://github.com/agevry)! - The css for import-map-overrides UI is no longer injected into the main page, but only within the shadow dom for the UI
+
+### Minor Changes
+
+- [#126](https://github.com/single-spa/import-map-overrides/pull/126) [`2241fed`](https://github.com/single-spa/import-map-overrides/commit/2241feddf19cac3c387b364ebec9ffc21fe10b6f) Thanks [@agevry](https://github.com/agevry)! - Add style-nonce attribute to import-map-overrides-full element to support use under a Content Security Policy(CSP)
+
 ## 4.2.0
 
 ### Minor Changes

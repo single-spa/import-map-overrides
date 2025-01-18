@@ -1,8 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="style-src 'nonce-adsffdsa78dsaf87a9'"
+    />
     <title>Import Map Overrides test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -25,6 +29,9 @@
     <script src="https://cdn.jsdelivr.net/npm/systemjs/dist/system.js"></script>
   </head>
   <body>
-    <import-map-overrides-full dev-libs></import-map-overrides-full>
+    <import-map-overrides-full
+      dev-libs
+      style-nonce="adsffdsa78dsaf87a9"
+    ></import-map-overrides-full>
   </body>
 </html>

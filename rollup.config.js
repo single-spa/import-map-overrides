@@ -22,7 +22,9 @@ export default [
         babelHelpers: "bundled",
       }),
       nodeResolve(),
-      postcss(),
+      postcss({
+        inject: false,
+      }),
       isProduction &&
         terser({
           compress: {

@@ -36,7 +36,7 @@ function preactCustomElement(Comp, observedAttributes = []) {
     static get observedAttributes() {
       return observedAttributes;
     }
-    attributeChangedCallback(name, oldValue, newValue) {
+    attributeChangedCallback() {
       this.renderWithPreact();
     }
     renderWithPreact() {

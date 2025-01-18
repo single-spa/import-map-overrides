@@ -10,6 +10,7 @@ if (window.customElements && !isDisabled) {
     "import-map-overrides-full",
     preactCustomElement(FullUI, [
       "show-when-local-storage",
+      "style-nonce",
       "trigger-position",
     ]),
   );
@@ -43,6 +44,9 @@ function preactCustomElement(Comp, observedAttributes = []) {
         this.shadow = this.attachShadow({ mode: "open" });
         const style = document.createElement("style");
         style.textContent = styles.toString();
+        if (this.getAttribute("style-nonce")) {
+          style.setAttribute("nonce", this.getAttribute("style-nonce"));
+        }
         this.shadow.appendChild(style);
       } else {
         this.shadow = this.shadowRoot;

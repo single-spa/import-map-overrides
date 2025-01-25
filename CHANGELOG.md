@@ -1,5 +1,15 @@
 # import-map-overrides
 
+## 5.1.0
+
+### Minor Changes
+
+- [#131](https://github.com/single-spa/import-map-overrides/pull/131) [`1e066a2`](https://github.com/single-spa/import-map-overrides/commit/1e066a20185ba60c6cb64a15bd883bb1a19f7bb5) Thanks [@joeldenning](https://github.com/joeldenning)! - Support for style-nonce attribute on import-map-overrides-popup and import-map-overrides-list custom elements
+
+### Patch Changes
+
+- [#131](https://github.com/single-spa/import-map-overrides/pull/131) [`1e066a2`](https://github.com/single-spa/import-map-overrides/commit/1e066a20185ba60c6cb64a15bd883bb1a19f7bb5) Thanks [@joeldenning](https://github.com/joeldenning)! - Fix CSS issue with dialogs/popups
+
 ## 5.0.0
 
 ### Major Changes

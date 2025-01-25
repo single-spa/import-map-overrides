@@ -54,8 +54,20 @@ You have three options for the UI, depending on how much you want to customize t
 <!-- Alternatively, just the black popup itself -->
 <import-map-overrides-popup></import-map-overrides-popup>
 
+<!-- Optionally supply a nonce that will be added to the style tag used to style the import-map-overrides UI. 
+   This is useful if you are using a Content Security Policy(CSP) -->
+<import-map-overrides-popup
+  style-nonce="NWFjZDlhNTctYTMzZC00MmZjLWJhYzAtZWJmOWYwNTQ0MTdh"
+></import-map-overrides-popup>
+
 <!-- Or if you only want the actual import map list and UI for overriding -->
 <import-map-overrides-list></import-map-overrides-list>
+
+<!-- Optionally supply a nonce that will be added to the style tag used to style the import-map-overrides UI. 
+   This is useful if you are using a Content Security Policy(CSP) -->
+<import-map-overrides-list
+  style-nonce="NWFjZDlhNTctYTMzZC00MmZjLWJhYzAtZWJmOWYwNTQ0MTdh"
+></import-map-overrides-list>
 
 <!-- Or if you prefer enabling via javascript -->
 <script>

@@ -16,11 +16,11 @@ if (window.customElements && !isDisabled) {
   );
   window.customElements.define(
     "import-map-overrides-popup",
-    preactCustomElement(Popup),
+    preactCustomElement(Popup, ["style-nonce"]),
   );
   window.customElements.define(
     "import-map-overrides-list",
-    preactCustomElement(List),
+    preactCustomElement(List, ["style-nonce"]),
   );
 }
 

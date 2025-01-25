@@ -29,41 +29,6 @@ export default class List extends Component {
   componentWillUnmount() {
     window.removeEventListener("import-map-overrides:change", this.doUpdate);
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevState.dialogModule && this.state.dialogModule) {
-      this.dialogContainer = document.createElement("div");
-      document.body.appendChild(this.dialogContainer);
-      render(
-        <ModuleDialog
-          module={this.state.dialogModule}
-          cancel={this.cancel}
-          updateModuleUrl={this.updateModuleUrl}
-          addNewModule={this.addNewModule}
-        />,
-        this.dialogContainer,
-      );
-    } else if (prevState.dialogModule && !this.state.dialogModule) {
-      render(null, this.dialogContainer);
-      this.dialogContainer.remove();
-      delete this.dialogContainer;
-    }
-
-    if (!prevState.dialogExternalMap && this.state.dialogExternalMap) {
-      this.dialogContainer = document.createElement("div");
-      document.body.appendChild(this.dialogContainer);
-      render(
-        <ExternalImportMap
-          dialogExternalMap={this.state.dialogExternalMap}
-          cancel={this.cancel}
-        />,
-        this.dialogContainer,
-      );
-    } else if (prevState.dialogExternalMap && !this.state.dialogExternalMap) {
-      render(null, this.dialogContainer);
-      this.dialogContainer.remove();
-      delete this.dialogContainer;
-    }
-  }
   render() {
     const overriddenModules = [],
       nextOverriddenModules = [],
@@ -379,6 +344,20 @@ export default class List extends Component {
               ))}
             </tbody>
           </table>
+        )}
+        {this.state.dialogModule && (
+          <ModuleDialog
+            module={this.state.dialogModule}
+            cancel={this.cancel}
+            updateModuleUrl={this.updateModuleUrl}
+            addNewModule={this.addNewModule}
+          />
+        )}
+        {this.state.dialogExternalMap && (
+          <ExternalImportMap
+            dialogExternalMap={this.state.dialogExternalMap}
+            cancel={this.cancel}
+          />
         )}
       </div>
     );

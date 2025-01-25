@@ -1,4 +1,4 @@
-import { h, Component, render } from "preact";
+import { Component } from "preact";
 import { includes } from "../../util/includes.js";
 import ModuleDialog from "./module-dialog.component";
 import ExternalImportMap from "./external-importmap-dialog.component";

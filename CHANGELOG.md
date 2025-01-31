@@ -1,5 +1,11 @@
 # import-map-overrides
 
+## 5.1.1
+
+### Patch Changes
+
+- [#133](https://github.com/single-spa/import-map-overrides/pull/133) [`519da38`](https://github.com/single-spa/import-map-overrides/commit/519da380ae4ff481b11afd9fca802b906ac396e6) Thanks [@joeldenning](https://github.com/joeldenning)! - Fix popup not opening bug
+
 ## 5.1.0
 
 ### Minor Changes

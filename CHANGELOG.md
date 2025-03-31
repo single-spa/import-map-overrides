@@ -1,5 +1,11 @@
 # import-map-overrides
 
+## 6.0.0
+
+### Major Changes
+
+- [#135](https://github.com/single-spa/import-map-overrides/pull/135) [`f503162`](https://github.com/single-spa/import-map-overrides/commit/f503162337a7225c2a5657eff46f9c7cded254ba) Thanks [@MehmetYararVX](https://github.com/MehmetYararVX)! - Bump cookie to 1.0.2 and add server-api tests
+
 ## 5.1.1
 
 ### Patch Changes

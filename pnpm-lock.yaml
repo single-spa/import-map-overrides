@@ -8,8 +8,8 @@ importers:
   .:
     dependencies:
       cookie:
-        specifier: ^0.6.0
-        version: 0.6.0
+        specifier: ^1.0.2
+        version: 1.0.2
     devDependencies:
       "@babel/core":
         specifier: ^7.25.2
@@ -2356,12 +2356,12 @@ packages:
         integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==,
       }
 
-  cookie@0.6.0:
+  cookie@1.0.2:
     resolution:
       {
-        integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==,
+        integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==,
       }
-    engines: { node: ">= 0.6" }
+    engines: { node: ">=18" }
 
   copyfiles@2.4.1:
     resolution:
@@ -7595,7 +7595,7 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  cookie@0.6.0: {}
+  cookie@1.0.2: {}
 
   copyfiles@2.4.1:
     dependencies:

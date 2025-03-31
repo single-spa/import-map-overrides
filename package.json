@@ -74,7 +74,7 @@
     "serve": "^14.2.3"
   },
   "dependencies": {
-    "cookie": "^0.6.0"
+    "cookie": "^1.0.2"
   },
   "packageManager": "pnpm@9.12.1"
 }

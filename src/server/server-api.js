@@ -1,4 +1,4 @@
-import cookie from "cookie";
+import { parse } from "cookie";
 
 const cookiePrefix = "import-map-override:";
 const portRegex = /^\d+$/g;
@@ -34,7 +34,7 @@ export function getOverridesFromCookies(
   req,
   getUrlFromPort = defaultGetUrlFromPort,
 ) {
-  const parsedCookies = cookie.parse(req.headers["cookie"] || "");
+  const parsedCookies = parse(req.headers["cookie"] || "");
 
   const overrides = {};
 

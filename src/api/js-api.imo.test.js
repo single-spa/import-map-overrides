@@ -75,9 +75,7 @@ describe("window.importMapOverrides", () => {
       try {
         const map = await window.importMapOverrides.getDefaultMap();
       } catch (e) {
-        expect(e.message).toEqual(
-          "Unexpected token 'M', \"Malformed\" is not valid JSON",
-        );
+        expect(e.message).toEqual("Unexpected token M in JSON at position 0");
       }
     });
 

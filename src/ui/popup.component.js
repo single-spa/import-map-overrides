@@ -22,7 +22,7 @@ export default class Popup extends Component {
               maps. Start by clicking on a module that you'd like to override.{" "}
               <a
                 target="_blank"
-                href="https://github.com/joeldenning/import-map-overrides"
+                href="https://github.com/single-spa/import-map-overrides"
               >
                 See documentation for more info
               </a>

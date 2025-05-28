@@ -1,5 +1,11 @@
 # import-map-overrides
 
+## 6.0.1
+
+### Patch Changes
+
+- [#137](https://github.com/single-spa/import-map-overrides/pull/137) [`c7dff64`](https://github.com/single-spa/import-map-overrides/commit/c7dff648e1e3158e73d1a511660ce8eeb3c12205) Thanks [@PopCristianGabriel](https://github.com/PopCristianGabriel)! - The url of the documentation reference in the popup pointed to an outdated hijacked repository"
+
 ## 6.0.0
 
 ### Major Changes

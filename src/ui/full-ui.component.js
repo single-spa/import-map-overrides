@@ -45,7 +45,6 @@ export default class FullUI extends Component {
     return (
       <div>
         <button
-          {/* you can style this with css `import-map-overrides::part(button-with-override){color:red;}`*/}
           part={this.atLeastOneOverride() ? "button-with-override" : "button-no-override"}
           onClick={this.toggleTrigger}
           className={`imo-unstyled imo-trigger imo-trigger-${triggerPosition} ${

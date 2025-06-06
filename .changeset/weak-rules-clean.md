@@ -2,4 +2,4 @@
 "import-map-overrides": minor
 ---
 
-add 'patch' to the button for external css styling
+add 'part' to the button for external css styling

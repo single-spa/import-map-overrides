@@ -4,7 +4,7 @@ modern css allows you to style elements in the shadow-dom by using `::part`. you
 
 Here is a simple example of how you might apply custom styles
 ```css
-import-map-overrides-full::part(button-with-overrides){
+import-map-overrides-full::part(button-with-overrides) {
     /* styles to be applied to the button when overrides are present */
     color: green;
 }

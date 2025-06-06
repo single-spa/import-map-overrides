@@ -6,7 +6,7 @@ import-map-overrides-full::part(button-with-overrides) {
     color: green;
 }
 
-import-map-overrides-full::part(button-no-overrides){
+import-map-overrides-full::part(button-no-overrides) {
     /* styles to be applied to the button when overrides are not present */
     color: green;
 }

@@ -1,6 +1,6 @@
 {
   "name": "import-map-overrides",
-  "version": "6.0.1",
+  "version": "6.1.0",
   "main": "dist/import-map-overrides-server.js",
   "type": "module",
   "repository": "https://github.com/single-spa/import-map-overrides.git",

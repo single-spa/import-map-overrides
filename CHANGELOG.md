@@ -1,5 +1,11 @@
 # import-map-overrides
 
+## 6.1.0
+
+### Minor Changes
+
+- [#140](https://github.com/single-spa/import-map-overrides/pull/140) [`c6a8351`](https://github.com/single-spa/import-map-overrides/commit/c6a83511e60a7dae94e25efd8717ba9689612abf) Thanks [@joranbeasley](https://github.com/joranbeasley)! - add 'part' to the button for external css styling
+
 ## 6.0.1
 
 ### Patch Changes

@@ -45,7 +45,7 @@ export default class FullUI extends Component {
     return (
       <div>
         <button
-          part={`button${this.atLeastOneOverride() ? " with-override" : ""}`}
+          part={`button${this.atLeastOneOverride() ? " with-overrides" : ""}`}
           onClick={this.toggleTrigger}
           className={`imo-unstyled imo-trigger imo-trigger-${triggerPosition} ${
             this.atLeastOneOverride() ? "imo-current-override" : ""

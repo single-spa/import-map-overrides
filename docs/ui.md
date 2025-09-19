@@ -90,3 +90,22 @@ In the UI, you can add inline overrides and external overrides.
 An _inline override_ is an override for a single module. Each inline override is stored in local storage. You may add inline overrides by clicking on a module or on "Add Module".
 
 An _external override_ is a partial import map hosted on a different server. Any imports in that external import map will be applied as overrides to the current page's imports. You can add external overrides by clicking on the "Add import map" button. Note that external overrides are only supported in [multiple import map modes](/docs/configuration.md#override-modes).
+
+## styling the ui button with custom css rules
+
+```css
+import-map-overrides-full::part(button with-overrides) {
+  /* styles to be applied to the button when overrides are present */
+  color: green;
+}
+
+import-map-overrides-full::part(button) {
+  /* styles to be applied to the button when overrides are not present */
+  color: green;
+}
+
+import-map-overrides-full::part(button with-overrides):hover {
+  /* styles to be applied to the button when overrides are present and it is hovered */
+  border: 5px solid black;
+}
+```

@@ -14,9 +14,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-        with:
-          # check out full history
-          fetch-depth: 0
 
       - name: Install Pnpm
         uses: pnpm/action-setup@v4
@@ -24,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: latest
           cache: pnpm
 
       - name: Install dependencies
@@ -34,40 +31,9 @@ jobs:
         run: |
           pnpm run lint
           pnpm run check-format
-          pnpm exec changeset status --since=origin/main
 
       - name: Test
         run: pnpm run test
 
       - name: Build
         run: pnpm run build
-
-  release:
-    name: Release
-    needs: build_lint_test
-    permissions:
-      contents: write # To push release tags
-      pull-requests: write # To create release pull requests
-    runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }}
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: Install Pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm run build
-
-      - name: Changesets
-        run: pnpm exec changeset status
